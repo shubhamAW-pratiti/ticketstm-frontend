@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Container, Paper, Stack, TextField, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Divider } from '@mui/material';
 import bcrypt from 'bcryptjs'; 
-import { Link } from 'react-router-dom';
+import { Link, Navigate, redirect, useNavigate } from 'react-router-dom';
 
-const Login_poc = () => {
+const Login_poc = ({onLogin}) => {
+  const navigate=useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [openPopup, setOpenPopup] = useState(false);
@@ -35,6 +36,10 @@ const Login_poc = () => {
 
       if (email === storedUser.email && isValidPassword) {
         // Show the welcome popup
+
+        onLogin();
+        navigate('/profile');
+
         setOpenPopup(true);
       } else {
         // Show an error message or perform other actions
