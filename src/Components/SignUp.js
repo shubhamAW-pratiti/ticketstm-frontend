@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Container, Dialog, DialogTitle, DialogContent, DialogActions, Paper, Stack, TextField, Typography } from '@mui/material';
 import bcrypt from 'bcryptjs'; // Import the bcrypt library
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -10,6 +11,9 @@ const SignUp = () => {
   const [isPasswordStrong, setIsPasswordStrong] = useState(true);
   const [openPopup , setOpenPopup]=useState(false);
   const [popupContent, setPopupContent]=useState('');
+  const [message, setMessage] = useState('');
+  const [role, setRole] = useState('basic');
+
 
   const handleEmailChange = (value) => {
     setEmail(value);
@@ -25,37 +29,68 @@ const SignUp = () => {
     setIsPasswordStrong(passwordPattern.test(value));
   };
 
-  const handleSignUp = async () => {
+  const handleSignUp = async (e) => {
 
     if (isEmailValid && isPasswordStrong && email && password) {
 
-        //checked if user already exist
-        const storedUser=JSON.parse(localStorage.getItem('user'));
+        // //checked if user already exist
+        // const storedUser=JSON.parse(localStorage.getItem('user'));
 
-        if(storedUser && storedUser.email===email){
-            const isValidPassword = await bcrypt.compare(password, storedUser.password);
+        // if(storedUser && storedUser.email===email){
+        //     const isValidPassword = await bcrypt.compare(password, storedUser.password);
 
-            if(email===storedUser.email && isValidPassword){
-                setPopupContent('User already exist, Please Login');
-                setOpenPopup(true);
+        //     if(email===storedUser.email && isValidPassword){
+        //         setPopupContent('User already exist, Please Login');
+        //         setOpenPopup(true);
+        //     }
+        // }
+        // else {
+
+        //         // Hash the password
+        //         const hashedPassword = await bcrypt.hash(password, 10); // 10 is the salt rounds
+
+        //         const user = {
+        //             email: email,
+        //             password: hashedPassword, // Store the hashed password
+        //         };
+        //         localStorage.setItem('user', JSON.stringify(user));
+        //         setEmail('');
+        //         setPassword('');
+        //         alert('User created successfully');
+        // }
+
+        e.preventDefault();
+
+        
+          try {
+            const formData = new URLSearchParams();
+            formData.append('role', role);
+            formData.append('email', email);
+            formData.append('password', password);
+        
+            const response = await axios.post('http://localhost:3002/signup', formData.toString(), {
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+            });
+        
+            if (response.status === 200) {
+              const data = response.data;
+              // Store accessToken in localStorage
+              localStorage.setItem('accessToken', data.data.accessToken);
+              alert('User created successfully');
+              setMessage(data.message);
+            } else {
+              const data = response.data;
+              alert('User already exists, Please Login');
+              setMessage(data.message);
             }
-        }
-        else {
-
-                // Hash the password
-                const hashedPassword = await bcrypt.hash(password, 10); // 10 is the salt rounds
-
-                const user = {
-                    email: email,
-                    password: hashedPassword, // Store the hashed password
-                };
-                localStorage.setItem('user', JSON.stringify(user));
-                setEmail('');
-                setPassword('');
-                alert('User created successfully');
-        }
+          } catch (error) {
+            console.error('Error signing up:', error);
+          }
+        };
           
-    }
+    
 
     if(!email || !password){
         setPopupContent('Please enter email and password');
@@ -94,6 +129,7 @@ const SignUp = () => {
             required
             fullWidth
             label='Email'
+            id='email'
             value={email}
             error={!isEmailValid}
             helperText={isEmailValid ? '' : 'Invalid email format'}
@@ -105,6 +141,7 @@ const SignUp = () => {
             required
             fullWidth
             label='Password'
+            id='password'
             value={password}
             error={!isPasswordStrong}
             helperText={(!isPasswordStrong) ?'password must contain letter, alphabet and special character':''}

@@ -10,6 +10,9 @@ import ForgotPass from './Components/ForgotPass';
 import Profile from './Components/Profile';
 import PrivateRoute from './Components/PrivateRoute';
 import About from './Components/About';
+import AdminDashboard from './Components/AdminDashboard';
+import AgentDashboard from './Components/AgentDashboard';
+import TicketDetails from './Components/TicketDetails';
 
 export default function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -25,7 +28,7 @@ export default function App() {
 
   return (
     <div>
-       <Header/>
+       {/* <Header/> */}
       <Routes>
           <Route
             path='/profile'
@@ -35,12 +38,38 @@ export default function App() {
               </PrivateRoute>
             }
           />
+          <Route
+            path='/agent-dashboard'
+            element={
+              <PrivateRoute path="/agent-dashboard" isLoggedIn={isLoggedIn} >
+                <AgentDashboard onLogout={handleLogout} />
+              </PrivateRoute>
+            }
+          />
+          {/* Admin dashboard */}
+          <Route
+            path='/admin-dashboard'
+            element={
+              <PrivateRoute path="/admin-dashboard" isLoggedIn={isLoggedIn} >
+                <AdminDashboard onLogout={handleLogout} />
+              </PrivateRoute>
+            }
+          />
+          {/* ticket Details */}
+          <Route
+            path='/ticket/:ticketId'
+           element={
+            <PrivateRoute path="/ticket/:ticketId" isLoggedIn={isLoggedIn} >
+                 <TicketDetails onLogout={handleLogout} />
+            </PrivateRoute>
+           } 
+          />
         <Route path="/" element={<Login_poc onLogin={handleLogin} />}/>
         <Route path="/SignUp" element={<SignUp/>}/>
         <Route path="/ForgotPass" element={<ForgotPass/>}/>
         <Route path='/about' element={<About/>}/>
       </Routes>
-      <Footer/>
+      {/* <Footer/> */}
     </div>
     
  );

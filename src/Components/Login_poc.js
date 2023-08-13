@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Button, Container, Paper, Stack, TextField, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Divider } from '@mui/material';
 import bcrypt from 'bcryptjs'; 
 import { Link, Navigate, redirect, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 
 const Login_poc = ({onLogin}) => {
   const navigate=useNavigate();
@@ -10,6 +12,7 @@ const Login_poc = ({onLogin}) => {
   const [openPopup, setOpenPopup] = useState(false);
   const [isEmailValid , setIsEmailValid]=useState(true);
   const [isPasswordStrong , setIsPasswordStrong]=useState(true);
+  const [message, setMessage] = useState('');
 
   const handleEmailChange=(value)=>{
     setEmail(value);
@@ -26,29 +29,44 @@ const Login_poc = ({onLogin}) => {
   }
 
 
-  const handleLogin = async () => {
-    // Retrieve user data from local storage
-    const storedUser = JSON.parse(localStorage.getItem('user'));
 
-    if (storedUser) {
-      // Compare hashed password using bcrypt
-      const isValidPassword = await bcrypt.compare(password, storedUser.password);
-
-      if (email === storedUser.email && isValidPassword) {
-        // Show the welcome popup
-
+  const handleLogin = async (e) => {
+    e.preventDefault();
+  
+    try {
+      const formData = new URLSearchParams();
+      formData.append('email', email);
+      formData.append('password', password);
+  
+      const response = await axios.post('http://localhost:3002/login', formData.toString(), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+  
+      if (response.status === 200) {
+        const data = response.data;
+        localStorage.setItem('accessToken', data.accessToken);
+        localStorage.setItem('userId', data.data.id);
+        alert('role is ' + data.data.role);
+        setMessage('Login successful');
+        alert('Login successful');
         onLogin();
-        navigate('/profile');
-
-        setOpenPopup(true);
+        if (data.data.role === 'admin')
+          navigate('/admin-dashboard');
+        else if (data.data.role === 'basic')
+          navigate('/profile');
+        else
+          navigate('/agent-dashboard');
       } else {
-        // Show an error message or perform other actions
-        alert('Invalid credentials');
+        const data = response.data;
+        setMessage(data.message);
       }
-    } else {
-      alert('User not found');
+    } catch (error) {
+      console.error('Error logging in:', error);
     }
   };
+  
 
   const handleClosePopup = () => {
     setOpenPopup(false);
@@ -74,7 +92,7 @@ const Login_poc = ({onLogin}) => {
 
         <TextField
           type='email'
-          id="outlined-basic"
+          id="email-signin"
           label="Email"
           variant="outlined"
           fullWidth
@@ -87,7 +105,7 @@ const Login_poc = ({onLogin}) => {
         />
         <TextField
           type='password'
-          id="outlined-basic"
+          id="password-signin"
           label="Password"
           variant="outlined"
           fullWidth
