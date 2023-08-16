@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Container, Dialog, DialogTitle, DialogContent, DialogActions, Paper, Stack, TextField, Typography } from '@mui/material';
 import bcrypt from 'bcryptjs'; // Import the bcrypt library
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer , toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -13,7 +15,6 @@ const SignUp = () => {
   const [popupContent, setPopupContent]=useState('');
   const [message, setMessage] = useState('');
   const [role, setRole] = useState('basic');
-
 
   const handleEmailChange = (value) => {
     setEmail(value);
@@ -32,36 +33,7 @@ const SignUp = () => {
   const handleSignUp = async (e) => {
 
     if (isEmailValid && isPasswordStrong && email && password) {
-
-        // //checked if user already exist
-        // const storedUser=JSON.parse(localStorage.getItem('user'));
-
-        // if(storedUser && storedUser.email===email){
-        //     const isValidPassword = await bcrypt.compare(password, storedUser.password);
-
-        //     if(email===storedUser.email && isValidPassword){
-        //         setPopupContent('User already exist, Please Login');
-        //         setOpenPopup(true);
-        //     }
-        // }
-        // else {
-
-        //         // Hash the password
-        //         const hashedPassword = await bcrypt.hash(password, 10); // 10 is the salt rounds
-
-        //         const user = {
-        //             email: email,
-        //             password: hashedPassword, // Store the hashed password
-        //         };
-        //         localStorage.setItem('user', JSON.stringify(user));
-        //         setEmail('');
-        //         setPassword('');
-        //         alert('User created successfully');
-        // }
-
         e.preventDefault();
-
-        
           try {
             const formData = new URLSearchParams();
             formData.append('role', role);
@@ -78,14 +50,28 @@ const SignUp = () => {
               const data = response.data;
               // Store accessToken in localStorage
               localStorage.setItem('accessToken', data.data.accessToken);
-              alert('User created successfully');
+              //Toast message for success
+              toast.success("Sign Up successfully !", {
+                position: toast.POSITION.TOP_RIGHT
+              });
               setMessage(data.message);
+              window.location.href = '/';
             } else {
               const data = response.data;
+              //toast message for warn
+              toast.warn("user already exists,Please login !", {
+                position: toast.POSITION.TOP_RIGHT
+              });
               alert('User already exists, Please Login');
               setMessage(data.message);
+
+              
+
             }
           } catch (error) {
+            toast.error("Error signing up !", {
+              position: toast.POSITION.TOP_RIGHT
+            });
             console.error('Error signing up:', error);
           }
         };
@@ -183,7 +169,10 @@ const SignUp = () => {
             </DialogActions>
           </Dialog>
 
+
       </Paper>
+      <ToastContainer />
+
     </Container>
   );
 };

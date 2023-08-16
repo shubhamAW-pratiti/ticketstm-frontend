@@ -36,11 +36,8 @@ const AgentDashboard = () => {
   return (
     <div
       style={{
-        margin:'10%',
-        border: '1px solid #ccc',
-        padding: '16px',
+        margin: '5%',
         borderRadius: '10px',
-        backgroundColor: '#f5f5f5',
       }}
     >
       <h1>Assigned tickets: </h1>

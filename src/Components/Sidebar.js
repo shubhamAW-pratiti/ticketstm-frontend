@@ -1,0 +1,273 @@
+import React from 'react';
+import { Box, 
+    Divider,
+    Drawer,
+    IconButton,
+    List,
+    ListItem,
+    ListItemText,
+    ListItemButton,
+    ListItemIcon,
+    Typography,
+    useTheme,
+    useMediaQuery
+} from '@mui/material';
+import { SettingsOutlined,
+    ChevronLeft,
+    ChevronRightOutlined,
+    HomeOutlined,
+    ShoppingCartOutlined,
+    Groups2Outlined,
+    ReceiptLongOutlined,
+    PublicOutlined,
+    PointOfSaleOutlined,
+    TodayOutlined,
+    CalendarMonthOutlined,
+    AdminPanelSettingsOutlined,
+    TrendingUpOutlined,
+    PieChartOutlined }
+from '@mui/icons-material';
+import { useEffect, useState} from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import FlexBetween from './FlexBetween';
+
+const navItems = [
+  {
+      text: "Dashboard",
+      icon: <HomeOutlined />,
+      roles: ['admin', 'agent', 'basic']
+  },
+  {
+      text: "Tickets",
+      icon: null,
+      roles: ['admin', 'agent', 'basic']
+  },
+  {
+      text: "Admin-dashboard",
+      icon: <ShoppingCartOutlined />,
+      roles: ['admin']
+  },
+  {
+    text:'profile',
+    icon:<ShoppingCartOutlined/>,
+    roles:['basic']
+  },
+  {
+    text:'agent-dashboard',
+    icon:<ShoppingCartOutlined/>,
+    roles:['agent']
+  },
+  {
+      text: "Users",
+      icon: <Groups2Outlined />,
+      roles: ['admin', 'agent']
+  },
+  {
+      text: "Tickets",
+      icon: <ReceiptLongOutlined />,
+      roles: ['admin', 'agent']
+  },
+  {
+      text: "Data",
+      icon: <PublicOutlined />,
+      roles: ['admin', 'agent']
+  },
+  {
+      text: "",
+      icon: null,
+      roles: ['admin', 'agent']
+  },
+  {
+      text: "Manage",
+      icon: null,
+      roles: ['admin', 'agent']
+  },
+  {
+      text: "Daily",
+      icon: <TodayOutlined />,
+      roles: ['admin', 'agent']
+  },
+  {
+      text: "Monthly",
+      icon: <CalendarMonthOutlined />,
+      roles: ['admin', 'agent']
+  },
+  {
+      text: "Breakdown",
+      icon: <PieChartOutlined />,
+      roles: ['admin', 'agent']
+  },
+  {
+      text: "Management",
+      icon: null,
+      roles: ['admin', 'agent']
+  },
+  {
+      text: "Admin",
+      icon: <AdminPanelSettingsOutlined />,
+      roles: ['admin']
+  },
+  {
+      text: "Performance",
+      icon: <TrendingUpOutlined />,
+      roles: ['admin', 'agent']
+  },
+];
+
+
+const Sidebar = ({
+    user,
+    drawerWidth,
+    isSidebarOpen,
+    setIsSidebarOpen,
+    isNonMobile
+}) =>  {
+    const userRole = localStorage.getItem('userRole');
+    const filteredNavItems = navItems.filter(item => item.roles.includes(userRole));
+    console.log('filternavitems',filteredNavItems);
+    const { pathname } = useLocation();
+    const [active, setActive ] = useState("");
+    const navigate = useNavigate()
+    const theme = useTheme()
+    const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
+
+    useEffect(() => {
+        setActive(pathname.substring(1))
+    }, [pathname])
+  return (
+    <Box component="nav">
+        {isSidebarOpen && (
+            <Drawer 
+            open={isSidebarOpen} 
+            onClose = {() => setIsSidebarOpen(false)}
+            variant="persistent"
+            anchor="left"
+            sx={{
+                width:drawerWidth,
+                "& .MuiDrawer-paper": {
+                    color: theme.palette.secondary[200],
+                    // backgroundColor: '#1f1f1f',
+                    boxSizing: "border-box",
+                    borderWidth: isNonMobile ? 0 : "2px",
+                    width: drawerWidth,
+                    borderRightWidth: '1px',
+                }
+            }}
+            >
+             <Box width="100%">
+                 <Box m="1.5rem 2rem 2rem 3rem">
+                     <FlexBetween color={theme.palette.secondary.main}>
+                         <Box display="flex" alignItems="center" gap="0.5rem">
+                             <Typography variant="h4" fontWeight="bold">
+                                 Ticketstm
+                             </Typography>
+                         </Box>
+                         {!isNonMobile && (
+                             <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+                                 <ChevronLeft />
+                             </IconButton>
+                         )}
+                     </FlexBetween>
+                 </Box>
+
+                 <List>
+                        {filteredNavItems.map(({ text, icon }) => {
+                            if (!icon) {
+                                return (
+                                    <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem"}} >
+                                        { text }
+                                    </Typography>
+                                );
+                            }
+
+                            const lcText = text.toLowerCase();
+
+                            return (
+                                <ListItem key={text} disablePadding>
+                                    {/* ... rest of the code ... */}
+                                    <ListItemButton onClick={() => {
+                                                navigate(`/${lcText}`);
+                                                setActive(lcText);
+                                          }}
+                                                sx={{backgroundColor: active === lcText ? 'yellow' : "transparent",
+                                                color: active === lcText ? theme.palette.primary[600] : theme.palette.secondary[100]}}>
+                                            <ListItemIcon sx={{ ml: "2rem",
+                                                color: active === lcText ? theme.palette.primary[600] : theme.palette.secondary[200]
+                                                }}>
+                                                {icon}
+                                            </ListItemIcon>
+                                            <ListItemText primary={text} />
+                                                {active === lcText && (
+                                                <ChevronRightOutlined sx={{ml: "auto" }} />
+                                                )}
+                                            </ListItemButton>
+                                </ListItem>
+                            );
+                        })}
+                    </List>
+
+                 {/* <List>
+                     {navItems.map(({ text, icon}) => {
+                         if(!icon) {
+                             return (
+                                <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem"}} >
+                                    { text }
+                                </Typography>
+                             )
+                         }
+
+                         const lcText = text.toLowerCase()
+
+                         return (
+                             <ListItem key={text} disablePadding>
+                                 <ListItemButton onClick={() => {
+                                     navigate(`/${lcText}`);
+                                     setActive(lcText);
+                                 }}
+                                 sx={{backgroundColor: active === lcText ? 'yellow' : "transparent",
+                                 color: active === lcText ? theme.palette.primary[600] : theme.palette.secondary[100]}}>
+                                     <ListItemIcon sx={{ ml: "2rem",
+                                        color: active === lcText ? theme.palette.primary[600] : theme.palette.secondary[200]
+                                    }}>
+                                        {icon}
+                                     </ListItemIcon>
+                                    <ListItemText primary={text} />
+                                    {active === lcText && (
+                                        <ChevronRightOutlined sx={{ml: "auto" }} />
+                                    )}
+                                 </ListItemButton>
+                             </ListItem>
+                         )
+                     })}
+                 </List> */}
+
+             </Box>
+             {isNonMediumScreens && <Box position="absolute" bottom="2rem">
+                <Divider />
+                <FlexBetween textTransform="none" gap="1rem" m="1.5rem 2rem 0 3rem">
+                    <Box
+                    component="img"
+                    alt="profile"
+                    height="40px"
+                    width="40px"
+                    borderRadius="50%"
+                    sx={{ objectFit: "Cover"}} 
+                   />
+                   <Box textAlign="left">
+                        <Typography fontWeight="bold" fontSize="0.9rem" sx={{ color: theme.palette.secondary[100]}}>
+                            {user.name}
+                        </Typography>
+                        <Typography  fontSize="0.8rem" sx={{ color: theme.palette.secondary[200]}}>
+                            {user.occupation}
+                        </Typography>
+                    </Box>
+                    <SettingsOutlined sx={{color: theme.palette.secondary[300], fontSize: "25px"}} />
+                </FlexBetween>
+            </Box>}
+            </Drawer>
+        )} 
+    </Box>
+  )
+}
+
+export default Sidebar

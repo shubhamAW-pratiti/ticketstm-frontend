@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Container, Paper, Stack, TextField, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Divider } from '@mui/material';
+import { Button, Container, Paper, Stack, TextField, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Divider ,Grid } from '@mui/material';
 import bcrypt from 'bcryptjs'; 
 import { Link, Navigate, redirect, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -48,9 +48,11 @@ const Login_poc = ({onLogin}) => {
         const data = response.data;
         localStorage.setItem('accessToken', data.accessToken);
         localStorage.setItem('userId', data.data.id);
+        localStorage.setItem('userRole', data.data.role);
+
         alert('role is ' + data.data.role);
-        setMessage('Login successful');
-        alert('Login successful');
+
+        
         onLogin();
         if (data.data.role === 'admin')
           navigate('/admin-dashboard');
@@ -73,11 +75,11 @@ const Login_poc = ({onLogin}) => {
   };
 
   return (
-    <Container component="main" maxWidth='md'>
+
+      <Container component="main" maxWidth='md'>
       <Paper
         sx={{
-          margin: 8,
-          padding: 5,
+          padding: 2,
           display: 'flex',
           flexDirection: 'column',
           gap: 2,
@@ -143,7 +145,7 @@ const Login_poc = ({onLogin}) => {
         </Stack>
 
         {/* signup & forgot password */}
-        <Stack spacing={0} direction='row' marginTop={2}>
+        <Stack spacing={0} direction="row" marginTop={2}>
           <ul> <Link to="/SignUp">Signup</Link> </ul>
           <ul>|</ul>
           <ul><Link to="/ForgotPass">Forgot Password</Link></ul>
@@ -179,10 +181,120 @@ const Login_poc = ({onLogin}) => {
             </Button>
           </DialogActions>
         </Dialog>
-
+        
       </Paper>
     </Container>
+
   );
 };
 
 export default Login_poc;
+
+    // <Container component="main" maxWidth='md'>
+    //   <Paper
+    //     sx={{
+    //       padding: 2,
+    //       display: 'flex',
+    //       flexDirection: 'column',
+    //       gap: 2,
+    //       alignItems: 'center',
+    //       maxWidth: 'md',
+    //       backgroundColor: 'whitesmoke',
+    //     }}
+    //   >
+    //     <Typography variant="h4" component="h4">
+    //       Login
+    //     </Typography>
+
+    //     <TextField
+    //       type='email'
+    //       id="email-signin"
+    //       label="Email"
+    //       variant="outlined"
+    //       fullWidth
+    //       margin="normal"
+    //       required
+    //       value={email}
+    //       error={!isEmailValid}
+    //       helperText={isEmailValid ? '' : 'Invalid email format'}
+    //       onChange={(e) => handleEmailChange(e.target.value)}
+    //     />
+    //     <TextField
+    //       type='password'
+    //       id="password-signin"
+    //       label="Password"
+    //       variant="outlined"
+    //       fullWidth
+    //       margin="normal"
+    //       required
+    //       value={password}
+    //       error={!isPasswordStrong}
+    //       helperText={(!isPasswordStrong) ?'password must contain letter, alphabet and special character':''}
+    //       onChange={(e) => handlePasswordChange(e.target.value)}
+    //     />
+
+    //     {/* Login & Reset Buttons */}
+    //     <Stack direction={'row'} spacing={1} width={'100%'}>
+    //       <Button
+    //         variant='contained'
+    //         size='large'
+    //         fullWidth
+    //         onClick={handleLogin}
+    //       >
+    //         Login
+    //       </Button>
+
+    //       <Button
+    //         variant="outlined"
+    //         size='large'
+    //         fullWidth
+    //         type="reset"
+    //         onClick={() => {
+    //           setEmail('');
+    //           setPassword('');
+    //         }}
+    //       >
+    //         Reset
+    //       </Button>
+    //     </Stack>
+
+    //     {/* signup & forgot password */}
+    //     <Stack spacing={0} direction="row" marginTop={2}>
+    //       <ul> <Link to="/SignUp">Signup</Link> </ul>
+    //       <ul>|</ul>
+    //       <ul><Link to="/ForgotPass">Forgot Password</Link></ul>
+    //     </Stack>
+  
+
+
+    //     {/* Divider */}
+    //     <Divider flexItem sx={{ marginTop: 2 }}>
+    //       OR
+    //     </Divider>
+
+    //     {/* Continue as a guest */}
+    //     <Button
+    //       fullWidth
+    //       type='button'
+    //       size='large'
+    //       variant='contained'
+    //       onClick={() => setOpenPopup(true)}
+    //     >
+    //       Continue As a Guest
+    //     </Button>
+
+    //     {/* Welcome Popup */}
+    //     <Dialog open={openPopup} onClose={handleClosePopup}>
+    //       <DialogTitle>Welcome</DialogTitle>
+    //       <DialogContent>
+    //         <Typography variant='body1'>Welcome to our website!</Typography>
+    //       </DialogContent>
+    //       <DialogActions>
+    //         <Button onClick={handleClosePopup} color='primary'>
+    //           Close
+    //         </Button>
+    //       </DialogActions>
+    //     </Dialog>
+        
+    //   </Paper>
+    // </Container>

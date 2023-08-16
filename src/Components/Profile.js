@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from '@mui/material'
+import { Button, Grid, Typography ,TextField } from '@mui/material'
 import React, { useEffect } from 'react'
 import { Navigate ,Link} from 'react-router-dom';
 import jwt_decode from 'jwt-decode'; //needed when you want to extract userId form accessToken(which is stored in local Storage)
@@ -43,7 +43,6 @@ const Profile = ({onLogout}) => {
 
       if(response.status === 201){
         const data = response.data;
-        alert('Ticket created successfully');
       }
       else{
         alert('problem with ticket creationg');
@@ -131,60 +130,57 @@ const Profile = ({onLogout}) => {
     ticket.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  return (
-    <Grid >
-      <Typography
-        variant='h4'
-      >
-        welcome {user?.email}
-      </Typography>
-      {/* top right corner placement of signout */}
-      <Button onClick={handleSignOUt}
-      variant='contained' color='secondary'
-      sx={{
-        position:'absolute',
-        top:10,
-        right:10
-      }}
-      >SignOut</Button>
-
-      <Button onClick={()=>setIsFormOpen(true)}>
-        Create Ticket
-      </Button>
-
-      <CreateTicketForm isOpen={isFormOpen} onClose={handleFormClose} onSubmit={handleFormSubmit} />
-
-      <Typography
-        variant='h4'
-      >
-        Ticket List 
-      </Typography>
-
-      {/* input search field */}
-      <input type='text' placeholder='Search' onChange={handleSearch} />
-
-      {/* {tickets.map((ticket)=>(
-        <Grid key={ticket._id} >
-          <span>'title' - {ticket.title}</span> &&
-          <span>description-{ticket.description}</span>
-        </Grid>
-      ))} */}
-
-      {/* filtered tickets */}
-
-      <ul>
-
-        {filterTickets.map((ticket)=>(
-          <li key={ticket._id} >
-            <Link to={`/ticket/${ticket._id}`}>{ticket.title}</Link>
-          </li>
-        ))}
-      </ul>
-
-
-    </Grid>
  
-  )
+  return (
+    <Grid container spacing={2} sx={{ padding: 2 }}>
+      <Grid item xs={12}>
+        <Typography variant="h4" gutterBottom>
+          Welcome {user?.email}
+        </Typography>
+        <Button onClick={() => setIsFormOpen(true)} variant="contained" color="primary">
+          Create Ticket
+        </Button>
+        <CreateTicketForm isOpen={isFormOpen} onClose={handleFormClose} onSubmit={handleFormSubmit} />
+      </Grid>
+      <Grid item xs={12}>
+        <Typography variant="h4" gutterBottom>
+          Ticket List
+        </Typography>
+        <TextField
+          label="Search"
+          variant="outlined"
+          fullWidth
+          value={searchTerm}
+          onChange={handleSearch}
+          sx={{ marginBottom: 2 }}
+        />
+      </Grid>
+      {filterTickets.map((ticket) => (
+        <Grid item key={ticket._id} xs={12} sm={6} md={4} lg={3}>
+          <Link to={`/ticket/${ticket._id}`} style={{ textDecoration: 'none' }}>
+            <div
+              sx={{
+                padding: 2,
+                backgroundColor: 'white',
+                border: '1px solid #ccc',
+                borderRadius: 4,
+                minHeight: 150,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Typography variant="h6" gutterBottom>
+                {ticket.title}
+              </Typography>
+              <Typography>{ticket.description}</Typography>
+              <Typography>Status: {ticket?.status}</Typography>
+            </div>
+          </Link>
+        </Grid>
+      ))}
+    </Grid>
+  );
 }
 
 export default Profile

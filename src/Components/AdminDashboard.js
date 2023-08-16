@@ -42,11 +42,11 @@ const AdminDashboard = () => {
     return (
         <div
             style={{
-                margin: '10%',
-                border: '1px solid #ccc',
-                padding: '16px',
+                width:'100%',
+                height:'100%',
                 borderRadius: '10px',
-                backgroundColor: '#f5f5f5',
+                padding: '5%',
+                
             }}
         >
             <h1>Admin Dashboard</h1>
