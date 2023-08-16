@@ -156,18 +156,17 @@ const Profile = ({onLogout}) => {
         />
       </Grid>
       {filterTickets.map((ticket) => (
-        <Grid item key={ticket._id} xs={12} sm={6} md={4} lg={3}>
+        <Grid item key={ticket._id}  xs={12} sm={6} md={4} lg={3} gap={2}>
           <Link to={`/ticket/${ticket._id}`} style={{ textDecoration: 'none' }}>
             <div
-              sx={{
-                padding: 2,
-                backgroundColor: 'white',
+              style={{
+                backgroundColor: 'whitesmoke',
                 border: '1px solid #ccc',
-                borderRadius: 4,
-                minHeight: 150,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
+                borderRadius: 10,
+                padding: 10,
+                '&:hover': {
+                  backgroundColor: 'red',
+                },
               }}
             >
               <Typography variant="h6" gutterBottom>

@@ -144,7 +144,7 @@ export default function App() {
       </Routes>
       {/* <Footer/> */}
     </div>
-    // </ThemeProvider>
+    // </ThemeP••••••••••rovider>
     
  );
 }
