@@ -20,7 +20,9 @@ import {
 } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import CloseIcon from '@mui/icons-material/Close';
+import PendingActionsOutlinedIcon from '@mui/icons-material/PendingActionsOutlined';
+import MemoryOutlinedIcon from '@mui/icons-material/MemoryOutlined';
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 
 const UserProfile = () => {
     const { userId } = useParams();
@@ -188,7 +190,7 @@ const UserProfile = () => {
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>ID</TableCell>
+                                    <TableCell>Title</TableCell>
                                     <TableCell>Status</TableCell>
                                     <TableCell>Agent Assigned</TableCell>
                                 </TableRow>
@@ -204,11 +206,38 @@ const UserProfile = () => {
                                         <TableCell>{ticket?.title}</TableCell>
                                         <TableCell>
                                             {ticket.status === 'pending' ? (
-                                                <HelpOutlineIcon style={{ color: 'orange' }} />
+                                                <div style={{
+                                                    display: 'flex',
+                                                    flexDirection:'row',
+                                                    alignItems:'center',
+                                                    gap:'5px',
+                                                }}>
+
+                                                    <PendingActionsOutlinedIcon style={{color:'orange'}} textAnchor='pending'/>
+                                                    <Typography>Pending</Typography>
+                                                </div>
                                             ) : ticket.status === 'opened' ? (
-                                                <CheckCircleOutlineIcon style={{ color: 'green' }} />
+                                                <div style={{
+                                                    display: 'flex',
+                                                    flexDirection:'row',
+                                                    alignItems:'center',
+                                                    gap:'5px',
+                                                }}>
+
+                                                    <MemoryOutlinedIcon style={{color:'blue'}}/>
+                                                    <Typography>In process.</Typography>
+                                                </div>
                                             ) : (
-                                                <CloseIcon style={{ color: 'red' }} />
+                                                <div style={{
+                                                    display: 'flex',
+                                                    flexDirection:'row',
+                                                    alignItems:'center',
+                                                    gap:'5px',
+                                                }}>
+
+                                                    <CheckOutlinedIcon style={{color:'green'}} />
+                                                    <Typography>Resolved</Typography>
+                                                </div>
                                             )}
                                         </TableCell>
                                         <TableCell>{ticket.agent}</TableCell>
@@ -233,178 +262,3 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
-
-
-
-
-
-// import React, { useState, useEffect } from 'react';
-// import { useParams } from 'react-router-dom';
-// import axios from 'axios';
-// import { Grid, Typography, Paper } from '@mui/material';
-// import Avatar from '@mui/material/Avatar';
-// import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-// import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-// import CloseIcon from '@mui/icons-material/Close';
-
-// const UserProfile = () => {
-//     const { userId } = useParams();
-//     const [user, setUser] = useState(null);
-//     const [tickets, setTickets] = useState([]);
-    
-//     const TotalTickets = tickets.length;
-
-//     useEffect(() => {
-//         // Fetch user details
-//         axios.get(`http://localhost:3002/user/${userId}`)
-//         .then((response) => {
-//             if (response.status === 200) {
-//                 const fetchedUser = response.data.data;
-//                 setUser(fetchedUser);
-//             } else {
-//                 console.log('Problem with fetching user details');
-//             }
-//         })
-//         .catch((error) => {
-//             console.log('Error fetching user details', error);
-//         });
-
-//         // Fetch tickets created by the user
-//         axios.get('http://localhost:3002/allTicketsByUser', {
-//             params: {
-//                 userId: userId,
-//             },
-//             headers: {
-//                 'Content-Type': 'application/x-www-form-urlencoded',
-//             },
-//         })
-//         .then((response) => {
-//             if (response.status === 200) {
-//                 const tickets = response.data;
-//                 setTickets(tickets);
-//             } else {
-//                 console.log('Problem with fetching tickets');
-//             }
-//         })
-//         .catch((error) => {
-//             console.error('Error fetching tickets:', error);
-//         });
-
-//     }, [userId]);
-
-//     const pendingTickets = tickets.filter((ticket) => ticket.status === 'pending');
-//     const openedTickets = tickets.filter((ticket) => ticket.status === 'opened');
-//     const closedTickets = tickets.filter((ticket) => ticket.status === 'closed');
-
-//     return (
-//         <Grid container columnGap={2} rowGap={2}>
-//             <Grid item xs={12}>
-//                 <Paper elevation={3} style={{ padding: '1rem', borderRadius: '10px' }}>
-//                     <Typography variant="h4" gutterBottom>
-//                         User Profile
-//                     </Typography>
-//                 </Paper>
-//             </Grid>
-
-//             <Grid item xs={12} sm={6} md={4} lg={3}
-//             >
-//                 <Paper elevation={3} style={{ padding: '1rem', borderRadius: '10px' ,
-//                 display: 'flex',
-//                 flexDirection: 'column',
-//                 alignItems: 'center',
-//                 justifyContent: 'center',
-
-//             }}>
-//                     <Avatar
-//                         src="https://www.w3schools.com/howto/img_avatar.png"
-//                         alt="Avatar"
-//                         sx={{ width: '60%', height: 'auto', borderRadius: '50%', marginBottom: '1rem' }}
-//                     />
-
-//                     <Typography variant="h6" gutterBottom>
-//                         {user && user.email}
-//                     </Typography>
-
-//                     <Typography variant="h6" gutterBottom sx={{ color: 'grey' }}>
-//                         {user && user.role}
-//                     </Typography>
-//                 </Paper>
-//             </Grid>
-
-//             <Grid item xs={12} sm={3} md={3} lg={3}>
-//                          <Typography variant='h4'>
-//                             Tickets:
-//                         </Typography>
-//                 <Paper elevation={3} style={{ padding: '1rem', borderRadius: '10px' }}>
-//                     <Grid container justifyContent="space-evenly" alignItems="center">
-                       
-//                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-//                             <Typography variant="h6">{TotalTickets}</Typography>
-//                             <Typography variant="subtitle2">Total Tickets</Typography>
-//                         </div>
-
-//                         <div>
-//                             <Typography variant="h7" >|</Typography>
-//                         </div>
-
-//                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-//                             <Typography variant="h6">{pendingTickets.length}</Typography>
-//                             <Typography variant="subtitle2">Pending</Typography>
-//                         </div>
-                        
-//                         <div>
-//                             <Typography variant="h7" >|</Typography>
-//                         </div>
-
-//                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-//                             <Typography variant="h6">{openedTickets.length}</Typography>
-//                             <Typography variant="subtitle2">Opened</Typography>
-//                         </div>
-
-//                         <div>
-//                             <Typography variant="h7" >|</Typography>
-//                         </div>
-
-//                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-//                             <Typography variant="h6">{closedTickets.length}</Typography>
-//                             <Typography variant="subtitle2">Closed</Typography>
-//                         </div>
-//                     </Grid>
-//                 </Paper>
-//             </Grid>
-//         </Grid>
-//     );
-// };
-
-// export default UserProfile;
-
-    
-//    // export default UserProfile;
-    
-//     // <div
-//     //     style={{
-//     //         width: '100%',
-//     //         height: '100%',
-//     //         borderRadius: '10px',
-//     //         backgroundColor: '#f5f5f5',
-//     //         padding: '5%',
-//     //     }}
-//     // >
-//     //     <h4>User Profile</h4>
-//     //     {user && (
-//     //         <div>
-//     //             <p>User id: {user.email}</p>
-//     //             <p>User role: {user.role}</p>
-//     //         </div>
-//     //     )}
-//     //     <h4>Tickets Created by User</h4>
-//     //     {tickets.length > 0 ? (
-//     //         <ul>
-//     //             {tickets.map((ticket) => (
-//     //                 <li key={ticket._id}>{ticket.title}</li>
-//     //             ))}
-//     //         </ul>
-//     //     ) : (
-//     //         <p>No tickets created by this user</p>
-//     //     )}
-//     // </div>
