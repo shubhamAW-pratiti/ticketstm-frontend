@@ -11,42 +11,56 @@ import { useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
 import profileImage from "../assets/profile.png";
 import { AppBar, useTheme, Toolbar, IconButton, InputBase, Button,Box, Typography, Menu, MenuItem, useMediaQuery,
-} from "@mui/material"
+} from "@mui/material";
+import axios from 'axios';
 
 const Navbar = ({
     isSidebarOpen,
     setIsSidebarOpen,
-    user
+    onLogout
     }) => {
     const API_URL = 'http://localhost:3002';
     const theme = useTheme()
     const navigate = useNavigate();
     const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
+    const [user ,setUser]=useState(null);
+    const userId=localStorage.getItem('userId');
 
     const [anchorEl, setAnchorEl] = useState(null);
     const isOpen = Boolean(anchorEl);
     const handleClick = event => setAnchorEl(event.currentTarget);
     const handleClose = () => setAnchorEl(null)
     const handleLogout = () => {
-        const response = fetch(`${API_URL}/general/logout`, {
-            method: "GET",
-            withCredentials: true,
-            credentials: 'include',
-            headers: {
-            "Content-Type": "application/json",
-            },
-        });
-        localStorage.removeItem("DashBoardUser");
-        localStorage.removeItem("DashBoardUserLoggedIn");
-        navigate("/");
+        alert('Really Want to LoggedOut!!');
+        localStorage.setItem('isLoggedIn',false);
+        localStorage.removeItem('userId');
+        localStorage.removeItem('userRole');
+        localStorage.removeItem('accessToken');
+        navigate('/');
     };
+
+    axios.get(`http://localhost:3002/user/${userId}`)
+    .then((response) => {
+        if (response.status === 200) {
+            const fetchedUser = response.data.data;
+            setUser(fetchedUser);
+        } else {
+            console.log('Problem with fetching user details');
+        }
+    })
+    .catch((error) => {
+        console.log('Error fetching user details', error);
+    });
+
     
     return (
     <AppBar sx = {{ 
         position:"static",
         background:"none",
         boxShadow:"none",
-        top:0,
+        // sticky at top
+        top:'0',
+        
     }}>
         <Toolbar sx={{ justifyContent:"space-between"}}>
             {/* LEFT SIDE */}
@@ -99,10 +113,10 @@ const Navbar = ({
                         />
                         <Box textAlign="left">
                             <Typography fontWeight="bold" fontSize="0.85rem" sx={{ color: theme.palette.secondary[100]}}>
-                                {user.name}
+                                {user?.email}
                             </Typography>
                             <Typography  fontSize="0.75rem" sx={{ color: theme.palette.secondary[200]}}>
-                                {user.occupation}
+                                {user?.role}
                             </Typography>
                         </Box>
                         <ArrowDropDownOutlined

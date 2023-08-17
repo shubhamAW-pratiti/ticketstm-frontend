@@ -27,10 +27,12 @@ export default function App() {
 
     const handleLogin = () => {
       setIsLoggedIn(true);
+      localStorage.setItem('isLoggedIn',true);
     };
 
     const handleLogout = () => {
       setIsLoggedIn(false);
+      localStorage.setItem('isLoggedIn',false);
     };
 
     const [mode, setMode] = useState('light');
@@ -45,7 +47,7 @@ export default function App() {
        {/* <Header/> */}
       <Routes>
         {/* Admin Layout */}
-        <Route  element={<AdminLayout/>}>
+        <Route  element={<AdminLayout onLogout={handleLogout}/>}>
         <Route
           path='/admin-dashboard'
           element={
@@ -144,7 +146,7 @@ export default function App() {
       </Routes>
       {/* <Footer/> */}
     </div>
-    // </ThemeP••••••••••rovider>
+    // </ThemeProvider>
     
  );
 }

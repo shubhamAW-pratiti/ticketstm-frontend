@@ -189,7 +189,7 @@ const Sidebar = ({
                                                 navigate(`/${lcText}`);
                                                 setActive(lcText);
                                           }}
-                                                sx={{backgroundColor: active === lcText ? 'yellow' : "transparent",
+                                                sx={{backgroundColor: active === lcText ? '#E4E5E3' : "transparent",
                                                 color: active === lcText ? theme.palette.primary[600] : theme.palette.secondary[100]}}>
                                             <ListItemIcon sx={{ ml: "2rem",
                                                 color: active === lcText ? theme.palette.primary[600] : theme.palette.secondary[200]

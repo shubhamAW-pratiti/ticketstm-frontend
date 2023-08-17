@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 import Navbar from "../Navbar";
 import Sidebar from "../Sidebar";
 
-const AdminLayout = () => {
+const AdminLayout = ({onLogout}) => {
   const isNonMobile = useMediaQuery("(min-width: 600px)");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const data = JSON.parse(localStorage.getItem('user'));
@@ -19,7 +19,7 @@ const AdminLayout = () => {
       setIsSidebarOpen={setIsSidebarOpen}
       />
       <Box flexGrow={1}>
-        <Navbar user={data || { }} isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+        <Navbar onLogout user={data || { }} isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
         <Outlet />
       </Box>
   </Box>

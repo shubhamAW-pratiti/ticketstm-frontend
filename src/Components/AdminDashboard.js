@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { ListItem, Typography, List ,Grid} from '@mui/material';
 
-const AdminDashboard = () => {
+const AdminDashboard = ({onLogout}) => {
     const [tickets, setTickets] = useState([]);
     const [adminId, setAdminId] = useState(null);
 
