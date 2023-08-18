@@ -5,7 +5,7 @@ import Navbar from "../Navbar";
 import Sidebar from "../Sidebar";
 
 const AgentLayout = () => {
-  const isNonMobile = useMediaQuery("(min-width: 600px)");
+  const isNonMobile = useMediaQuery("(min-width: 800px)");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const data = JSON.parse(localStorage.getItem('user'));
   

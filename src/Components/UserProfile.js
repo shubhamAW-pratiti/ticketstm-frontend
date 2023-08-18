@@ -18,8 +18,6 @@ import {
     TextField,
     InputAdornment,
 } from '@mui/material';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import PendingActionsOutlinedIcon from '@mui/icons-material/PendingActionsOutlined';
 import MemoryOutlinedIcon from '@mui/icons-material/MemoryOutlined';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
@@ -85,7 +83,7 @@ const UserProfile = () => {
     );
 
     const pendingTickets = filteredTickets.filter((ticket) => ticket.status === 'pending');
-    const openedTickets = filteredTickets.filter((ticket) => ticket.status === 'opened');
+    const openedTickets = filteredTickets.filter((ticket) => ticket.status === 'open');
     const closedTickets = filteredTickets.filter((ticket) => ticket.status === 'closed');
 
     return (
@@ -117,8 +115,7 @@ const UserProfile = () => {
                 </Paper>
             </Grid>
 
-            <Grid item xs={12} sm={3} md={3} lg={3}>
-                {/* ... ticket statistics section ... */}
+            <Grid item xs={12} md={4} lg={3}>
                 <Typography variant='h4'>
                     Tickets:
                 </Typography>
@@ -143,7 +140,7 @@ const UserProfile = () => {
 
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                             <Typography variant="h6">{openedTickets.length}</Typography>
-                            <Typography variant="subtitle2">Opened</Typography>
+                            <Typography variant="subtitle2">In process</Typography>
                         </div>
 
                         <div>
@@ -151,8 +148,8 @@ const UserProfile = () => {
                         </div>
 
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                            <Typography variant="h6">{closedTickets.length}</Typography>
-                            <Typography variant="subtitle2">Closed</Typography>
+                            <Typography variant="h6">{closedTickets.length }</Typography>
+                            <Typography variant="subtitle2">Resolved</Typography>
                         </div>
                     </Grid>
                 </Paper>
@@ -174,7 +171,6 @@ const UserProfile = () => {
                                 width: '100%',
                                 padding: '0.5rem',
                                 borderRadius: '5px',
-                                padding:'15px',
                             }}
                             InputProps={{
                                 startAdornment: (
@@ -216,7 +212,7 @@ const UserProfile = () => {
                                                     <PendingActionsOutlinedIcon style={{color:'orange'}} textAnchor='pending'/>
                                                     <Typography>Pending</Typography>
                                                 </div>
-                                            ) : ticket.status === 'opened' ? (
+                                            ) : ticket.status === 'open' ? (
                                                 <div style={{
                                                     display: 'flex',
                                                     flexDirection:'row',

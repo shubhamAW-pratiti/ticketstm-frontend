@@ -5,7 +5,7 @@ import Navbar from "../Navbar";
 import Sidebar from "../Sidebar";
 
 const AdminLayout = ({onLogout}) => {
-  const isNonMobile = useMediaQuery("(min-width: 600px)");
+  const isNonMobile = useMediaQuery("(min-width: 800px)");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const data = JSON.parse(localStorage.getItem('user'));
   
@@ -27,34 +27,3 @@ const AdminLayout = ({onLogout}) => {
 }
 
 export default AdminLayout
-
-
-// import React from 'react'
-// import { Outlet } from 'react-router-dom'
-// import Navbar from '../Navbar'
-// import Sidebar from '../Sidebar'
-
-// const AdminLayout = () => {
-//   return (
-//     <div
-//         style={{
-//             width:'100%',
-//             height:'100%',
-//             border: '1px solid #ccc',
-//             borderRadius: '10px',
-//         }}
-//     >
-//       <Navbar/>
-//       <div
-//         style={{
-//           display: 'flex',
-//       }}
-//       >
-//       <Sidebar/>
-//       <Outlet/>
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default AdminLayout

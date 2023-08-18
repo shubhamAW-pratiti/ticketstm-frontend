@@ -18,7 +18,6 @@ const AdminDashboard = ({onLogout}) => {
             if (response.status === 200) {
                 const allTickets = response.data;
                 setTickets(allTickets);
-                console.log('all tickets', allTickets);
             } else {
                 console.log('Problem with fetching tickets');
             }
@@ -30,7 +29,6 @@ const AdminDashboard = ({onLogout}) => {
 
     useEffect(() => {
         const adminId = localStorage.getItem('userId');
-        console.log('admin id', adminId);
         setAdminId(adminId);
     }, []);
 

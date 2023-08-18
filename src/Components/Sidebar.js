@@ -20,7 +20,6 @@ import { SettingsOutlined,
     Groups2Outlined,
     ReceiptLongOutlined,
     PublicOutlined,
-    PointOfSaleOutlined,
     TodayOutlined,
     CalendarMonthOutlined,
     AdminPanelSettingsOutlined,
@@ -30,85 +29,91 @@ from '@mui/icons-material';
 import { useEffect, useState} from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import FlexBetween from './FlexBetween';
+import axios from 'axios';
+import profile from '../assets/profile.png'
 
 const navItems = [
+//   {
+//       text: "Dashboard",
+//       icon: <HomeOutlined />,
+//       roles: ['admin', 'agent', 'basic']
+//   },
   {
-      text: "Dashboard",
-      icon: <HomeOutlined />,
-      roles: ['admin', 'agent', 'basic']
-  },
-  {
-      text: "Tickets",
-      icon: null,
-      roles: ['admin', 'agent', 'basic']
-  },
-  {
-      text: "Admin-dashboard",
+      text: "DashBoard",
+      component:'admin-dashboard',
       icon: <ShoppingCartOutlined />,
       roles: ['admin']
   },
+
   {
-    text:'profile',
+    text:'DashBoard',
+    component:'profile',
     icon:<ShoppingCartOutlined/>,
     roles:['basic']
   },
   {
-    text:'agent-dashboard',
+    text:'DashBoard',
+    component:'agent-dashboard',
     icon:<ShoppingCartOutlined/>,
     roles:['agent']
   },
   {
+    text:'Users',
+    component:'users1',
+    icon:null,
+    roles:['admin']
+  },
+  {
       text: "Users",
+      component:'users',
       icon: <Groups2Outlined />,
-      roles: ['admin', 'agent']
-  },
-  {
-      text: "Tickets",
-      icon: <ReceiptLongOutlined />,
-      roles: ['admin', 'agent']
-  },
-  {
-      text: "Data",
-      icon: <PublicOutlined />,
-      roles: ['admin', 'agent']
+      roles: ['admin']
   },
   {
       text: "",
+      component:'dummy',
       icon: null,
       roles: ['admin', 'agent']
   },
   {
       text: "Manage",
+      component:'manage',
       icon: null,
       roles: ['admin', 'agent']
   },
   {
       text: "Daily",
+      component:'daily',
       icon: <TodayOutlined />,
       roles: ['admin', 'agent']
   },
   {
       text: "Monthly",
+      component:'monthly',
       icon: <CalendarMonthOutlined />,
       roles: ['admin', 'agent']
   },
   {
       text: "Breakdown",
+      component:'breakdown',
       icon: <PieChartOutlined />,
       roles: ['admin', 'agent']
   },
   {
       text: "Management",
+      component:'management',
       icon: null,
       roles: ['admin', 'agent']
   },
   {
       text: "Admin",
+      component:'admin',
       icon: <AdminPanelSettingsOutlined />,
       roles: ['admin']
   },
   {
       text: "Performance",
+      component:'performance',
       icon: <TrendingUpOutlined />,
       roles: ['admin', 'agent']
   },
@@ -116,7 +121,6 @@ const navItems = [
 
 
 const Sidebar = ({
-    user,
     drawerWidth,
     isSidebarOpen,
     setIsSidebarOpen,
@@ -124,18 +128,37 @@ const Sidebar = ({
 }) =>  {
     const userRole = localStorage.getItem('userRole');
     const filteredNavItems = navItems.filter(item => item.roles.includes(userRole));
-    console.log('filternavitems',filteredNavItems);
     const { pathname } = useLocation();
     const [active, setActive ] = useState("");
     const navigate = useNavigate()
     const theme = useTheme()
     const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
+    const [user ,setUser]=useState(null);
+    
+    const userId=localStorage.getItem('userId');
 
     useEffect(() => {
         setActive(pathname.substring(1))
     }, [pathname])
+
+    useEffect(()=>{
+     axios.get(`http://localhost:3002/user/${userId}`)
+    .then((response) => {
+        if (response.status === 200) {
+            const fetchedUser = response.data.data;
+            setUser(fetchedUser);
+        } else {
+            console.log('Problem with fetching user details');
+        }
+    })
+    .catch((error) => {
+        console.log('Error fetching user details', error);
+    });
+    },[]);
+
+
   return (
-    <Box component="nav">
+    <Box >
         {isSidebarOpen && (
             <Drawer 
             open={isSidebarOpen} 
@@ -171,75 +194,39 @@ const Sidebar = ({
                  </Box>
 
                  <List>
-                        {filteredNavItems.map(({ text, icon }) => {
-                            if (!icon) {
-                                return (
-                                    <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem"}} >
-                                        { text }
-                                    </Typography>
-                                );
-                            }
-
-                            const lcText = text.toLowerCase();
-
+                    {filteredNavItems.map(({ text, icon ,component }) => {
+                        if (!icon) {
                             return (
-                                <ListItem key={text} disablePadding>
-                                    {/* ... rest of the code ... */}
-                                    <ListItemButton onClick={() => {
-                                                navigate(`/${lcText}`);
-                                                setActive(lcText);
-                                          }}
-                                                sx={{backgroundColor: active === lcText ? '#E4E5E3' : "transparent",
-                                                color: active === lcText ? theme.palette.primary[600] : theme.palette.secondary[100]}}>
-                                            <ListItemIcon sx={{ ml: "2rem",
-                                                color: active === lcText ? theme.palette.primary[600] : theme.palette.secondary[200]
-                                                }}>
-                                                {icon}
-                                            </ListItemIcon>
-                                            <ListItemText primary={text} />
-                                                {active === lcText && (
-                                                <ChevronRightOutlined sx={{ml: "auto" }} />
-                                                )}
-                                            </ListItemButton>
-                                </ListItem>
-                            );
-                        })}
-                    </List>
-
-                 {/* <List>
-                     {navItems.map(({ text, icon}) => {
-                         if(!icon) {
-                             return (
-                                <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem"}} >
+                                <Typography key={component} sx={{ m: "2.25rem 0 1rem 3rem"}} >
                                     { text }
                                 </Typography>
-                             )
-                         }
+                            );
+                        }
 
-                         const lcText = text.toLowerCase()
+                        const lcText = component.toLowerCase();
 
-                         return (
-                             <ListItem key={text} disablePadding>
-                                 <ListItemButton onClick={() => {
-                                     navigate(`/${lcText}`);
-                                     setActive(lcText);
-                                 }}
-                                 sx={{backgroundColor: active === lcText ? 'yellow' : "transparent",
-                                 color: active === lcText ? theme.palette.primary[600] : theme.palette.secondary[100]}}>
-                                     <ListItemIcon sx={{ ml: "2rem",
-                                        color: active === lcText ? theme.palette.primary[600] : theme.palette.secondary[200]
-                                    }}>
-                                        {icon}
-                                     </ListItemIcon>
-                                    <ListItemText primary={text} />
-                                    {active === lcText && (
-                                        <ChevronRightOutlined sx={{ml: "auto" }} />
-                                    )}
-                                 </ListItemButton>
-                             </ListItem>
-                         )
-                     })}
-                 </List> */}
+                        return (
+                            <ListItem key={component} disablePadding>
+                                <ListItemButton onClick={() => {
+                                            navigate(`/${lcText}`);
+                                            setActive(lcText);
+                                    }}
+                                            sx={{backgroundColor: active === lcText ? '#E4E5E3' : "transparent",
+                                            color: active === lcText ? theme.palette.primary[600] : theme.palette.secondary[100]}}>
+                                        <ListItemIcon sx={{ ml: "2rem",
+                                            color: active === lcText ? theme.palette.primary[600] : theme.palette.secondary[200]
+                                            }}>
+                                            {icon}
+                                        </ListItemIcon>
+                                        <ListItemText primary={text} />
+                                            {active === lcText && (
+                                            <ChevronRightOutlined sx={{ml: "auto" }} />
+                                            )}
+                                        </ListItemButton>
+                            </ListItem>
+                        );
+                    })}
+                </List>
 
              </Box>
              {isNonMediumScreens && <Box position="absolute" bottom="2rem">
@@ -251,14 +238,15 @@ const Sidebar = ({
                     height="40px"
                     width="40px"
                     borderRadius="50%"
+                    src={profile}
                     sx={{ objectFit: "Cover"}} 
                    />
                    <Box textAlign="left">
                         <Typography fontWeight="bold" fontSize="0.9rem" sx={{ color: theme.palette.secondary[100]}}>
-                            {user.name}
+                            {user?.email}
                         </Typography>
                         <Typography  fontSize="0.8rem" sx={{ color: theme.palette.secondary[200]}}>
-                            {user.occupation}
+                            {user?.role}
                         </Typography>
                     </Box>
                     <SettingsOutlined sx={{color: theme.palette.secondary[300], fontSize: "25px"}} />

@@ -5,24 +5,18 @@ import {Grid ,
     Paper,
     Typography,
     FormControl,
-    InputLabel,
     Select,
     MenuItem,
     Button,
     TextField,
-
+    List,
+    ListItem,
+    ListItemText,
 } from '@mui/material'
-
-
 
 // toast
 import { toast ,ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-import { List, ListItem, ListItemText } from '@mui/material';
-import { LineAxisOutlined } from '@mui/icons-material';
-
-
 
 const TicketDetails = () => {
     const { ticketId } = useParams();
@@ -33,10 +27,10 @@ const TicketDetails = () => {
     const [commentuser, setCommentUser] = useState('');
     const [comments, setComments] = useState([]);//comments array
     const [agents , setAgents] = useState([]);//agents array
-    const userId = localStorage.getItem('userId');
-
     const [selectedAgent, setSelectedAgent] = useState('');
     const [refresh, setRefresh] = useState(false);
+
+    const userId = localStorage.getItem('userId');
 
     // Handle agent change
     const handleAgentChange = (event) => {
@@ -46,15 +40,8 @@ const TicketDetails = () => {
     };
 
     const handleAssignAgent = () => {
-
         try{
 
-            // Format the data using qs library for x-www-form-urlencoded format
-        // const formData = qs.stringify({
-        //     agentId: newAgent,
-        //     ticketId: ticketId,
-        //     userId: userId,
-        // });
         const formData=new URLSearchParams();
         formData.append('agentId',selectedAgent);
         formData.append('ticketId',ticketId);
@@ -68,7 +55,6 @@ const TicketDetails = () => {
             },
         })
         .then((response) => {
-            // Handle the response if needed
             toast.success('Agent Assigned for Ticket successfully',{
                 position:toast.POSITION.TOP_RIGHT}
             );
@@ -76,13 +62,11 @@ const TicketDetails = () => {
         })
         .catch((error) => {
             console.error('Error assigning ticket:', error);
-        });
-    }catch(error){
-        console.log('Error updating ticket status', error);
-    }
-
-    setSelectedAgent('');//reset the selected agent
-   
+            });
+        }catch(error){
+            console.log('Error updating ticket status', error);
+        }
+        setSelectedAgent('');//reset the selected agent   
     }
 
 
@@ -100,11 +84,10 @@ const TicketDetails = () => {
         .catch((error) => {
             console.log('Error fetching ticket details', error);
         });
-    },[refresh]);
+    },[ticketId,refresh]);
 
     // Fetch ticket details when the component mounts
     useEffect(() => {
-        // Fetch ticket Details based on ticketId
         axios.get(`http://localhost:3002/ticketDetailsById/${ticketId}`)
             .then((response) => {
                 if (response.status === 200) {
@@ -119,12 +102,11 @@ const TicketDetails = () => {
                 console.log('Error fetching ticket details', error);
             });
 
-            // Fetch comments for the ticket
-        axios.get(`http://localhost:3002/commentsInTicket/${ticketId}`)
+    // Fetch comments for the ticket
+    axios.get(`http://localhost:3002/commentsInTicket/${ticketId}`)
                 .then((response) => {
             if (response.status === 200) {
                 setComments(response.data);
-                console.log('comments',response.data);
             } else {
                 console.log('Problem with fetching comments');
             }
@@ -139,7 +121,6 @@ const TicketDetails = () => {
         .then((response) => {
             if(response.status===200){
                 const fetchedAgents = response.data.data;
-                console.log('agents',fetchedAgents);
                 setAgents(fetchedAgents);
             }
         }
@@ -148,7 +129,7 @@ const TicketDetails = () => {
         })
 
 
-    },[ticketId , statusUpdate , selectedAgent]);
+    },[ticketId, statusUpdate , selectedAgent]);
 
     // Handle status change
     const handleStatusChange = (event) => {
@@ -158,11 +139,8 @@ const TicketDetails = () => {
 
     // Handle update status
     const handleUpdateStatus = () => {
-
         try{
-                // Update the ticket status using axios or your preferred method
-
-
+            // Update the ticket status using axios or your preferred method
             const newStatus = selectedStatus;
             const comment = commentuser;
             const agentId = localStorage.getItem('userId');
@@ -173,19 +151,16 @@ const TicketDetails = () => {
             formData.append('comment',comment);
             formData.append('id',agentId);
 
-            
             axios.put('http://localhost:3002/update-ticket', formData,{
                 headers:{
                     'Content-Type':'application/x-www-form-urlencoded'
                 },
             })
             .then((response) => {
-                // Handle the response if needed
                 toast.success('Ticket status updated successfully',{
                     position:toast.POSITION.TOP_RIGHT,
                 });
                 setStatusUpdate(!statusUpdate);
-
             })
             .catch((error) => {
                 console.log('Error updating ticket status', error);
@@ -193,13 +168,12 @@ const TicketDetails = () => {
         }catch(error){
             console.log('Error updating ticket status', error);
         }
-       
-        // Reset the status update state
     };
 
     return (
 
      <Grid container gap={5}>
+        {/* LEFT PANEL -TICKET DETAILS */}
             <Grid item xs={12} md={6}>
                 <Paper elevation={3} sx={{
                     padding:'2rem',
@@ -232,7 +206,8 @@ const TicketDetails = () => {
 
                     {ticket?.agent ? (
                         <Typography variant="h6" gutterBottom component="div">
-                            <span style={{color:'gray'}}>Agent:</span> {ticket.agent}
+                            <span style={{color:'gray'}}>Agent:</span> {ticket.agent} 
+                            {userId === ticket.agent && <span > (you)</span>} 
                         </Typography>
                     ):(<Typography variant="h6" gutterBottom component="div">
                         <span style={{color:'gray'}}>Agent:</span> Not Assigned
@@ -291,8 +266,7 @@ const TicketDetails = () => {
 
                     )
                 }
-               
-            
+                 {/* ONLY VISIABLE TO ADMIN.. */}
               {
                 selectedAgent && (
                     <Button variant="contained" onClick={handleAssignAgent} style={{
@@ -300,11 +274,8 @@ const TicketDetails = () => {
                     }}>
                         Assign
                     </Button>
-                )
-                
+                ) 
               }
-
-
                 </Paper>
             </Grid>
 
@@ -341,110 +312,7 @@ const TicketDetails = () => {
             </Grid>
             <ToastContainer/>
         </Grid>
-
-
-
         );
     };
     
-    export default TicketDetails;
-    
-    
-    //    <div
-    //     style={{
-    //         width:'100%',
-    //         height:'100%',
-    //         borderRadius: '10px',
-    //         padding: '5%',
-    //     }}
-    // >
-    //     <h1>Ticket Details</h1>
-    //     <p>Ticket Id: {ticketId}</p>
-    //     <p>Title: {ticket?.title}</p>
-    //     <p>Description: {ticket?.description}</p>
-    //     <p>Status: {ticket?.status}</p>
-    //     {ticket?.agent && <p>Agent: {ticket.agent}</p>}
-    //     <label>
-    //         Status:
-    //         <select value={selectedStatus} onChange={handleStatusChange}>
-    //             {statusOptions.map((status, index) => (
-    //                 <option key={index} value={status}>
-    //                     {status}
-    //                 </option>
-    //             ))}
-    //         </select>
-    //     </label>
-    //     {
-    //         (selectedStatus === 'closed' || selectedStatus==='open' || selectedStatus ==='pending') && (
-    //             <button onClick={handleUpdateStatus}>
-    //                 update
-    //             </button>
-    //         )
-    //     }
-    // </div>
-
-
-/*
-     <Grid container>
-            <Grid item xs={12} sm={6} >
-                <Paper elevation={3} sx={{
-                    padding:'2rem',
-                }}>
-                    <h1 style={{
-                        fontFamily:'sans-serif',
-                    }}>
-                        Ticket Details:
-                    </h1>
-
-                    <Typography variant="h6" gutterBottom component="div">
-                        Ticket Id: {ticketId}
-                    </Typography>
-
-                    <Typography variant="h6" gutterBottom component="div">
-                        Title: {ticket?.title}
-                    </Typography>
-
-                    <Typography variant="h6" gutterBottom component="div">
-                        Description: {ticket?.description}
-                    </Typography>
-
-                    <Typography variant="h6" gutterBottom component="div">
-                        Status: {ticket?.status}
-                    </Typography>
-
-                    {ticket?.agent ? (
-                        <Typography variant="h6" gutterBottom component="div">
-                            Agent: {ticket.agent}
-                        </Typography>
-                    ):(<Typography variant="h6" gutterBottom component="div">
-                        Agent: Not Assigned
-                        </Typography>
-                    )}
-                <FormControl style={{ width: '100%' }}>
-                    <InputLabel>Status</InputLabel>
-                    <Select value={selectedStatus} onChange={handleStatusChange}>
-                        {statusOptions.map((status, index) => (
-                            <MenuItem key={index} value={status}>
-                                {status}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-                {(selectedStatus === 'closed' || selectedStatus === 'open' || selectedStatus === 'pending') && (
-                    <Button variant="contained" onClick={handleUpdateStatus}>
-                        Update
-                    </Button>
-                )}
-
-
-
-
-                </Paper>
-            </Grid>
-        </Grid>
-*/
-
-    // Pending works : status changes is pending.. in Agent dashboard 
-
-
-    
+export default TicketDetails;
