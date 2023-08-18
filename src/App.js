@@ -10,27 +10,21 @@ import Footer from "./Components/Footer";
 import Login_poc from "./Components/Login_poc";
 import SignUp from "./Components/SignUp";
 import ForgotPass from "./Components/ForgotPass";
-import Profile from "./Components/Profile";
 import PrivateRoute from "./Components/PrivateRoute";
 import About from "./Components/About";
-import AdminDashboard from "./Components/AdminDashboard";
-import AgentDashboard from "./Components/AgentDashboard";
 import TicketDetails from "./Components/TicketDetails";
-import AdminLayout from "./Components/AdminLayout/AdminLayout";
-import AgentLayout from "./Components/AgentLayout/AgentLayout";
-import UserLayout from "./Components/UserLayout/UserLayout";
 import Users from "./Components/Users";
 import UserProfile from "./Components/UserProfile";
-import Daily from './scenes/Daily';
+import Daily from "./scenes/Daily";
+import DashboardLayout from "./Components/Layout/DashboardLayout";
+import Dashboard from "./Components/Dashboard";
+import Monthly from "./scenes/Monthly";
 
 export default function App() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    localStorage.setItem("mode", 'dark');
-    const [mode, setMode] = useState(localStorage.getItem('mode'));
-    let theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
-
-
-    
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  localStorage.setItem("mode", "dark");
+  const [mode, setMode] = useState(localStorage.getItem("mode"));
+  let theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -46,15 +40,15 @@ export default function App() {
     //  <ThemeProvider theme={theme}>
     //  <CssBaseline />
     <div>
-      {/* <Header/> */}
       <Routes>
-        {/* Admin Layout */}
-        <Route element={<AdminLayout onLogout={handleLogout} />}>
+
+        <Route element={<DashboardLayout />}>
           <Route
-            path="/admin-dashboard"
+            path="/dashboard"
             element={
-              <PrivateRoute isLoggedIn={isLoggedIn}>
-                <AdminDashboard onLogout={handleLogout} />
+              <PrivateRoute path='/dashboard' isLoggedIn={isLoggedIn}>
+                {/* Dashboard */}
+                <Dashboard/>
               </PrivateRoute>
             }
           />
@@ -68,8 +62,8 @@ export default function App() {
               </PrivateRoute>
             }
           />
-          {/* users details */}
 
+          {/* users details */}
           <Route
             path="user/:userId"
             element={
@@ -92,19 +86,89 @@ export default function App() {
           {/* Daily */}
 
           <Route
-            path='daily'
+            path="daily"
             element={
-              <PrivateRoute path='/daily' isLoggedIn={isLoggedIn}>
-                <Daily onLogout={handleLogout}/>
+              <PrivateRoute path="/daily" isLoggedIn={isLoggedIn}>
+                <Daily onLogout={handleLogout} />
               </PrivateRoute>
             }
           />
 
+          {/* Monthly */}
+
+          <Route
+            path="monthly"
+            element={
+              <PrivateRoute path="/monthly" isLoggedIn={isLoggedIn}>
+                <Monthly onLogout={handleLogout} />
+              </PrivateRoute>
+            }
+            />
+          
+          
         </Route>
 
-        {/* User Layout */}
-        <Route element={<UserLayout />}>
+        {/* <Route element={<AdminLayout onLogout={handleLogout} />}>
           <Route
+            path="/admin-dashboard"
+            element={
+              <PrivateRoute isLoggedIn={isLoggedIn}>
+                <AdminDashboard onLogout={handleLogout} />
+              </PrivateRoute>
+            }
+          /> */}
+
+          {/* ticket Details */}
+          {/* <Route
+            path="ticket/:ticketId"
+            element={
+              <PrivateRoute path="ticket/:ticketId" isLoggedIn={isLoggedIn}>
+                <TicketDetails onLogout={handleLogout} />
+              </PrivateRoute>
+            }
+          /> */}
+          {/* users details */}
+          {/* <Route
+            path="user/:userId"
+            element={
+              <PrivateRoute path="user/:userId" isLoggedIn={isLoggedIn}>
+                <UserProfile onLogout={handleLogout} />
+              </PrivateRoute>
+            }
+          /> */}
+
+          {/* Users */}
+          {/* <Route
+            path="users"
+            element={
+              <PrivateRoute path="/users" isLoggedIn={isLoggedIn}>
+                <Users onLogout={handleLogout} />
+              </PrivateRoute>
+            }
+          /> */}
+
+          {/* Daily */}
+
+          {/* <Route
+            path="daily"
+            element={
+              <PrivateRoute path="/daily" isLoggedIn={isLoggedIn}>
+                <Daily onLogout={handleLogout} />
+              </PrivateRoute>
+            }
+          /> */}
+
+          {/* <Route
+            path="/profile"
+            element={
+              <PrivateRoute path="/profile" isLoggedIn={isLoggedIn}>
+                <Profile onLogout={handleLogout} />
+              </PrivateRoute>
+            }
+          /> */}
+        {/* User Layout */}
+        {/* <Route element={<UserLayout />}> */}
+          {/* <Route
             path="/profile"
             element={
               <PrivateRoute path="/profile" isLoggedIn={isLoggedIn}>
@@ -121,10 +185,10 @@ export default function App() {
               </PrivateRoute>
             }
           />
-        </Route>
+        </Route> */}
 
         {/* Agent Layout */}
-        <Route element={<AgentLayout />}>
+        {/* <Route element={<AgentLayout />}>
           <Route
             path="/agent-dashboard"
             element={
@@ -142,7 +206,7 @@ export default function App() {
               </PrivateRoute>
             }
           />
-        </Route>
+        </Route> */}
 
         <Route path="/" element={<Login_poc onLogin={handleLogin} />} />
         <Route path="/SignUp" element={<SignUp />} />

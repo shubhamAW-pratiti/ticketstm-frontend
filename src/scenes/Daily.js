@@ -1,76 +1,96 @@
-import React, { PureComponent } from 'react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+// import React, { useState, useEffect } from 'react';
+// import {
+//   LineChart,
+//   Line,
+//   XAxis,
+//   YAxis,
+//   CartesianGrid,
+//   Tooltip,
+//   ResponsiveContainer,
+// } from 'recharts';
+// import axios from 'axios';
+// import DatePicker from 'react-datepicker';
+// import 'react-datepicker/dist/react-datepicker.css';
 
-const data = [
-  {
-    name: 'Page A',
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: 'Page B',
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: 'Page C',
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: 'Page D',
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: 'Page E',
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: 'Page F',
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: 'Page G',
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];
+// const Daily = () => {
+//   const [data, setData] = useState([]);
+//   const [selectedDate, setSelectedDate] = useState(new Date());
 
-const Daily=()=> {
-    return (
+//   useEffect(() => {
+//     axios.get(`http://localhost:3002/tickets/by-date/${selectedDate.toISOString()}`)
+//       .then(response => {
+//         setData(response.data);
+//         console.log(response.data);
+//       })
+//       .catch(error => {
+//         console.error('Error fetching ticket data:', error);
+//       });
+//   }, [selectedDate]);
+
+//   return (
+//     <div>
+//       <div style={{ marginBottom: '1rem' }}>
+//         <DatePicker selected={selectedDate} onChange={date => setSelectedDate(date)} />
+//       </div>
+//       <div style={{ width: '100%', height: '600px' }}>
+//         {/* You can adjust the height value above as needed */}
+//         <ResponsiveContainer width="100%" height="100%">
+//           <LineChart data={data}>
+//             <CartesianGrid strokeDasharray="3 3" />
+//             <XAxis dataKey="hour" />
+//             <YAxis />
+//             <Tooltip />
+//             <Line type="monotone" dataKey="count" stroke="#8884d8" strokeWidth={2} />
+//           </LineChart>
+//         </ResponsiveContainer>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Daily;
+
+
+import React, { useState, useEffect } from 'react';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from 'recharts';
+import axios from 'axios';
+
+const Daily = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:3002/tickets/today')
+      .then(response => {
+        setData(response.data);
+        console.log(response.data)
+      })
+      .catch(error => {
+        console.error('Error fetching ticket data:', error);
+      });
+  }, []);
+
+  return (
+    <div style={{ width: '100%', height: '800px' }}>
+      {/* You can adjust the height value above as needed */}
       <ResponsiveContainer width="100%" height="100%">
-        <AreaChart
-          width={500}
-          height={400}
-          data={data}
-          margin={{
-            top: 10,
-            right: 30,
-            left: 0,
-            bottom: 0,
-          }}
-        >
+        <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="hour" />
           <YAxis />
           <Tooltip />
-          <Area type="monotone" dataKey="uv" stackId="1" stroke="#8884d8" fill="#8884d8" />
-          <Area type="monotone" dataKey="pv" stackId="1" stroke="#82ca9d" fill="#82ca9d" />
-          <Area type="monotone" dataKey="amt" stackId="1" stroke="#ffc658" fill="#ffc658" />
-        </AreaChart>
+          <Line type="monotone" dataKey="count" stroke="#8884d8" strokeWidth={2} />
+        </LineChart>
       </ResponsiveContainer>
-    );
-}
-
+    </div>
+  );
+};
 
 export default Daily;

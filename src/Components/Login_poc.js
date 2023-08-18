@@ -54,15 +54,16 @@ const Login_poc = ({onLogin}) => {
 
         
         onLogin();
-        if (data.data.role === 'admin')
-          navigate('/admin-dashboard');
-        else if (data.data.role === 'basic')
-          navigate('/profile');
-        else
-          navigate('/agent-dashboard');
-      } else {
-        const data = response.data;
-        setMessage(data.message);
+      //   if (data.data.role === 'admin')
+      //     navigate('/dashboard');
+      //   else if (data.data.role === 'basic')
+      //     navigate('/dashboard');
+      //   else
+      //     navigate('/dashboard');
+      // } else {
+      //   const data = response.data;
+      //   setMessage(data.message);
+      navigate('/dashboard');
       }
     } catch (error) {
       console.error('Error logging in:', error);

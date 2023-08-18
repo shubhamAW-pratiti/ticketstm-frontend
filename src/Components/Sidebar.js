@@ -40,23 +40,23 @@ const navItems = [
 //   },
   {
       text: "DashBoard",
-      component:'admin-dashboard',
+      component:'dashboard',
       icon: <ShoppingCartOutlined />,
-      roles: ['admin']
+      roles: ['admin','basic','agent']
   },
 
-  {
-    text:'DashBoard',
-    component:'profile',
-    icon:<ShoppingCartOutlined/>,
-    roles:['basic']
-  },
-  {
-    text:'DashBoard',
-    component:'agent-dashboard',
-    icon:<ShoppingCartOutlined/>,
-    roles:['agent']
-  },
+//   {
+//     text:'DashBoard',
+//     component:'profile',
+//     icon:<ShoppingCartOutlined/>,
+//     roles:['basic']
+//   },
+//   {
+//     text:'DashBoard',
+//     component:'agent-dashboard',
+//     icon:<ShoppingCartOutlined/>,
+//     roles:['agent']
+//   },
   {
     text:'Users',
     component:'users1',

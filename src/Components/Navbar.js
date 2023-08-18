@@ -14,12 +14,14 @@ import { AppBar, useTheme, Toolbar, IconButton, InputBase, Button,Box, Typograph
 } from "@mui/material";
 import axios from 'axios';
 
+  
+
 const Navbar = ({
     isSidebarOpen,
     setIsSidebarOpen,
     onLogout
     }) => {
-    const API_URL = 'http://localhost:3002';
+    const API_URL = process.env.API_URL;
     const theme = useTheme()
     const navigate = useNavigate();
     const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
@@ -41,22 +43,39 @@ const Navbar = ({
         navigate('/');
     };
 
-    useEffect(()=>{
-        axios.get(`http://localhost:3002/user/${userId}`)
-    .then((response) => {
-        if (response.status === 200) {
-            const fetchedUser = response.data.data;
-            setUser(fetchedUser);
-        } else {
-            console.log('Problem with fetching user details');
-        }
-    })
-    .catch((error) => {
-        console.log('Error fetching user details', error);
-    });
-    });
+    // useEffect(()=>{
+    //     axios.get(`${process.env.API_URL}/user/${userId}`)
+    // .then((response) => {
+    //     if (response.status === 200) {
+    //         const fetchedUser = response.data.data;
+    //         setUser(fetchedUser);
+    //     } else {
+    //         console.log('Problem with fetching user details');
+    //     }
+    // })
+    // .catch((error) => {
+    //     console.log('Error fetching user details', error);
+    // });
+    // });
 
     
+  useEffect(() => {
+    if (userId) {
+      axios.get(`http://localhost:3002/user/${userId}`)
+        .then((response) => {
+          if (response.status === 200) {
+            const fetchedUser = response.data.data;
+            setUser(fetchedUser);
+          } else {
+            console.log('Problem with fetching user details');
+          }
+        })
+        .catch((error) => {
+          console.log('Error fetching user details', error);
+        });
+    }
+  }, [userId]);
+  
     return (
     <AppBar sx = {{ 
         position:"static",
@@ -87,7 +106,7 @@ const Navbar = ({
 
             <FlexBetween gap="1.5rem">
                 <IconButton >
-                    {theme.palette.mode == "dark" ? (
+                    {theme.palette.mode === "dark" ? (
                         <DarkModeOutlined sx={{ fontSize: "25px"}} />
                     ) : (
                         <LightModeOutlined sx={{ fontSize: "25px"}} />
