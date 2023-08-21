@@ -44,6 +44,7 @@ const Monthly = () => {
         display: "flex",
         flexDirection: "column",
         height: "800px",
+        padding:'24px'
       }}
     >
       <div style={{ marginBottom: "20px" }}>

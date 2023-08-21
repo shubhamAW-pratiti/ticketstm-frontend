@@ -6,6 +6,7 @@ import {
   Search,
   SettingsOutlined,
   ArrowDropDownOutlined,
+  ChevronLeft,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
@@ -78,7 +79,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
     setIsDialogOpen(false);
   };
 
-  const handleUpdateDetails = () => {};
+  const handleUpdateDetails = () => { };
 
   useEffect(() => {
     if (userId) {
@@ -112,7 +113,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
         {/* LEFT SIDE */}
         <FlexBetween>
           <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-            <MenuIcon />
+            {isSidebarOpen ? <ChevronLeft/> : <MenuIcon />}
           </IconButton>
           {isNonMediumScreens && (
             <FlexBetween

@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Grid, TextField, Button, Select, MenuItem, FormControl, InputLabel, Box, Typography } from '@mui/material';
 import { useActionData, useParams } from 'react-router-dom';
 import axios from 'axios';
+// toast
+import { toast ,ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const categories = ['Software', 'Hardware', 'HR'];
 
@@ -69,7 +72,9 @@ const CreateNewTicket = () => {
             setDescription('');
 
             // Show success alert
-            window.alert('Ticket created successfully!');
+            toast.success('Ticket Created successfully',{
+                position:toast.POSITION.TOP_CENTER,
+            });
         } catch (error) {
             console.error('Error saving data:', error);
         }
@@ -142,6 +147,7 @@ const CreateNewTicket = () => {
                     </Grid>
                 </Grid>
             </form>
+            <ToastContainer/>
         </Box>
     );
 };
