@@ -19,6 +19,9 @@ import Daily from "./scenes/Daily";
 import DashboardLayout from "./Components/Layout/DashboardLayout";
 import Dashboard from "./Components/Dashboard";
 import Monthly from "./scenes/Monthly";
+import Profile from './Components/Profile'
+import CreateTicketForm from "./Components/CreateTicketForm";
+import CreateNewTicket from "./Components/CreateNewTicket";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -105,6 +108,15 @@ export default function App() {
             }
             />
           
+          {/* User create Ticket */}
+          <Route
+            path="/createticket"
+            element={
+              <PrivateRoute path="/createticket" isLoggedIn={isLoggedIn}>
+                <CreateNewTicket/>
+              </PrivateRoute>
+            }
+          />
           
         </Route>
 
@@ -146,6 +158,14 @@ export default function App() {
               </PrivateRoute>
             }
           /> */}
+           {/* <Route
+            path="/profile"
+            element={
+              <PrivateRoute path="/profile" isLoggedIn={isLoggedIn}>
+                <Profile onLogout={handleLogout} />
+              </PrivateRoute>
+            }
+          /> */}
 
           {/* Daily */}
 
@@ -158,14 +178,6 @@ export default function App() {
             }
           /> */}
 
-          {/* <Route
-            path="/profile"
-            element={
-              <PrivateRoute path="/profile" isLoggedIn={isLoggedIn}>
-                <Profile onLogout={handleLogout} />
-              </PrivateRoute>
-            }
-          /> */}
         {/* User Layout */}
         {/* <Route element={<UserLayout />}> */}
           {/* <Route
@@ -209,6 +221,7 @@ export default function App() {
         </Route> */}
 
         <Route path="/" element={<Login_poc onLogin={handleLogin} />} />
+        <Route path="/create-new-ticket" element={<CreateNewTicket/>} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/ForgotPass" element={<ForgotPass />} />
         <Route path="/about" element={<About />} />

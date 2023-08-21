@@ -165,7 +165,7 @@ const Login_poc = ({onLogin}) => {
           type='button'
           size='large'
           variant='contained'
-          onClick={() => setOpenPopup(true)}
+          onClick={() => navigate('/create-new-ticket')}
         >
           Continue As a Guest
         </Button>

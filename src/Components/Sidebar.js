@@ -24,7 +24,8 @@ import { SettingsOutlined,
     CalendarMonthOutlined,
     AdminPanelSettingsOutlined,
     TrendingUpOutlined,
-    PieChartOutlined }
+    PieChartOutlined, 
+    AirplaneTicket}
 from '@mui/icons-material';
 import { useEffect, useState} from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -117,6 +118,14 @@ const navItems = [
       icon: <TrendingUpOutlined />,
       roles: ['admin', 'agent']
   },
+  {
+    text:"Create Ticket",
+    component:'createticket',
+    icon:<AirplaneTicket/>,
+    roles:['basic']
+
+  },
+
 ];
 
 
