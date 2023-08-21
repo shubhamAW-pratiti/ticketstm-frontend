@@ -477,6 +477,17 @@ const Dashboard = () => {
 
     // Filter tickets based on status
     const pendingTickets = sortedallTickets.filter(ticket => ticket.status === 'pending');
+    const sortedPendingTickets = pendingTickets.sort((a, b) => {
+        // Compare based on agent presence
+        if (a.agent === null && b.agent !== null) {
+            return -1; // a comes before b
+        } else if (a.agent !== null && b.agent === null) {
+            return 1; // b comes before a
+        } else {
+            // Both have same agent status, sort by date
+            return new Date(b.date) - new Date(a.date);
+        }
+    });
     const openTickets = sortedallTickets.filter(ticket => ticket.status === 'open');
     const closedTickets = sortedallTickets.filter(ticket => ticket.status === 'closed');
     const allTickets = pendingTickets.concat(openTickets, closedTickets);
