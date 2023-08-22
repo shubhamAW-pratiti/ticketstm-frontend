@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, 
-    Divider,
+    // Divider,
     Drawer,
     IconButton,
     List,
@@ -10,16 +10,17 @@ import { Box,
     ListItemIcon,
     Typography,
     useTheme,
-    useMediaQuery
+    // useMediaQuery
 } from '@mui/material';
-import { SettingsOutlined,
+import { 
+    // SettingsOutlined,
     ChevronLeft,
     ChevronRightOutlined,
-    HomeOutlined,
+    // HomeOutlined,
     ShoppingCartOutlined,
     Groups2Outlined,
-    ReceiptLongOutlined,
-    PublicOutlined,
+    // ReceiptLongOutlined,
+    // PublicOutlined,
     TodayOutlined,
     CalendarMonthOutlined,
     AdminPanelSettingsOutlined,
@@ -31,7 +32,7 @@ import { useEffect, useState} from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import FlexBetween from './FlexBetween';
 import axios from 'axios';
-import profile from '../assets/profile.png'
+// import profile from '../assets/profile.png'
 
 const navItems = [
 //   {
@@ -141,7 +142,7 @@ const Sidebar = ({
     const [active, setActive ] = useState("");
     const navigate = useNavigate()
     const theme = useTheme()
-    const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
+    //const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
     const [user ,setUser]=useState(null);
     
     const userId=localStorage.getItem('userId');
@@ -163,7 +164,7 @@ const Sidebar = ({
     .catch((error) => {
         console.log('Error fetching user details', error);
     });
-    },[]);
+    },[userId]);
 
 
   return (
@@ -238,7 +239,7 @@ const Sidebar = ({
                 </List>
 
              </Box>
-             {isNonMediumScreens && <Box position="absolute" bottom="2rem">
+             {/* {isNonMediumScreens && <Box position="absolute" bottom="2rem">
                 <Divider />
                 <FlexBetween textTransform="none" gap="1rem" m="1.5rem 2rem 0 3rem">
                     <Box
@@ -260,7 +261,7 @@ const Sidebar = ({
                     </Box>
                     <SettingsOutlined sx={{color: theme.palette.secondary[300], fontSize: "25px"}} />
                 </FlexBetween>
-            </Box>}
+            </Box>} */}
             </Drawer>
         )} 
     </Box>

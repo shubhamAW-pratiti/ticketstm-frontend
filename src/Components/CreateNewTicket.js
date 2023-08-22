@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, TextField, Button, Select, MenuItem, FormControl, InputLabel, Box, Typography } from '@mui/material';
-import { useActionData, useParams } from 'react-router-dom';
 import axios from 'axios';
 // toast
 import { toast ,ToastContainer } from 'react-toastify';
@@ -67,7 +66,7 @@ const CreateNewTicket = () => {
 
             // Clear form fields after successful submission
             setTitle('');
-            setUserEmail('');
+
             setCategory('');
             setDescription('');
 

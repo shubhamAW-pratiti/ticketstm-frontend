@@ -87,7 +87,7 @@ const UserProfile = () => {
     const closedTickets = filteredTickets.filter((ticket) => ticket.status === 'closed');
 
     return (
-        <Grid container columnGap={2} rowGap={2}>
+        <Grid container columnGap={2} rowGap={2} padding={4}>
             <Grid item xs={12}>
                 <Paper elevation={3} style={{ padding: '1rem', borderRadius: '10px' }}>
                     <Typography variant="h4" gutterBottom>

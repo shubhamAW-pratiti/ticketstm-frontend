@@ -3,12 +3,12 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Typography, Card, CardContent, Box, Button, Toolbar, Grid, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, List, ListItem } from '@mui/material';
+import { Typography, Card, CardContent, Box, Button, Toolbar, Grid, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, List, ListItem, CircularProgress } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css'
 
-const fetchTicketsData = (userId, role, setTickets) => {
+const fetchTicketsData = (userId, role, setTickets, setLoading) => {
     axios.get('http://localhost:3002/tickets', {
       params: {
         userId: userId,
@@ -19,8 +19,10 @@ const fetchTicketsData = (userId, role, setTickets) => {
       if (response.status === 200) {
         const allTickets = response.data.map(ticket => ({ ...ticket, id: ticket._id }));
         setTickets(allTickets);
+        setLoading(false); 
       } else {
         console.log('Problem with fetching tickets');
+        setLoading(false); 
       }
     })
     .catch((error) => {
@@ -29,6 +31,7 @@ const fetchTicketsData = (userId, role, setTickets) => {
   };
 
 const Dashboard = () => {
+    const [loading, setLoading] = useState(true);
 
     const [selectedRows, setSelectedRows] = useState([]);
     const [tickets, setTickets] = useState([]);
@@ -53,7 +56,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         // Fetch all tickets 
-        fetchTicketsData(localStorage.getItem('userId'), role, setTickets);
+        fetchTicketsData(localStorage.getItem('userId'), role, setTickets, setLoading);
 
     }, [role]);
 
@@ -66,7 +69,7 @@ const Dashboard = () => {
                     newStatus: newStatus,
                 },
             });
-            fetchTicketsData(localStorage.getItem('userId'), role, setTickets);
+            fetchTicketsData(localStorage.getItem('userId'), role, setTickets, setLoading);
 
             console.log(response.data.message);
             clearSelectedRows();
@@ -82,17 +85,6 @@ const Dashboard = () => {
 
     // Filter tickets based on status
     const pendingTickets = sortedallTickets.filter(ticket => ticket.status === 'pending');
-    const sortedPendingTickets = pendingTickets.sort((a, b) => {
-        // Compare based on agent presence
-        if (a.agent === null && b.agent !== null) {
-            return -1; // a comes before b
-        } else if (a.agent !== null && b.agent === null) {
-            return 1; // b comes before a
-        } else {
-            // Both have same agent status, sort by date
-            return new Date(b.date) - new Date(a.date);
-        }
-    });
     const openTickets = sortedallTickets.filter(ticket => ticket.status === 'open');
     const closedTickets = sortedallTickets.filter(ticket => ticket.status === 'closed');
     const allTickets = pendingTickets.concat(openTickets, closedTickets);
@@ -118,6 +110,26 @@ const Dashboard = () => {
             setSelectedRows([...selectedRows, id]);
         } else {
             setSelectedRows(selectedRows.filter(rowId => rowId !== id));
+        }
+    };
+
+    //call userprofile
+    const navigate = useNavigate();
+    const handleReporterIdClick = (userId) =>{
+        
+        navigate(`/user/${userId}`);
+    };
+
+    const handleCellClick = (params, event) => {
+      
+       
+        if (params.value !==undefined && (params.field === 'user' || params.field === 'agent')) {
+            event.preventDefault();
+            handleReporterIdClick(params.value); 
+        } else {
+        
+            const ticketId = params.row._id;
+            navigate(`/ticket/${ticketId}`);
         }
     };
 
@@ -147,8 +159,25 @@ const Dashboard = () => {
             { field: 'index', headerName: 'Sr.No.', flex: 1, width: 100, headerClassName: 'custom-header-cell', },
             { field: 'id', headerName: 'Ticket ID', flex: 1, width: 150, headerClassName: 'custom-header-cell', },
             { field: 'title', headerName: 'Title', width: 200, flex: 2, headerClassName: 'custom-header-cell', },
-            { field: 'description', headerName: 'Description', width: 200, flex: 2, headerClassName: 'custom-header-cell', },
-            { field: 'user', headerName: 'ReporterId', width: 280, flex: 3, headerClassName: 'custom-header-cell', },
+            // { field: 'useremail', headerName: 'UserEmail', width: 200, flex: 2, headerClassName: 'custom-header-cell', },
+            // {
+            //     field: 'user',
+            //     headerName: 'ReporterId',
+            //     flex: 3,
+            //     width: 200,
+            //     headerClassName: 'custom-header-cell',
+            //     renderCell: (params) => {
+            //         return (
+            //             <div
+            //                 onClick={() => handleReporterIdClick(params.value)} 
+            //                 style={{ cursor: 'pointer' }}
+            //             >
+            //                 {params.value}
+            //             </div>
+            //         );
+            //     },
+            // },
+            { field: 'user', headerName: 'ReporterId', flex: 3, width: 200, headerClassName: 'custom-header-cell', },
             { field: 'agent', headerName: 'AssingedAgentId', width: 270, flex: 3, headerClassName: 'custom-header-cell', },
             {
                 field: 'date',
@@ -186,7 +215,7 @@ const Dashboard = () => {
             },
             { field: 'index', headerName: 'Sr.No.', width: 100, flex: 1, headerClassName: 'custom-header-cell', },
             { field: 'title', headerName: 'Title', flex: 2, width: 200, headerClassName: 'custom-header-cell', },
-            { field: 'description', headerName: 'Description', flex: 2, width: 200, headerClassName: 'custom-header-cell', },
+            // { field: 'useremail', headerName: 'UserEmail', flex: 2, width: 200, headerClassName: 'custom-header-cell', },
             { field: 'user', headerName: 'ReporterId', flex: 3, width: 200, headerClassName: 'custom-header-cell', },
             {
                 field: 'date',
@@ -241,14 +270,7 @@ const Dashboard = () => {
         ];
     }
 
-    const navigate = useNavigate();
-
-    const handleCellClick = (params) => {
-        // Get the ticketId from the row data
-        const ticketId = params.row._id;
-        navigate(`/ticket/${ticketId}`);
-    };
-
+   
     //cards height
     const cardHeight = '10em';
 
@@ -256,179 +278,186 @@ const Dashboard = () => {
 
 
         <Box component="main" sx={{ flexGrow: 1, p: 3, }}>
+            {loading ? (
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                    <CircularProgress color="inherit"/>
+                </div>
+            ) : (
+                <>
+                    <Grid
+                        container
+                        justifyContent="center"
+                        spacing={3}
 
-            <Grid
-                container
-                justifyContent="center"
-                spacing={3}
 
-
-            >
-                <Grid item xs={12} sm={6} md={3}>
-                    <Card
-                        sx={{
-                            height: cardHeight,
-                            backgroundColor: '#fafafa',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            cursor: 'pointer',
-                            transition: 'background-color 0.3s',
-                            '&:hover': {
-                                backgroundColor: '#e0e0e0',
-                            },
-                        }}
-                        onClick={() => setSelectedCategory('all')}
                     >
-                        <CardContent>
-                            <Typography gutterBottom variant="h3" component="div" sx={{ fontSize: '2rem', textAlign: 'center', marginTop: '0px' }}>
-                                Total Tickets
-                            </Typography>
-                            <Typography variant="h2" color="text.secondary" sx={{ fontSize: '3rem', textAlign: 'center' }}>
-                                {allTickets.length}
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid item xs={12} sm={6} md={3}>
-                    <Card
-                        sx={{
-                            height: cardHeight,
-                            backgroundColor: '#fafafa',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            cursor: 'pointer',
-                            transition: 'background-color 0.3s',
-                            '&:hover': {
-                                backgroundColor: '#e0e0e0',
-                            },
-                        }}
-                        onClick={() => setSelectedCategory('pending')}
-                    >
-                        <CardContent>
-                            <Typography gutterBottom variant="h3" component="div" sx={{ fontSize: '2rem', textAlign: 'center' }}>
-                                Pending Tickets
-                            </Typography>
-                            <Typography variant="h2" color="text.secondary" sx={{ fontSize: '3rem', textAlign: 'center' }}>
-                                {pendingTickets.length}
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid item xs={12} sm={6} md={3}>
-                    <Card
-                        sx={{
-                            height: cardHeight,
-                            backgroundColor: '#fafafa',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            cursor: 'pointer',
-                            transition: 'background-color 0.3s',
-                            '&:hover': {
-                                backgroundColor: '#e0e0e0',
-                            },
-                        }}
-                        onClick={() => setSelectedCategory('open')}
-                    >
-                        <CardContent>
-                            <Typography gutterBottom variant="h3" component="div" sx={{ fontSize: '2rem', textAlign: 'center' }}>
-                                Open Tickets
-                            </Typography>
-                            <Typography variant="h2" color="text.secondary" sx={{ fontSize: '3rem', textAlign: 'center' }}>
-                                {openTickets.length}
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid item xs={12} sm={6} md={3}>
-                    <Card
-                        sx={{
-                            height: cardHeight,
-                            backgroundColor: '#fafafa',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            cursor: 'pointer',
-                            transition: 'background-color 0.3s',
-                            '&:hover': {
-                                backgroundColor: '#e0e0e0',
-                            },
-                        }}
-                        onClick={() => setSelectedCategory('closed')}
-                    >
-                        <CardContent>
-                            <Typography gutterBottom variant="h3" component="div" sx={{ fontSize: '2rem', textAlign: 'center' }}>
-                                Closed Tickets
-                            </Typography>
-                            <Typography variant="h2" color="text.secondary" sx={{ fontSize: '3rem', textAlign: 'center' }}>
-                                {closedTickets.length}
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-            </Grid>
-            <Toolbar sx={{ justifyContent: 'flex-end' }}>
-                {selectedRows.length > 0 && (
-                    <>
-                        <Button variant="contained" color="primary" onClick={openStatusDialog}>
-                            Change Status
-                        </Button>
-                        <Dialog open={isStatusDialogOpen} onClose={closeStatusDialog}>
-                            <DialogTitle>Select Status</DialogTitle>
-                            <DialogContent>
-                                <List>
-                                    {role === 'basic' && (
-                                        <>
-                                            <ListItem>
-                                                <Button onClick={() => handleStatusChange('closed')} sx={{ color: 'red' }}>
-                                                    Closed
-                                                </Button>
-                                            </ListItem>
-                                        </>
-                                    )}
-                                    {(role === 'admin' || role === 'agent') && (
-                                        <>
-                                            <ListItem>
-                                                <Button onClick={() => handleStatusChange('pending')}>
-                                                    Pending
-                                                </Button>
-                                            </ListItem>
-                                            <ListItem>
-                                                <Button onClick={() => handleStatusChange('open')} sx={{ color: 'green' }}>
-                                                    Open
-                                                </Button>
-                                            </ListItem>
-                                            <ListItem>
-                                                <Button onClick={() => handleStatusChange('closed')} sx={{ color: 'red' }}>
-                                                    Closed
-                                                </Button>
-                                            </ListItem>
-                                        </>
-                                    )}
-                                </List>
-
-                            </DialogContent>
-                            <DialogActions>
-                                <Button onClick={clearSelectedRows} color="primary" >
-                                    Cancel
+                        <Grid item xs={12} sm={6} md={3}>
+                            <Card
+                                sx={{
+                                    height: cardHeight,
+                                    backgroundColor: '#fafafa',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    transition: 'background-color 0.3s',
+                                    '&:hover': {
+                                        backgroundColor: '#e0e0e0',
+                                    },
+                                }}
+                                onClick={() => setSelectedCategory('all')}
+                            >
+                                <CardContent>
+                                    <Typography gutterBottom variant="h3" component="div" sx={{ fontSize: '2rem', textAlign: 'center', marginTop: '0px' }}>
+                                        Total Tickets
+                                    </Typography>
+                                    <Typography variant="h2" color="text.secondary" sx={{ fontSize: '3rem', textAlign: 'center' }}>
+                                        {allTickets.length}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={3}>
+                            <Card
+                                sx={{
+                                    height: cardHeight,
+                                    backgroundColor: '#fafafa',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    transition: 'background-color 0.3s',
+                                    '&:hover': {
+                                        backgroundColor: '#e0e0e0',
+                                    },
+                                }}
+                                onClick={() => setSelectedCategory('pending')}
+                            >
+                                <CardContent>
+                                    <Typography gutterBottom variant="h3" component="div" sx={{ fontSize: '2rem', textAlign: 'center' }}>
+                                        Pending Tickets
+                                    </Typography>
+                                    <Typography variant="h2" color="text.secondary" sx={{ fontSize: '3rem', textAlign: 'center' }}>
+                                        {pendingTickets.length}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={3}>
+                            <Card
+                                sx={{
+                                    height: cardHeight,
+                                    backgroundColor: '#fafafa',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    transition: 'background-color 0.3s',
+                                    '&:hover': {
+                                        backgroundColor: '#e0e0e0',
+                                    },
+                                }}
+                                onClick={() => setSelectedCategory('open')}
+                            >
+                                <CardContent>
+                                    <Typography gutterBottom variant="h3" component="div" sx={{ fontSize: '2rem', textAlign: 'center' }}>
+                                        Open Tickets
+                                    </Typography>
+                                    <Typography variant="h2" color="text.secondary" sx={{ fontSize: '3rem', textAlign: 'center' }}>
+                                        {openTickets.length}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={3}>
+                            <Card
+                                sx={{
+                                    height: cardHeight,
+                                    backgroundColor: '#fafafa',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    transition: 'background-color 0.3s',
+                                    '&:hover': {
+                                        backgroundColor: '#e0e0e0',
+                                    },
+                                }}
+                                onClick={() => setSelectedCategory('closed')}
+                            >
+                                <CardContent>
+                                    <Typography gutterBottom variant="h3" component="div" sx={{ fontSize: '2rem', textAlign: 'center' }}>
+                                        Closed Tickets
+                                    </Typography>
+                                    <Typography variant="h2" color="text.secondary" sx={{ fontSize: '3rem', textAlign: 'center' }}>
+                                        {closedTickets.length}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    </Grid>
+                    <Toolbar sx={{ justifyContent: 'flex-end' }}>
+                        {selectedRows.length > 0 && (
+                            <>
+                                <Button variant="contained" color="primary" onClick={openStatusDialog}>
+                                    Change Status
                                 </Button>
-                            </DialogActions>
-                        </Dialog>
-                    </>
-                )}
-            </Toolbar>
+                                <Dialog open={isStatusDialogOpen} onClose={closeStatusDialog}>
+                                    <DialogTitle>Select Status</DialogTitle>
+                                    <DialogContent>
+                                        <List>
+                                            {role === 'basic' && (
+                                                <>
+                                                    <ListItem>
+                                                        <Button onClick={() => handleStatusChange('closed')} sx={{ color: 'red' }}>
+                                                            Closed
+                                                        </Button>
+                                                    </ListItem>
+                                                </>
+                                            )}
+                                            {(role === 'admin' || role === 'agent') && (
+                                                <>
+                                                    <ListItem>
+                                                        <Button onClick={() => handleStatusChange('pending')}>
+                                                            Pending
+                                                        </Button>
+                                                    </ListItem>
+                                                    <ListItem>
+                                                        <Button onClick={() => handleStatusChange('open')} sx={{ color: 'green' }}>
+                                                            Open
+                                                        </Button>
+                                                    </ListItem>
+                                                    <ListItem>
+                                                        <Button onClick={() => handleStatusChange('closed')} sx={{ color: 'red' }}>
+                                                            Closed
+                                                        </Button>
+                                                    </ListItem>
+                                                </>
+                                            )}
+                                        </List>
+
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={clearSelectedRows} color="primary" >
+                                            Cancel
+                                        </Button>
+                                    </DialogActions>
+                                </Dialog>
+                            </>
+                        )}
+                    </Toolbar>
 
 
 
-            <div style={{ height: 600, width: '100%' }}>
+                    <div style={{ height: 600, width: '100%' }}>
 
-                <DataGrid
-                    rows={dataForDataGridWithIndex}
-                    columns={columns}
-                    onCellClick={handleCellClick}
+                        <DataGrid
+                            rows={dataForDataGridWithIndex}
+                            columns={columns}
+                            onCellClick={handleCellClick}                           
+                        />
+
+
+                    </div>
                     
-                />
-
-
-            </div>
+                </>
+            )}
 
         </Box>
     );
