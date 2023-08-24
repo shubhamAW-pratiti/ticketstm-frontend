@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom'
 
 const HomeLayout = () => {
 
+  
   return (
     <div
       sx={{
@@ -11,7 +12,7 @@ const HomeLayout = () => {
       }}
     >
         <HomeNavbar/>
-        <Outlet />
+        <Outlet/>
     </div>
   )
 }
