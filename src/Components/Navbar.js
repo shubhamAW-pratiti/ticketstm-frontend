@@ -27,6 +27,7 @@ import {
   TextField,
   DialogTitle,
   DialogContent,
+  Grid,
 } from "@mui/material";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
@@ -38,6 +39,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
   const navigate = useNavigate();
 
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
+  const isNotMobile =useMediaQuery("(min-width:600px)");
   const [user, setUser] = useState(null);
   const userId = localStorage.getItem("userId");
   
@@ -133,6 +135,9 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
   }, [userId]);
 
   return (
+    <Grid container  >
+
+    
     <AppBar
       sx={{
         position: "static",
@@ -204,7 +209,9 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
                 borderRadius="50%"
                 sx={{ objectFit: "cover" }}
               />
-              <Box textAlign="left">
+
+              {isNotMobile &&(
+                <Box textAlign="left">
                 <Typography
                   fontWeight="bold"
                   fontSize="0.85rem"
@@ -219,6 +226,8 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
                   {user?.role}
                 </Typography>
               </Box>
+              )}
+              
               <ArrowDropDownOutlined
                 sx={{ color: theme.palette.secondary[300], fontSize: "25px" }}
               />
@@ -317,6 +326,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
       </Dialog>
       <ToastContainer />
     </AppBar>
+    </Grid>
   );
 };
 
