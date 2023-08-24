@@ -78,7 +78,7 @@ const Daily = () => {
   }, []);
 
   return (
-    <div style={{ width: '100%', height: '800px' }}>
+    <div style={{ width: '100%', height: '700px' }}>
       {/* You can adjust the height value above as needed */}
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data}>

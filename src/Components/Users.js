@@ -110,6 +110,15 @@ const Users = () => {
         <Table>
           <TableHead >
             <TableRow  >
+            <TableCell
+                  style={{
+                    fontSize: '1.2rem',
+                    backgroundColor:'#f5f5f5'
+                  }}
+    
+              >
+                User Name
+              </TableCell>
               <TableCell
                   style={{
                     fontSize: '1.2rem',
@@ -150,6 +159,7 @@ const Users = () => {
                      
                     }}
                   >
+                    <TableCell>{user.firstname+' '+user.lastname}</TableCell>
                     <TableCell
                       style={{
                         // hover 
