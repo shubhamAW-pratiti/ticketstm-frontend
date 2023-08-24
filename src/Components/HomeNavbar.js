@@ -58,7 +58,7 @@ export default function HomeNavbar() {
             </Link>
           </ListItem>
           <ListItem onClick={handleCloseDrawer}>
-            <Link to="/login" style={{ textDecoration: 'none' }}>
+            <Link to="/loginform" style={{ textDecoration: 'none' }}>
               <ListItemText primary="Login" />
             </Link>
           </ListItem>
