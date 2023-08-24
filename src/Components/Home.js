@@ -20,27 +20,28 @@ const Home = () => {
           }}
         >
           <Typography
-            variant="h2"
             sx={{
               fontFamily: "sans-serif",
               fontWeight: "bold",
+              fontSize:'3.5rem',
             }}
           >
             One Page BootStrap
           </Typography>
           <Typography
-            variant="h2"
             sx={{
               fontFamily: "sans-serif",
               fontWeight: "bold",
+              fontSize:'3.5rem',
             }}
           >
             Website Template
           </Typography>
           <Typography
-            variant="h5"
             sx={{
               margin: "10px",
+              fontSize:'1.5rem',
+              color:'gray'
             }}
           >
             Sub Slogan Of our Website..
@@ -61,7 +62,7 @@ const Home = () => {
         <Grid
           container
           sx={{
-            marginY: "3rem",
+            marginY: "4rem",
             padding: "1.5rem",
             background: "linear-gradient(to bottom, #f0f2f5, #d9e2ec)", // Gradient background color
             borderRadius: "0.5rem",
@@ -74,19 +75,24 @@ const Home = () => {
               display: "block",
             }}
           >
-            <Typography  variant="h6" sx={{
+            <Typography color='primary' variant="h6" sx={{
               fontWeight:'bold',
-
-            }}>Why Build with Miui?</Typography>
-            <Typography variant="h4" sx={{
-              fontWeight:'bold',
-
+              fontSize:'0.9rem',
+            }}>
+              Features of our Website..
+            </Typography>
+            <Typography sx={{
+              fontWeight:'bold',  
+              fontSize:'2rem',
             }}>
             A delightful Experience 
             </Typography>
-            <Typography variant="h4" sx={{
+            <Typography  sx={{
+
               fontWeight:'bold',
-              marginBottom:'2rem'
+              marginBottom:'2rem',
+              fontSize:'2.5rem',
+              marginTop:'-1rem'
             }}>
             For you and Your Users.
             </Typography>

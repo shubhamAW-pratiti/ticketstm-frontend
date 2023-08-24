@@ -4,7 +4,8 @@ import { Card, CardContent, Typography } from '@mui/material';
 const FeatureCard = ({ logo, title, description }) => {
   return (
     <Card sx={{
-        margin: '1rem',
+        marginLeft: '1rem',
+        marginBottom: '1rem',
         height: '200px',
         borderRadius: '1rem',
         boxShadow: '0px 6px 10px rgba(0, 0, 0, 0.1)',
@@ -13,6 +14,8 @@ const FeatureCard = ({ logo, title, description }) => {
       }}>
       {/* You can place your logo here */}
       <CardContent >
+        {/* LOGO */}
+        <img src={logo} alt="logo" style={{ width: '50px', height: '50px' }} />
         <Typography variant="h6" component="div">
           {title}
         </Typography>

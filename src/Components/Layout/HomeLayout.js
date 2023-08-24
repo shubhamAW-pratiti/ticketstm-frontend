@@ -4,7 +4,11 @@ import { Outlet } from 'react-router-dom'
 
 const HomeLayout = () => {
   return (
-    <div>
+    <div
+      sx={{
+        background: "linear-gradient(to bottom, #f0f2f5, #d9e2ec)", 
+      }}
+    >
         <HomeNavbar />
         <Outlet />
     </div>
