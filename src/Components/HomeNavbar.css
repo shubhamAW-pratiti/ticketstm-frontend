@@ -1,0 +1,43 @@
+/* .nav-links {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+  }
+  
+  .nav-links:hover {
+    color: #f718ff;
+    transition: all 0.2s ease-out;
+  } */
+  .nav-links {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    position: relative; 
+  }
+  
+  .nav-links::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 2px; 
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transform: scaleX(0); 
+    transform-origin: bottom center;
+    transition: transform 0.2s ease-out, background-color 0.2s ease-out;
+  }
+  
+  
+/* 
+  .nav-links:hover {
+    color: #d51c1c;
+    transition: color 0.2s ease-out;
+  } */
+  
+
+  .nav-links:hover::after {
+    transform: scaleX(1);
+    background-color: white; 
+  }
+  
