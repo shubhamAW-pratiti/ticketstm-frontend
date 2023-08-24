@@ -1,7 +1,10 @@
-import { Button, Container, Grid, Typography } from "@mui/material";
+import { Button, Container, Divider, Grid, Typography } from "@mui/material";
 import React from "react";
 import FeatureCard from "./FeatureCard";
-import featureData from "../data";
+import TestimonialCard from "./TestimonialCard";
+import {featureData } from "../data";
+import {Testimonials} from "../data";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
@@ -23,39 +26,47 @@ const Home = () => {
             sx={{
               fontFamily: "sans-serif",
               fontWeight: "bold",
-              fontSize:'3.5rem',
+              fontSize: "3.5rem",
             }}
           >
-            One Page BootStrap
+            One Step Solution For
           </Typography>
           <Typography
             sx={{
               fontFamily: "sans-serif",
               fontWeight: "bold",
-              fontSize:'3.5rem',
+              fontSize: "3.5rem",
             }}
           >
-            Website Template
+            Your Queries.
           </Typography>
           <Typography
             sx={{
               margin: "10px",
-              fontSize:'1.5rem',
-              color:'gray'
+              fontSize: "1.5rem",
+              color: "gray",
             }}
           >
-            Sub Slogan Of our Website..
+            We are here to help you with your queries.
           </Typography>
-          <Button
-            variant="contained"
-            sx={{
-              margin: "40px",
-              paddingX: "30px",
-              paddingY: "10px",
+
+          <Link
+            to="/create-new-ticket"
+              style={{
+              textDecoration: "none",
             }}
           >
-            Get Started
-          </Button>
+            <Button
+              variant="contained"
+              sx={{
+                margin: "40px",
+                paddingX: "30px",
+                paddingY: "10px",
+              }}
+            >
+              Create New Ticket
+            </Button>
+          </Link>
         </Grid>
 
         {/* SECOND - FEATURE COMPONENT (LOGO , TITLE , DESCRIPTION) */}
@@ -66,7 +77,6 @@ const Home = () => {
             padding: "1.5rem",
             background: "linear-gradient(to bottom, #f0f2f5, #d9e2ec)", // Gradient background color
             borderRadius: "0.5rem",
-
           }}
         >
           <Grid
@@ -75,26 +85,33 @@ const Home = () => {
               display: "block",
             }}
           >
-            <Typography color='primary' variant="h6" sx={{
-              fontWeight:'bold',
-              fontSize:'0.9rem',
-            }}>
+            <Typography
+              color="primary"
+              variant="h6"
+              sx={{
+                fontWeight: "bold",
+                fontSize: "0.9rem",
+              }}
+            >
               Features of our Website..
             </Typography>
-            <Typography sx={{
-              fontWeight:'bold',  
-              fontSize:'2rem',
-            }}>
-            A delightful Experience 
+            <Typography
+              sx={{
+                fontWeight: "bold",
+                fontSize: "2rem",
+              }}
+            >
+              A delightful Experience
             </Typography>
-            <Typography  sx={{
-
-              fontWeight:'bold',
-              marginBottom:'2rem',
-              fontSize:'2.5rem',
-              marginTop:'-1rem'
-            }}>
-            For you and Your Users.
+            <Typography
+              sx={{
+                fontWeight: "bold",
+                marginBottom: "2rem",
+                fontSize: "2.5rem",
+                marginTop: "-1rem",
+              }}
+            >
+              For you and Your Users.
             </Typography>
           </Grid>
 
@@ -103,7 +120,7 @@ const Home = () => {
 
           <Grid container>
             {featureData.map((feature, index) => (
-              <Grid item xs={12} sm={6} md={4} key={index}>
+              <Grid item xs={12} sm={6} md={3} key={index}>
                 <FeatureCard
                   logo={feature.logo}
                   title={feature.title}
@@ -112,6 +129,65 @@ const Home = () => {
               </Grid>
             ))}
           </Grid>
+        </Grid>
+
+        {/* DIVIDER LINE */}
+        <div
+          style={{
+            width: "100%",
+            height: "1px",
+            background: "gray",
+            margin: "1rem 0",
+          }}
+        />
+
+        {/* THIRD - TESTIMONIALS */}
+        <Grid container>
+          <Grid item>
+            <Typography
+              color="primary"
+              variant="h6"
+              sx={{
+                fontWeight: "bold",
+                fontSize: "0.9rem",
+              }}
+            >
+              Testimonials of our Website..
+            </Typography>
+            <Typography
+              sx={{
+                fontWeight: "bold",
+                fontSize: "2rem",
+              }}
+            >
+              Testimonials
+            </Typography>
+            <Typography
+              sx={{
+                fontWeight: "bold",
+                marginBottom: "2rem",
+                fontSize: "2.5rem",
+                marginTop: "-1rem",
+              }}
+            >
+              Your Happy Customers.
+            </Typography>
+          </Grid>
+
+          {/* <Grid container>
+            {
+              Testimonials.map((Testimonial,index)=>(
+                <Grid item xs={12} sm={6} md={3} key={index}>
+                  <TestimonialCard
+                    title={Testimonial.title}
+                    description={Testimonial.description}
+                    image={Testimonial.User.Image}
+                    name={Testimonial.User.Name}
+                    position={Testimonial.User.Position}
+                  />
+                </Grid>
+              ))}
+          </Grid> */}
         </Grid>
       </Grid>
     </Container>
