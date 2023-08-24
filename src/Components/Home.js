@@ -5,8 +5,15 @@ import TestimonialCard from "./TestimonialCard";
 import {featureData } from "../data";
 import {Testimonials} from "../data";
 import { Link } from "react-router-dom";
+import { useActiveLink } from './ActiveLinkContext';
 
 const Home = () => {
+  const { setActiveLink } = useActiveLink();
+
+  const handleGetStartedClick = () => {
+    setActiveLink('/create-new-ticket');
+  };
+
   return (
     <Container>
       <Grid container>
@@ -26,7 +33,7 @@ const Home = () => {
             sx={{
               fontFamily: "sans-serif",
               fontWeight: "bold",
-              fontSize: "3.5rem",
+              fontSize:'3.5rem',
             }}
           >
             One Step Solution For
@@ -43,18 +50,14 @@ const Home = () => {
           <Typography
             sx={{
               margin: "10px",
-              fontSize: "1.5rem",
-              color: "gray",
+              fontSize:'1.5rem',
+              color:'gray'
             }}
           >
             We are here to help you with your queries.
           </Typography>
-
-          <Link
-            to="/create-new-ticket"
-              style={{
-              textDecoration: "none",
-            }}
+          <Link to="/create-new-ticket"
+            onClick={handleGetStartedClick}
           >
             <Button
               variant="contained"
@@ -63,8 +66,9 @@ const Home = () => {
                 paddingX: "30px",
                 paddingY: "10px",
               }}
+              
             >
-              Create New Ticket
+              Get Started
             </Button>
           </Link>
         </Grid>
@@ -96,13 +100,11 @@ const Home = () => {
             >
               Features of our Website..
             </Typography>
-            <Typography
-              sx={{
-                fontWeight: "bold",
-                fontSize: "2rem",
-              }}
-            >
-              A delightful Experience
+            <Typography sx={{
+              fontWeight:'bold',  
+              fontSize:'2rem',
+            }}>
+            A delightful Experience 
             </Typography>
             <Typography
               sx={{

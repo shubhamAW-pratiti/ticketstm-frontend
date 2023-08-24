@@ -54,7 +54,14 @@ const navItems = [
         text: "My Tickets",
         component: 'userdashboard',
         icon: <ConfirmationNumber />,
-        roles: ['basic']
+        roles: ['basic', 'agent']
+    },
+    {
+        text: "Create Ticket",
+        component: 'createticket',
+        icon: <AddBox />,
+        roles: ['basic', 'agent']
+
     },
 
     //   {
@@ -129,13 +136,7 @@ const navItems = [
         icon: <TrendingUpOutlined />,
         roles: ['admin', 'agent']
     },
-    {
-        text: "Create Ticket",
-        component: 'createticket',
-        icon: <AddBox />,
-        roles: ['basic']
-
-    },
+    
 
 ];
 
