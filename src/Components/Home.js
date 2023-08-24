@@ -74,7 +74,8 @@ const Home = () => {
           container
           sx={{
             marginY: "4rem",
-            padding: "1.5rem",
+            paddingY:'1.2rem',
+            paddingX:'0.3rem',
             background: "linear-gradient(to bottom, #f0f2f5, #d9e2ec)", // Gradient background color
             borderRadius: "0.5rem",
           }}
@@ -174,20 +175,33 @@ const Home = () => {
             </Typography>
           </Grid>
 
-          {/* <Grid container>
-            {
+          <Grid container>
+            {/* {
               Testimonials.map((Testimonial,index)=>(
                 <Grid item xs={12} sm={6} md={3} key={index}>
                   <TestimonialCard
                     title={Testimonial.title}
                     description={Testimonial.description}
-                    image={Testimonial.User.Image}
-                    name={Testimonial.User.Name}
-                    position={Testimonial.User.Position}
+                    image={Testimonial.UserProfile}
+                    name={Testimonial.UserName}
+                    position={Testimonial.UserPosition}
                   />
                 </Grid>
-              ))}
-          </Grid> */}
+              ))} */}
+
+          {Testimonials.map((Testimonial, index) => (
+              <Grid item xs={12} sm={6} md={3} key={index}>
+                <TestimonialCard
+                  title={Testimonial.title}
+                  description={Testimonial.description}
+                  image={Testimonial.UserProfile}
+                  name={Testimonial.UserName}
+                  position={Testimonial.UserPosition}
+
+                />
+              </Grid>
+            ))}
+          </Grid>
         </Grid>
       </Grid>
     </Container>
