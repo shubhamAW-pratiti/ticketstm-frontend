@@ -123,7 +123,7 @@ const Dashboard = () => {
     const handleCellClick = (params, event) => {
       
        
-        if (params.value !==undefined && (params.field === 'user' || params.field === 'agent')) {
+        if (role==='admin'&& params.value !==undefined && (params.field === 'user' || params.field === 'agent')) {
             event.preventDefault();
             handleReporterIdClick(params.value); 
         } else {
@@ -156,8 +156,8 @@ const Dashboard = () => {
                     );
                 },
             },
-            { field: 'index', headerName: 'Sr.No.', flex: 1, width: 100, headerClassName: 'custom-header-cell', },
-            { field: 'id', headerName: 'Ticket ID', flex: 1, width: 150, headerClassName: 'custom-header-cell', },
+            { field: 'index', headerName: 'Sr.No.', flex: 1, width: 70, headerClassName: 'custom-header-cell', },
+            { field: 'ticketId', headerName: 'Ticket ID', flex: 2, width: 200, headerClassName: 'custom-header-cell', },
             { field: 'title', headerName: 'Title', width: 200, flex: 2, headerClassName: 'custom-header-cell', },
             // { field: 'useremail', headerName: 'UserEmail', width: 200, flex: 2, headerClassName: 'custom-header-cell', },
             // {
@@ -231,44 +231,45 @@ const Dashboard = () => {
             },
             { field: 'status', headerName: 'Status', flex: 1, width: 150, headerClassName: 'custom-header-cell', checkboxSelection: true, },
         ];
-    } else {
-        columns = [
-            {
-                field: 'checkbox',
-                headerName: 'Select',
-                flex: 1,
-                width: 100,
-                headerClassName: 'custom-header-cell',
-
-                renderCell: (params) => {
-                    return (
-                        <Checkbox
-                            checked={selectedRows.includes(params.id)}
-                            onChange={(event) => handleRowCheckboxChange(event, params.id)}
-                            onClick={(event) => event.stopPropagation()}
-
-                        />
-                    );
-                },
-            },
-            { field: 'index', headerName: 'Sr.No.', flex: 1, width: 100, headerClassName: 'custom-header-cell', },
-            { field: 'title', headerName: 'Title', flex: 2, width: 200, headerClassName: 'custom-header-cell', },
-            { field: 'description', headerName: 'Description', flex: 2, width: 200, headerClassName: 'custom-header-cell', },
-            {
-                field: 'date',
-                headerName: 'Time',
-                type: 'dateTime',
-                flex: 3,
-                width: 300,
-                valueFormatter: (params) => {
-                    const date = new Date(params.value);
-                    return date.toLocaleString();
-                },
-                headerClassName: 'custom-header-cell',
-            },
-            { field: 'status', headerName: 'Status', flex: 1, width: 150, headerClassName: 'custom-header-cell', checkboxSelection: true, },
-        ];
     }
+    //  else {
+    //     columns = [
+    //         {
+    //             field: 'checkbox',
+    //             headerName: 'Select',
+    //             flex: 1,
+    //             width: 100,
+    //             headerClassName: 'custom-header-cell',
+
+    //             renderCell: (params) => {
+    //                 return (
+    //                     <Checkbox
+    //                         checked={selectedRows.includes(params.id)}
+    //                         onChange={(event) => handleRowCheckboxChange(event, params.id)}
+    //                         onClick={(event) => event.stopPropagation()}
+
+    //                     />
+    //                 );
+    //             },
+    //         },
+    //         { field: 'index', headerName: 'Sr.No.', flex: 1, width: 100, headerClassName: 'custom-header-cell', },
+    //         { field: 'title', headerName: 'Title', flex: 2, width: 200, headerClassName: 'custom-header-cell', },
+    //         { field: 'description', headerName: 'Description', flex: 2, width: 200, headerClassName: 'custom-header-cell', },
+    //         {
+    //             field: 'date',
+    //             headerName: 'Time',
+    //             type: 'dateTime',
+    //             flex: 3,
+    //             width: 300,
+    //             valueFormatter: (params) => {
+    //                 const date = new Date(params.value);
+    //                 return date.toLocaleString();
+    //             },
+    //             headerClassName: 'custom-header-cell',
+    //         },
+    //         { field: 'status', headerName: 'Status', flex: 1, width: 150, headerClassName: 'custom-header-cell', checkboxSelection: true, },
+    //     ];
+    // }
 
    
     //cards height

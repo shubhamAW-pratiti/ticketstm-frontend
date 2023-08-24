@@ -6,7 +6,7 @@ import {
   Search,
   SettingsOutlined,
   ArrowDropDownOutlined,
-  ChevronLeft,
+  
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
@@ -29,15 +29,18 @@ import {
   DialogContent,
 } from "@mui/material";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
   const API_URL = process.env.API_URL;
   const theme = useTheme();
   const navigate = useNavigate();
+
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const [user, setUser] = useState(null);
   const userId = localStorage.getItem("userId");
-
+  
   const [anchorEl, setAnchorEl] = useState(null);
   const isOpen = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
@@ -47,6 +50,9 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
   const [updateFirstName, setUpdateFirstName] = useState("");
   const [updateLastName, setUpdateLastName] = useState("");
   const [isUpdateButtonDisabled, setIsUpdateButtonDisabled] = useState(true);
+
+
+
 
   //Handle Logout and navigate to / route.
   const handleLogout = () => {
@@ -79,7 +85,34 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
     setIsDialogOpen(false);
   };
 
-  const handleUpdateDetails = () => { };
+
+
+  const handleUpdateDetails = () => {
+    const token = localStorage.getItem('accessToken')
+    const requestBody = new URLSearchParams();
+    requestBody.append('firstname', updateFirstName);
+    requestBody.append('lastname', updateLastName);
+
+    // Make the API request to update the specified field
+    fetch(`http://localhost:3002/user/details/${userId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        'Authorization': `Bearer ${token}`
+      },
+      body: requestBody.toString()
+    })
+      .then(response => response.json())
+      .then(data => {
+        toast.success("Information updated successfully!", {
+          position: toast.POSITION.TOP_CENTER
+        });
+      })
+      .catch(error => {
+        console.error("Error updating user:", error);
+
+      });
+  };
 
   useEffect(() => {
     if (userId) {
@@ -112,9 +145,17 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
       <Toolbar sx={{ justifyContent: "space-between" }}>
         {/* LEFT SIDE */}
         <FlexBetween>
-          <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-            {isSidebarOpen ? <ChevronLeft/> : <MenuIcon />}
-          </IconButton>
+          
+          {!isSidebarOpen && (
+            <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+              <MenuIcon />
+            </IconButton>
+          )}
+{/*             
+            <Button variant="text" onClick={() => navigate(-1)}>
+              Back
+            </Button> */}
+
           {isNonMediumScreens && (
             <FlexBetween
               backgroundColor={theme.palette.background.alt}
@@ -122,6 +163,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
               gap="3rem"
               p="0.1rem 1.5rem"
             >
+
               <InputBase placeholder="Search..." />
               <IconButton>
                 <Search />
@@ -273,6 +315,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
           </div>
         </DialogContent>
       </Dialog>
+      <ToastContainer />
     </AppBar>
   );
 };

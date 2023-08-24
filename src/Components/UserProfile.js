@@ -38,6 +38,7 @@ const UserProfile = () => {
                 if (response.status === 200) {
                     const fetchedUser = response.data.data;
                     setUser(fetchedUser);
+                    console.log(user);
                 } else {
                     console.log('Problem with fetching user details');
                 }
@@ -86,12 +87,16 @@ const UserProfile = () => {
     const openedTickets = filteredTickets.filter((ticket) => ticket.status === 'open');
     const closedTickets = filteredTickets.filter((ticket) => ticket.status === 'closed');
 
+
     return (
         <Grid container columnGap={2} rowGap={2} padding={4}>
             <Grid item xs={12}>
                 <Paper elevation={3} style={{ padding: '1rem', borderRadius: '10px' }}>
                     <Typography variant="h4" gutterBottom>
-                        User Profile
+                        {user&&user.firstname !== undefined || user&&user.lastname !== undefined
+                            ? `${user&&user.firstname || ''} ${user&&user.lastname || ''}`
+                            : 'User Pofile'}
+                           
                     </Typography>
                 </Paper>
             </Grid>
@@ -133,7 +138,7 @@ const UserProfile = () => {
                             <Typography variant="h6">{pendingTickets.length}</Typography>
                             <Typography variant="subtitle2">Pending</Typography>
                         </div>
-                        
+
                         <div>
                             <Typography variant="h7" >|</Typography>
                         </div>
@@ -148,7 +153,7 @@ const UserProfile = () => {
                         </div>
 
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                            <Typography variant="h6">{closedTickets.length }</Typography>
+                            <Typography variant="h6">{closedTickets.length}</Typography>
                             <Typography variant="subtitle2">Resolved</Typography>
                         </div>
                     </Grid>
@@ -162,26 +167,26 @@ const UserProfile = () => {
                     Tickets Created by User
                 </Typography>
                 <Paper elevation={3} style={{ padding: '1rem', borderRadius: '10px' }}>
-                        <TextField
-                            type="text"
-                            placeholder="Search by title..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            style={{
-                                width: '100%',
-                                padding: '0.5rem',
-                                borderRadius: '5px',
-                            }}
-                            InputProps={{
-                                startAdornment: (
-                                  <InputAdornment position="start">
+                    <TextField
+                        type="text"
+                        placeholder="Search by title..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        style={{
+                            width: '100%',
+                            padding: '0.5rem',
+                            borderRadius: '5px',
+                        }}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
                                     <span role="img" aria-label="search">
-                                      🔍
+                                        🔍
                                     </span>
-                                  </InputAdornment>
-                                ),
-                              }}
-                        />
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
                     <TableContainer>
                         <Table>
                             <TableHead>
@@ -204,34 +209,34 @@ const UserProfile = () => {
                                             {ticket.status === 'pending' ? (
                                                 <div style={{
                                                     display: 'flex',
-                                                    flexDirection:'row',
-                                                    alignItems:'center',
-                                                    gap:'5px',
+                                                    flexDirection: 'row',
+                                                    alignItems: 'center',
+                                                    gap: '5px',
                                                 }}>
 
-                                                    <PendingActionsOutlinedIcon style={{color:'orange'}} textAnchor='pending'/>
+                                                    <PendingActionsOutlinedIcon style={{ color: 'orange' }} textAnchor='pending' />
                                                     <Typography>Pending</Typography>
                                                 </div>
                                             ) : ticket.status === 'open' ? (
                                                 <div style={{
                                                     display: 'flex',
-                                                    flexDirection:'row',
-                                                    alignItems:'center',
-                                                    gap:'5px',
+                                                    flexDirection: 'row',
+                                                    alignItems: 'center',
+                                                    gap: '5px',
                                                 }}>
 
-                                                    <MemoryOutlinedIcon style={{color:'blue'}}/>
+                                                    <MemoryOutlinedIcon style={{ color: 'blue' }} />
                                                     <Typography>In process.</Typography>
                                                 </div>
                                             ) : (
                                                 <div style={{
                                                     display: 'flex',
-                                                    flexDirection:'row',
-                                                    alignItems:'center',
-                                                    gap:'5px',
+                                                    flexDirection: 'row',
+                                                    alignItems: 'center',
+                                                    gap: '5px',
                                                 }}>
 
-                                                    <CheckOutlinedIcon style={{color:'green'}} />
+                                                    <CheckOutlinedIcon style={{ color: 'green' }} />
                                                     <Typography>Resolved</Typography>
                                                 </div>
                                             )}

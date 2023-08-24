@@ -58,7 +58,7 @@ const Monthly = () => {
         />
       </div>
 
-      <div style={{ width: "100%", height: "700px" }}>
+      <div style={{ width: "100%", height: "500px" }}>
         {/* You can adjust the height value above as needed */}
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
@@ -67,7 +67,7 @@ const Monthly = () => {
               <Label value="Days" offset={0} position="insideBottom" />
             </XAxis>
             <YAxis dataKey="count">
-              <Label value="Tickets" offset={0} position="insideLeft" />
+              <Label value="Tickets" offset={1} position="insideLeft" />
             </YAxis>
             <Tooltip />
             <Line

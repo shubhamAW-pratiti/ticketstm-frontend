@@ -22,6 +22,7 @@ import Monthly from "./scenes/Monthly";
 import Profile from './Components/Profile'
 import CreateTicketForm from "./Components/CreateTicketForm";
 import CreateNewTicket from "./Components/CreateNewTicket";
+import UserDashboard from "./Components/UserDashboard";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -52,6 +53,15 @@ export default function App() {
               <PrivateRoute path='/dashboard' isLoggedIn={isLoggedIn}>
                 {/* Dashboard */}
                 <Dashboard/>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/userdashboard"
+            element={
+              <PrivateRoute path='/userdashboard' isLoggedIn={isLoggedIn}>
+                {/* User Dashboard */}
+                <UserDashboard/>
               </PrivateRoute>
             }
           />
