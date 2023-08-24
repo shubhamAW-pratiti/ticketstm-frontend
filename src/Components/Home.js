@@ -5,7 +5,7 @@ import TestimonialCard from "./TestimonialCard";
 import {featureData } from "../data";
 import {Testimonials} from "../data";
 import { Link } from "react-router-dom";
-import { useActiveLink } from './ActiveLinkContext';import { Link } from "react-router-dom";
+import { useActiveLink } from './ActiveLinkContext';
 
 const Home = () => {
   const { setActiveLink } = useActiveLink();
