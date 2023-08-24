@@ -23,6 +23,8 @@ import Profile from './Components/Profile'
 import CreateTicketForm from "./Components/CreateTicketForm";
 import CreateNewTicket from "./Components/CreateNewTicket";
 import UserDashboard from "./Components/UserDashboard";
+import HomeLayout from "./Components/Layout/HomeLayout";
+import Home from "./Components/Home";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -45,6 +47,17 @@ export default function App() {
     //  <CssBaseline />
     <div>
       <Routes>
+
+        {/* Home DashBoard */}
+
+        <Route element={<HomeLayout/>}>
+          <Route path="/" element={ <Home/>} />
+          <Route path="/login" element={<Login_poc onLogin={handleLogin} />} />
+          <Route path="/create-new-ticket" element={<CreateNewTicket/>} />
+          <Route path="/SignUp" element={<SignUp />} />
+          <Route path="/ForgotPass" element={<ForgotPass />} />
+          <Route path="/about" element={<About />} />
+        </Route>
 
         <Route element={<DashboardLayout />}>
           <Route
@@ -230,11 +243,7 @@ export default function App() {
           />
         </Route> */}
 
-        <Route path="/" element={<Login_poc onLogin={handleLogin} />} />
-        <Route path="/create-new-ticket" element={<CreateNewTicket/>} />
-        <Route path="/SignUp" element={<SignUp />} />
-        <Route path="/ForgotPass" element={<ForgotPass />} />
-        <Route path="/about" element={<About />} />
+        
       </Routes>
       {/* <Footer/> */}
     </div>
