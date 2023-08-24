@@ -1,4 +1,4 @@
-import { Button, Container, Grid, Paper, TextField, Typography } from '@mui/material';
+import { Button, Container, Divider, Grid, Paper, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
@@ -153,8 +153,16 @@ function Signup() {
 
   return (
     <Container component="main" maxWidth="sm">
-      <Paper elevation={3} sx={{ padding: '16px', margin: 'auto',mt: 5 }}>
-        <Typography variant="h5" align="center" gutterBottom>
+      <Paper elevation={3}  sx={{
+          padding: 4,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+          alignItems: 'center',
+          maxWidth: 'md',
+          marginTop: 5,
+        }}>
+        <Typography variant="h4" align="center" gutterBottom>
           SignUp
         </Typography>
 
@@ -278,18 +286,10 @@ function Signup() {
           </Grid>
         </form>
 
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            margin: '20px 0',
-          }}
-        >
-          <div style={{ borderTop: '1px solid black', width: '45%' }}></div>
-          <div style={{ margin: '0 10px' }}>OR</div>
-          <div style={{ borderTop: '1px solid black', width: '45%' }}></div>
-        </div>
+        {/* Divider */}
+        <Divider flexItem sx={{ marginTop: 2 }}>
+          OR
+        </Divider>
 
         <Button
           variant="contained"
