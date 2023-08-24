@@ -23,7 +23,7 @@ import './HomeNavbar.css';
 
 
 export default function HomeNavbar() {
-
+  const [activeLink, setActiveLink] = React.useState('');
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [drawerOpen, setDrawerOpen] = React.useState(false);
@@ -50,11 +50,21 @@ export default function HomeNavbar() {
         </FlexBetween>
       </Box>
       <Divider />
-      <Box m="1rem 1rem 1rem 4rem">
+      <Box m="1rem 1rem 1rem 3rem">
         <List>
           <ListItem onClick={handleCloseDrawer}>
             <Link to="/" style={{ textDecoration: 'none' }}>
               <ListItemText primary="Home" />
+            </Link>
+          </ListItem>
+          <ListItem onClick={handleCloseDrawer}>
+            <Link to="/about" style={{ textDecoration: 'none' }}>
+              <ListItemText primary="About Us" />
+            </Link>
+          </ListItem>
+          <ListItem onClick={handleCloseDrawer}>
+            <Link to="/create-new-ticket" style={{ textDecoration: 'none' }}>
+              <ListItemText primary="Create Ticket" />
             </Link>
           </ListItem>
           <ListItem onClick={handleCloseDrawer}>
@@ -63,7 +73,7 @@ export default function HomeNavbar() {
             </Link>
           </ListItem>
           <ListItem onClick={handleCloseDrawer}>
-            <Link to="/signupform" style={{ textDecoration: 'none' }}>
+            <Link to="/SignUp" style={{ textDecoration: 'none' }}>
               <ListItemText primary="SignUp" />
             </Link>
           </ListItem>
@@ -75,49 +85,63 @@ export default function HomeNavbar() {
   return (
     <React.Fragment>
       {isMobile ? (
-        <AppBar position="static" >
+        <AppBar sx={{ position: "static", backgroundColor: 'white', boxShadow: 'none' }}>
           <Toolbar>
             <IconButton
               size="large"
               edge="start"
-              color="inherit"
+              color="black"
               aria-label="menu"
               onClick={handleDrawerToggle}
               sx={{ mr: 2 }}
             >
               <MenuIcon />
             </IconButton>
-            <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
-              <Typography variant="h4" fontWeight="bold">
+            <Link to="/" style={{ textDecoration: 'none', display: 'flex', justifyContent: 'center' }} >
+              <Typography variant="h4" fontWeight="bold" sx={{ color: theme.palette.secondary.main }}>
                 Ticketstm
               </Typography>
             </Link>
           </Toolbar>
         </AppBar>
       ) : (
-        <AppBar position="static">
+        <AppBar position="static" sx={{ backgroundColor: '#FFFAFA', boxShadow: 'none' }} >
           <Toolbar>
-            <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
+            <Link to="/" style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
               <Typography variant="h4" component="div" fontWeight="bold">
                 Ticketstm
               </Typography>
             </Link>
             <div style={{ marginLeft: 'auto' }}>
-              <Link to="/" className='nav-links'>
+              <Link to="/"
+                className={`nav-links ${activeLink === '' ? 'active' : ''}`}
+                onClick={() => setActiveLink('')}>
                 Home
               </Link>
-              <Link to="/about" className='nav-links'>
+              <Link
+                to="/about"
+                className={`nav-links ${activeLink === '/about' ? 'active' : ''}`}
+                onClick={() => setActiveLink('/about')}
+              >
                 About Us
               </Link>
-              <Link to="/create-new-ticket" className='nav-links'>
+              <Link to="/create-new-ticket"
+                className={`nav-links ${activeLink === '/create-new-ticket' ? 'active' : ''}`}
+                onClick={() => setActiveLink('/create-new-ticket')}
+              >
                 Create Ticket
               </Link>
 
-              <Link to="/loginform" className='nav-links'>
+              <Link to="/login"
+                className={`nav-links ${activeLink === '/login' ? 'active' : ''}`}
+                onClick={() => setActiveLink('/login')}
+              >
                 Login
               </Link>
 
-              <Link to="/SignUp" className='nav-links'>
+              <Link to="/SignUp" className={`nav-links ${activeLink === '/SignUp' ? 'active' : ''}`}
+                onClick={() => setActiveLink('/SignUp')}
+              >
                 SignUp
               </Link>
             </div>
