@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Button, Container, Paper, Stack, TextField, Typography,Divider} from '@mui/material';
-import { Link,useNavigate } from 'react-router-dom';
+import { Button, Container, Paper, Stack, TextField, Typography, Divider, Grid } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { ToastContainer , toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 
 
@@ -84,17 +84,17 @@ const Login_poc = ({ onLogin }) => {
         else
           navigate('/dashboard');
 
-      }else{
+      } else {
         const data = response.data;
         toast.error(data.message, {
           position: toast.POSITION.TOP_CENTER
         });
-        
+
       }
 
     } catch (error) {
       console.error('Error logging in:', error);
-      
+
     }
   };
 
@@ -107,7 +107,7 @@ const Login_poc = ({ onLogin }) => {
 
     <Container component="main" maxWidth='sm'>
       <Paper
-      elevation={3} 
+        elevation={3}
         sx={{
           padding: 4,
           display: 'flex',
@@ -115,7 +115,7 @@ const Login_poc = ({ onLogin }) => {
           gap: 2,
           alignItems: 'center',
           maxWidth: 'md',
-          marginTop:5,
+          marginTop: 5,
         }}
       >
         <Typography variant="h4" component="h4">
@@ -151,33 +151,36 @@ const Login_poc = ({ onLogin }) => {
         />
 
         {/* Login & Reset Buttons */}
-        <Stack direction={'row'} spacing={1} width={'100%'}>
-          <Button
-            disabled={btnDisabled}
-            variant='contained'
-            size='large'
-            fullWidth
-            onClick={handleLogin}
-          >
-            Login
-          </Button>
+        <Grid container spacing={2} mt={1}>
+          <Grid item xs={12} sm={6}>
+            <Button
+              disabled={btnDisabled}
+              variant='contained'
+              size='large'
+              fullWidth
+              onClick={handleLogin}
+            >
+              Login
+            </Button>
 
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Button
+              variant="outlined"
+              size='large'
+              fullWidth
+              type="reset"
+              onClick={() => {
+                setEmail('');
+                setPassword('');
+                setEmailError('');
 
-          <Button
-            variant="outlined"
-            size='large'
-            fullWidth
-            type="reset"
-            onClick={() => {
-              setEmail('');
-              setPassword('');
-              setEmailError('');
-
-            }}
-          >
-            Reset
-          </Button>
-        </Stack>
+              }}
+            >
+              Reset
+            </Button>
+          </Grid>
+        </Grid>
 
         {/* signup & forgot password */}
         {/* <Stack spacing={0} direction="row" marginTop={2}>
@@ -218,12 +221,12 @@ const Login_poc = ({ onLogin }) => {
           }}
         >
           <Link to="/SignUp" style={{ textDecoration: 'none', marginRight: '10px' }}>
-            <Typography variant="body1" sx={{ textTransform: 'capitalize', paddingRight: '12px', borderRight: '1px solid #ccc', color:'#1976d2' }}>
+            <Typography variant="body1" sx={{ textTransform: 'capitalize', paddingRight: '12px', borderRight: '1px solid #ccc', color: '#1976d2' }}>
               Sign Up
             </Typography>
           </Link>
 
-          <Link to="ForgotPass" style={{ textDecoration: 'none', width: '40%', marginRight: '5%',color:'#1976d2'  }}>
+          <Link to="ForgotPass" style={{ textDecoration: 'none', width: '40%', marginRight: '5%', color: '#1976d2' }}>
             <Typography variant="body1" sx={{ textTransform: 'capitalize' }}>
               Forgot Password
             </Typography>
@@ -261,7 +264,7 @@ const Login_poc = ({ onLogin }) => {
           </DialogActions>
         </Dialog> */}
       </Paper>
-      <ToastContainer/>
+      <ToastContainer />
     </Container>
 
   );
