@@ -1,5 +1,4 @@
 import React from 'react'
-import Home from '../Home'
 import HomeNavbar from '../HomeNavbar'
 import { Outlet } from 'react-router-dom'
 
