@@ -20,12 +20,12 @@ import { Link } from 'react-router-dom';
 import FlexBetween from './FlexBetween';
 import { ChevronLeft } from '@mui/icons-material';
 import './HomeNavbar.css';
-
+import { useActiveLink } from './ActiveLinkContext';
 
 export default function HomeNavbar() {
-  const [activeLink, setActiveLink] = React.useState('');
+  const { activeLink, setActiveLink } = useActiveLink();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery("(max-width: 700px)");
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -107,7 +107,8 @@ export default function HomeNavbar() {
       ) : (
         <AppBar position="static" sx={{ backgroundColor: '#FFFAFA', boxShadow: 'none' }} >
           <Toolbar>
-            <Link to="/" style={{ textDecoration: 'none', color: theme.palette.secondary.main }}>
+            <Link to="/" style={{ textDecoration: 'none', color: theme.palette.secondary.main }} onClick={() => setActiveLink('')}
+            >
               <Typography variant="h4" component="div" fontWeight="bold">
                 Ticketstm
               </Typography>

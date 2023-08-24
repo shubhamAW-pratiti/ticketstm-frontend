@@ -6,7 +6,7 @@ import {
   Search,
   SettingsOutlined,
   ArrowDropDownOutlined,
-  
+
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
@@ -32,6 +32,7 @@ import {
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { useActiveLink } from './ActiveLinkContext';
 
 const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
   const API_URL = process.env.API_URL;
@@ -39,10 +40,10 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
   const navigate = useNavigate();
 
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
-  const isNotMobile =useMediaQuery("(min-width:600px)");
+  const isNotMobile = useMediaQuery("(min-width:600px)");
   const [user, setUser] = useState(null);
   const userId = localStorage.getItem("userId");
-  
+
   const [anchorEl, setAnchorEl] = useState(null);
   const isOpen = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
@@ -53,7 +54,11 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
   const [updateLastName, setUpdateLastName] = useState("");
   const [isUpdateButtonDisabled, setIsUpdateButtonDisabled] = useState(true);
 
+  const { setActiveLink } = useActiveLink();
 
+  const handleGetStartedClick = () => {
+    setActiveLink('');
+  };
 
 
   //Handle Logout and navigate to / route.
@@ -63,14 +68,16 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
     localStorage.removeItem("userId");
     localStorage.removeItem("userRole");
     localStorage.removeItem("accessToken");
+    handleGetStartedClick();
     navigate("/");
   };
 
   const handleOpenDialog = () => {
     setIsDialogOpen(true);
-    setUpdateFirstName(user?.firstName || "");
-    setUpdateLastName(user?.lastName || "");
+    setUpdateFirstName(user?.firstname || "");
+    setUpdateLastName(user?.lastname || "");
     setIsUpdateButtonDisabled(true);
+    
   };
 
   const handleFirstNameChange = (e) => {
@@ -124,6 +131,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
           if (response.status === 200) {
             const fetchedUser = response.data.data;
             setUser(fetchedUser);
+            console.log(fetchedUser);
           } else {
             console.log("Problem with fetching user details");
           }
@@ -134,198 +142,196 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
     }
   }, [userId]);
 
+
   return (
     <Grid container  >
 
-    
-    <AppBar
-      sx={{
-        position: "static",
-        background: "none",
-        boxShadow: "none",
-        // sticky at top
-        top: "0",
-      }}
-    >
-      <Toolbar sx={{ justifyContent: "space-between" }}>
-        {/* LEFT SIDE */}
-        <FlexBetween>
-          
-          {!isSidebarOpen && (
-            <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-              <MenuIcon />
-            </IconButton>
-          )}
-{/*             
+
+      <AppBar
+        sx={{
+          position: "static",
+          background: "none",
+          boxShadow: "none",
+          // sticky at top
+          top: "0",
+        }}
+      >
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          {/* LEFT SIDE */}
+          <FlexBetween>
+
+            {!isSidebarOpen && (
+              <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+                <MenuIcon />
+              </IconButton>
+            )}
+            {/*             
             <Button variant="text" onClick={() => navigate(-1)}>
               Back
             </Button> */}
 
-          {isNonMediumScreens && (
-            <FlexBetween
-              backgroundColor={theme.palette.background.alt}
-              borderRadius="9px"
-              gap="3rem"
-              p="0.1rem 1.5rem"
-            >
+            {isNonMediumScreens && (
+              <FlexBetween
+                backgroundColor={theme.palette.background.alt}
+                borderRadius="9px"
+                gap="3rem"
+                p="0.1rem 1.5rem"
+              >
 
-              <InputBase placeholder="Search..." />
-              <IconButton>
-                <Search />
-              </IconButton>
-            </FlexBetween>
-          )}
-        </FlexBetween>
-        {/* RIGHT SIDE */}
-
-        <FlexBetween gap="1.5rem">
-          <IconButton>
-            {theme.palette.mode === "dark" ? (
-              <DarkModeOutlined sx={{ fontSize: "25px" }} />
-            ) : (
-              <LightModeOutlined sx={{ fontSize: "25px" }} />
+                <InputBase placeholder="Search..." />
+                <IconButton>
+                  <Search />
+                </IconButton>
+              </FlexBetween>
             )}
-          </IconButton>
-          <IconButton onClick={handleOpenDialog}>
-            <SettingsOutlined sx={{ fontSize: "25px" }} />
-          </IconButton>
-          <FlexBetween>
-            <Button
-              onClick={handleClick}
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                textTransform: "none",
-                gap: "1rem",
-              }}
-            >
-              <Box
-                component="img"
-                alt="profile"
-                src={profileImage}
-                height="32px"
-                width="32px"
-                borderRadius="50%"
-                sx={{ objectFit: "cover" }}
-              />
-
-              {isNotMobile &&(
-                <Box textAlign="left">
-                <Typography
-                  fontWeight="bold"
-                  fontSize="0.85rem"
-                  sx={{ color: theme.palette.secondary[100] }}
-                >
-                  {user?.email}
-                </Typography>
-                <Typography
-                  fontSize="0.75rem"
-                  sx={{ color: theme.palette.secondary[200] }}
-                >
-                  {user?.role}
-                </Typography>
-              </Box>
-              )}
-              
-              <ArrowDropDownOutlined
-                sx={{ color: theme.palette.secondary[300], fontSize: "25px" }}
-              />
-            </Button>
-            <Menu
-              anchorEl={anchorEl}
-              open={isOpen}
-              onClose={handleClose}
-              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-            >
-              <MenuItem onClick={handleLogout}>Log Out</MenuItem>
-            </Menu>
           </FlexBetween>
-        </FlexBetween>
-      </Toolbar>
+          {/* RIGHT SIDE */}
 
-      <Dialog
-        open={isDialogOpen}
-        onClose={handleCloseDialog}
-        fullWidth
-        PaperProps={{
-          style: {
-            width: "60vh",
-            height: "100vh",
-          },
-        }}
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-        }}
-      >
-        <DialogTitle>Update User Details</DialogTitle>
+          <FlexBetween gap="1.5rem">
+            <IconButton>
+              {theme.palette.mode === "dark" ? (
+                <DarkModeOutlined sx={{ fontSize: "25px" }} />
+              ) : (
+                <LightModeOutlined sx={{ fontSize: "25px" }} />
+              )}
+            </IconButton>
+            <IconButton onClick={handleOpenDialog}>
+              <SettingsOutlined sx={{ fontSize: "25px" }} />
+            </IconButton>
+            <FlexBetween>
+              <Button
+                onClick={handleClick}
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  textTransform: "none",
+                  gap: "1rem",
+                }}
+              >
+                <Box
+                  component="img"
+                  alt="profile"
+                  src={profileImage}
+                  height="32px"
+                  width="32px"
+                  borderRadius="50%"
+                  sx={{ objectFit: "cover" }}
+                />
 
-        <DialogContent
+                {isNotMobile && (
+                  <Box textAlign="left">
+                    <Typography
+                      fontWeight="bold"
+                      fontSize="0.85rem"
+                      sx={{ color: theme.palette.secondary[100] }}
+                    >
+                      {user?.email}
+                    </Typography>
+                    <Typography
+                      fontSize="0.75rem"
+                      sx={{ color: theme.palette.secondary[200] }}
+                    >
+                      {user?.role}
+                    </Typography>
+                  </Box>
+                )}
+
+                <ArrowDropDownOutlined
+                  sx={{ color: theme.palette.secondary[300], fontSize: "25px" }}
+                />
+              </Button>
+              <Menu
+                anchorEl={anchorEl}
+                open={isOpen}
+                onClose={handleClose}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              >
+                <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+              </Menu>
+            </FlexBetween>
+          </FlexBetween>
+        </Toolbar>
+
+        <Dialog
+          open={isDialogOpen}
+          onClose={handleCloseDialog}
+          fullWidth
+          PaperProps={{
+            style: {
+              widows: '100%',
+              height: "70vh",
+            },
+          }}
           sx={{
             display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            alignItems: "center",
+            justifyContent: "flex-end",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "1rem",
-              width: "100%",
-              marginTop: "2rem",
-            }}
-          >
-            <TextField
-              label="First Name"
-              variant="outlined"
-              value={updateFirstName}
-              onChange={handleFirstNameChange}
-            />
-            <TextField
-              label="Last Name"
-              variant="outlined"
-              value={updateLastName}
-              onChange={handleLastNameChange}
-            />
+          <DialogTitle>Update User Details</DialogTitle>
 
-            <TextField
-              label="email"
-              variant="outlined"
-              value={user?.email}
-              disabled
-            />
-
-            <TextField
-              label="role"
-              variant="outlined"
-              value={user?.role}
-              disabled
-            />
-          </div>
-          <div
-            style={{
-              display: "flex",
-            }}
-          >
-            {/* cancel and upate button */}
-            <Button varian="outlined" onClick={handleCloseDialog}>
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              disabled={isUpdateButtonDisabled}
-              onClick={handleUpdateDetails}
-            >
-              Update
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-      <ToastContainer />
-    </AppBar>
+          <DialogContent>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  label="First Name"
+                  variant="outlined"
+                  value={updateFirstName}
+                  onChange={handleFirstNameChange}
+                  fullWidth
+                  sx={{ mt: '10px' }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Last Name"
+                  variant="outlined"
+                  value={updateLastName}
+                  onChange={handleLastNameChange}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Email"
+                  variant="outlined"
+                  value={user?.email}
+                  disabled
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Role"
+                  variant="outlined"
+                  value={user?.role}
+                  disabled
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Grid container justifyContent="flex-end" spacing={2}>
+                  <Grid item>
+                    <Button variant="outlined" onClick={handleCloseDialog}>
+                      Cancel
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <Button
+                      variant="contained"
+                      disabled={isUpdateButtonDisabled}
+                      onClick={handleUpdateDetails}
+                    >
+                      Update
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </DialogContent>
+        </Dialog>
+        <ToastContainer />
+      </AppBar>
     </Grid>
   );
 };
