@@ -65,9 +65,10 @@ import axios from 'axios';
 
 const Daily = () => {
   const [data, setData] = useState([]);
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
 
   useEffect(() => {
-    axios.get('http://localhost:3002/tickets/today')
+    axios.get(`${BASE_URL}/tickets/today`)
       .then(response => {
         setData(response.data);
         console.log(response.data)

@@ -38,6 +38,8 @@ const Dashboard = () => {
     const role = localStorage.getItem('userRole');
     const [isStatusDialogOpen, setStatusDialogOpen] = useState(false);
 
+    const BASE_URL = process.env.REACT_APP_BASE_URL;
+
     const openStatusDialog = () => {
         setStatusDialogOpen(true);
     };
@@ -63,7 +65,7 @@ const Dashboard = () => {
 
     const handleStatusChange = async (newStatus) => {
         try {
-            const response = await axios.put('http://localhost:3002/tickets/status', null, {
+            const response = await axios.put(`${BASE_URL}/tickets/status`, null, {
                 params: {
                     ticketIds: selectedRows.join(','),
                     newStatus: newStatus,

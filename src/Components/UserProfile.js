@@ -28,6 +28,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 
 const UserProfile = () => {
+    const BASE_URL = process.env.REACT_APP_BASE_URL;
     const { userId } = useParams();
     const [user, setUser] = useState(null);
     const [tickets, setTickets] = useState([]);
@@ -47,7 +48,7 @@ const UserProfile = () => {
         const requestBody = new URLSearchParams();
         requestBody.append('role', role);
         axios.put(
-            `http://localhost:3002/user/role/${userId}`,
+            `${BASE_URL}/user/role/${userId}`,
             requestBody.toString(),
             {
                 headers: {
@@ -73,7 +74,7 @@ const UserProfile = () => {
         if (useEffectCall) {
 
             axios
-                .get(`http://localhost:3002/user/${userId}`)
+                .get(`${BASE_URL}/user/${userId}`)
                 .then((response) => {
                     if (response.status === 200) {
                         const fetchedUser = response.data.data;
@@ -90,7 +91,7 @@ const UserProfile = () => {
 
             // Fetch tickets created by the user
             axios
-                .get('http://localhost:3002/allTicketsByUser', {
+                .get(`${BASE_URL}/allTicketsByUser`, {
                     params: {
                         userId: userId,
                     },

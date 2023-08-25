@@ -15,12 +15,14 @@ const CreateNewTicket = () => {
     const [category, setCategory] = useState('');
     const [description, setDescription] = useState('');
 
+    const BASE_URL = process.env.REACT_APP_BASE_URL;
+
     useEffect(() => {
         // Fetch user details
         if (userId) {
             // Fetch user details
             axios
-                .get(`http://localhost:3002/user/${userId}`)
+                .get(`${BASE_URL}/user/${userId}`)
                 .then((response) => {
                     if (response.status === 200) {
                         const fetchedEmail = response.data.data.email;
@@ -57,7 +59,7 @@ const CreateNewTicket = () => {
             formData.user = userId;
         }
         try {
-            const response = await axios.post('http://localhost:3002/newticket', formData, {
+            const response = await axios.post(`${BASE_URL}/newticket`, formData, {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },

@@ -20,6 +20,7 @@ function Signup() {
   const [firstNameError, setFirstNameError] = useState('');
   const role = 'basic';
   const { setActiveLink } = useActiveLink();
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
 
   const isEmailValid = (email) => {
     return /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email);
@@ -109,7 +110,7 @@ function Signup() {
         formData.append('firstname', firstName);
         formData.append('lastname', lastName);
 
-        const response = await axios.post('http://localhost:3002/signup', formData.toString(), {
+        const response = await axios.post(`${BASE_URL}/signup`, formData.toString(), {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },

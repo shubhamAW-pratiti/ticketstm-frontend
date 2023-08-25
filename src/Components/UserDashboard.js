@@ -13,6 +13,7 @@ import {
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 const UserDashboard = () => {
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("pending");
@@ -30,7 +31,7 @@ const UserDashboard = () => {
   useEffect(() => {
     // Fetch all tickets format: x-www-form-urlencoded
     axios
-      .get("http://localhost:3002/allTicketsByUser", {
+      .get(`${BASE_URL}/allTicketsByUser`, {
         params: {
           userId: userId,
         },

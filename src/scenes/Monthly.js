@@ -17,13 +17,14 @@ import {
 const Monthly = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [data, setData] = useState([]);
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
 
   useEffect(() => {
     const year = selectedDate.getFullYear();
     const month = selectedDate.getMonth() + 1; // Month is 0-indexed
 
     axios
-      .get("http://localhost:3002/tickets/by-month", {
+      .get(`${BASE_URL}/tickets/by-month`, {
         params: {
           year,
           month,

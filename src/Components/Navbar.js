@@ -35,7 +35,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { useActiveLink } from './ActiveLinkContext';
 
 const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
-  const API_URL = process.env.API_URL;
   const { setActiveLink } = useActiveLink();
   const theme = useTheme();
   const navigate = useNavigate();
@@ -56,6 +55,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
   const [isUpdateButtonDisabled, setIsUpdateButtonDisabled] = useState(true);
   const [useEffectCall, setUseEffectCall] = useState(true); 
 
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
   
   //Handle Logout and navigate to / route.
   const handleLogout = () => {
@@ -99,7 +99,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
     requestBody.append('lastname', updateLastName);
 
     axios.put(
-      `http://localhost:3002/user/details/${userId}`,
+      `${BASE_URL}/user/details/${userId}`,
       requestBody.toString(),
       {
         headers: {
@@ -125,7 +125,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
   useEffect(() => {
     if (useEffectCall) {
       axios
-        .get(`http://localhost:3002/user/${userId}`)
+        .get(`${BASE_URL}/user/${userId}`)
         .then((response) => {
           if (response.status === 200) {
             const fetchedUser = response.data.data;

@@ -10,6 +10,7 @@ import CreateTicketForm from './CreateTicketForm';
 
 
 const Profile = ({onLogout}) => {
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
   const [user, setUser] = useState(null);
   const [isFormOpen , setIsFormOpen] = useState(false);
   const [userId , setUserId] = useState(null);
@@ -35,7 +36,7 @@ const Profile = ({onLogout}) => {
 
       console.log(formData.toString());
 
-      const response = await axios.post('http://localhost:3002/newticket', formData.toString(),{
+      const response = await axios.post(`${BASE_URL}/newticket`, formData.toString(),{
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
@@ -58,7 +59,7 @@ const Profile = ({onLogout}) => {
   };
   
   useEffect(()=>{
-    axios.get('http://localhost:3002/allTicketsByUser', {
+    axios.get(`${BASE_URL}/allTicketsByUser`, {
   params: {
     userId: localStorage.getItem("userId")|| null,
   },
@@ -86,7 +87,7 @@ const Profile = ({onLogout}) => {
   //Ticket render when first time render
 
   useEffect(()=>{
-    axios.get('http://localhost:3002/allTicketsByUser', {
+    axios.get(`${BASE_URL}/allTicketsByUser`, {
   params: {
     userId: localStorage.getItem("userId"),
   },

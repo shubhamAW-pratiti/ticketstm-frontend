@@ -5,8 +5,6 @@ import { themeSettings } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 
-import Header from "./Components/Header";
-import Footer from "./Components/Footer";
 import Login_poc from "./Components/Login_poc";
 import SignUp from "./Components/SignUp";
 import ForgotPass from "./Components/ForgotPass";
@@ -19,8 +17,7 @@ import Daily from "./scenes/Daily";
 import DashboardLayout from "./Components/Layout/DashboardLayout";
 import Dashboard from "./Components/Dashboard";
 import Monthly from "./scenes/Monthly";
-import Profile from './Components/Profile'
-import CreateTicketForm from "./Components/CreateTicketForm";
+import BreakDown from "./scenes/BreakDown";
 import CreateNewTicket from "./Components/CreateNewTicket";
 import UserDashboard from "./Components/UserDashboard";
 import HomeLayout from "./Components/Layout/HomeLayout";
@@ -42,9 +39,12 @@ export default function App() {
     localStorage.setItem("isLoggedIn", false);
   };
 
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
+
   return (
     //  <ThemeProvider theme={theme}>
     //  <CssBaseline />
+
     <div>
       <Routes>
 
@@ -58,6 +58,7 @@ export default function App() {
           <Route path="/about" element={<About />} />
         </Route>
 
+        {/* user , agent & Admin */}
         <Route element={<DashboardLayout />}>
           <Route
             path="/dashboard"
@@ -139,110 +140,7 @@ export default function App() {
               </PrivateRoute>
             }
           />
-          
-        </Route>
-
-        {/* <Route element={<AdminLayout onLogout={handleLogout} />}>
-          <Route
-            path="/admin-dashboard"
-            element={
-              <PrivateRoute isLoggedIn={isLoggedIn}>
-                <AdminDashboard onLogout={handleLogout} />
-              </PrivateRoute>
-            }
-          /> */}
-
-          {/* ticket Details */}
-          {/* <Route
-            path="ticket/:ticketId"
-            element={
-              <PrivateRoute path="ticket/:ticketId" isLoggedIn={isLoggedIn}>
-                <TicketDetails onLogout={handleLogout} />
-              </PrivateRoute>
-            }
-          /> */}
-          {/* users details */}
-          {/* <Route
-            path="user/:userId"
-            element={
-              <PrivateRoute path="user/:userId" isLoggedIn={isLoggedIn}>
-                <UserProfile onLogout={handleLogout} />
-              </PrivateRoute>
-            }
-          /> */}
-
-          {/* Users */}
-          {/* <Route
-            path="users"
-            element={
-              <PrivateRoute path="/users" isLoggedIn={isLoggedIn}>
-                <Users onLogout={handleLogout} />
-              </PrivateRoute>
-            }
-          /> */}
-           {/* <Route
-            path="/profile"
-            element={
-              <PrivateRoute path="/profile" isLoggedIn={isLoggedIn}>
-                <Profile onLogout={handleLogout} />
-              </PrivateRoute>
-            }
-          /> */}
-
-          {/* Daily */}
-
-          {/* <Route
-            path="daily"
-            element={
-              <PrivateRoute path="/daily" isLoggedIn={isLoggedIn}>
-                <Daily onLogout={handleLogout} />
-              </PrivateRoute>
-            }
-          /> */}
-
-        {/* User Layout */}
-        {/* <Route element={<UserLayout />}> */}
-          {/* <Route
-            path="/profile"
-            element={
-              <PrivateRoute path="/profile" isLoggedIn={isLoggedIn}>
-                <Profile onLogout={handleLogout} />
-              </PrivateRoute>
-            }
-          />
-
-          <Route
-            path="/ticket/:ticketId"
-            element={
-              <PrivateRoute path="/ticket/:ticketId" isLoggedIn={isLoggedIn}>
-                <TicketDetails onLogout={handleLogout} />
-              </PrivateRoute>
-            }
-          />
-        </Route> */}
-
-        {/* Agent Layout */}
-        {/* <Route element={<AgentLayout />}>
-          <Route
-            path="/agent-dashboard"
-            element={
-              <PrivateRoute path="/agent-dashboard" isLoggedIn={isLoggedIn}>
-                <AgentDashboard onLogout={handleLogout} />
-              </PrivateRoute>
-            }
-          />
-
-          <Route
-            path="/ticket/:ticketId"
-            element={
-              <PrivateRoute path="/ticket/:ticketId" isLoggedIn={isLoggedIn}>
-                <TicketDetails onLogout={handleLogout} />
-              </PrivateRoute>
-            }
-          />
-        </Route> */}
-
-        
+        </Route>        
       </Routes>
       {/* <Footer/> */}
     </div>

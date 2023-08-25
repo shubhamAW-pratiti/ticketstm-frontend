@@ -19,6 +19,8 @@ const Login_poc = ({ onLogin }) => {
   // const [passwordError, setPasswordError] = useState('');
   const [btnDisabled, setBtnDisabled] = useState(true);
 
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
+
   const isEmailValid = (email) => {
     return /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email);
   };
@@ -59,7 +61,7 @@ const Login_poc = ({ onLogin }) => {
       formData.append('email', email);
       formData.append('password', password);
 
-      const response = await axios.post('http://localhost:3002/login', formData.toString(), {
+      const response = await axios.post(`${BASE_URL}/login`, formData.toString(), {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },

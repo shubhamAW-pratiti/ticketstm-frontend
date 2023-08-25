@@ -20,6 +20,7 @@ import {
 import { Link } from 'react-router-dom';
 
 const Users = () => {
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
@@ -32,7 +33,7 @@ const Users = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:3002/users')
+      .get(`${BASE_URL}/users`)
       .then((response) => {
         if (response.status === 200) {
           const fetchedUsers = response.data.data;

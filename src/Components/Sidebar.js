@@ -147,6 +147,7 @@ const Sidebar = ({
     setIsSidebarOpen,
     isNonMobile
 }) => {
+    const BASE_URL = process.env.REACT_APP_BASE_URL;
     const userRole = localStorage.getItem('userRole');
     const filteredNavItems = navItems.filter(item => item.roles.includes(userRole));
     const { pathname } = useLocation();
@@ -170,7 +171,7 @@ const Sidebar = ({
     }, [pathname])
 
     useEffect(() => {
-        axios.get(`http://localhost:3002/user/${userId}`)
+        axios.get(`${BASE_URL}/user/${userId}`)
             .then((response) => {
                 if (response.status === 200) {
                     const fetchedUser = response.data.data;
