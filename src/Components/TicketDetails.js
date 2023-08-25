@@ -116,6 +116,7 @@ const TicketDetails = () => {
             .then((response) => {
                 if (response.status === 200) {
                     setComments(response.data);
+                    console.log('comments',response.data);
                 } else {
                     console.log('Problem with fetching comments');
                 }
@@ -239,19 +240,19 @@ const TicketDetails = () => {
                         Comment
                     </TextField>
 
-                    <FormControl style={{ width: '100%', marginTop: '10px' }}>
-
-                        <Typography variant='h6' gutterBottom component='div'>
-                            <span style={{ color: 'gray' }}>Status:</span>
-                        </Typography>
-                        <Select value={selectedStatus} onChange={handleStatusChange}>
-                            {statusOptions.map((status, index) => (
-                                <MenuItem key={index} value={status}>
-                                    {status}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+                            <FormControl style={{ width: '100%', marginTop: '10px' }}>
+                                <Typography variant='h6' gutterBottom component='div'>
+                                    <span style={{ color: 'gray' }}>Status:</span>
+                                </Typography>
+                               <Select value={selectedStatus} onChange={handleStatusChange}>
+                                    {statusOptions.map((status, index) => (
+                                        <MenuItem key={index} value={status}>
+                                            {status}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>  
+                   
                     <Button variant="contained" onClick={handleUpdateStatus} style={{
                         marginTop: '30px',
                     }}>
@@ -310,7 +311,7 @@ const TicketDetails = () => {
                                 }}>
                                     <ListItemText
                                         primary={comment.comment}
-                                        secondary={`By ${comment.userId} on ${new Date(comment.date).toLocaleString()}`}
+                                        secondary={`By ${comment.firstname} on ${new Date(comment.date).toLocaleString()}`}
                                     />
                                 </ListItem>
                             ))}

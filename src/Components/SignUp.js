@@ -302,7 +302,7 @@ function Signup() {
 
         <Typography align="center">
           Already signed up?{' '}
-          <Link to="/" style={{ textDecoration: 'none', color:'#1976d2' }}>
+          <Link to="/login" style={{ textDecoration: 'none', color:'#1976d2' }}>
             Login
           </Link>
         </Typography>

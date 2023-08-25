@@ -26,7 +26,7 @@ const Home = () => {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            paddingY: "100px",
+            paddingY: "8rem",
           }}
         >
           <Typography
@@ -155,7 +155,7 @@ const Home = () => {
                 fontSize: "0.9rem",
               }}
             >
-              Testimonials of our Website..
+              Testimonials..
             </Typography>
             <Typography
               sx={{

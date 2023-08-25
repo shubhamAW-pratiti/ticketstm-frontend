@@ -69,16 +69,6 @@ const Login_poc = ({ onLogin }) => {
         localStorage.setItem('userId', data.data.id);
         localStorage.setItem('userRole', data.data.role);
         onLogin();
-        //   if (data.data.role === 'admin')
-        //     navigate('/dashboard');
-        //   else if (data.data.role === 'basic')
-        //     navigate('/dashboard');
-        //   else
-        //     navigate('/dashboard');
-        // } else {
-        //   const data = response.data;
-        //   setMessage(data.message);
-
         if (data.data.role === 'basic')
           navigate('/userdashboard');
         else
@@ -98,13 +88,7 @@ const Login_poc = ({ onLogin }) => {
     }
   };
 
-
-  // const handleClosePopup = () => {
-  //   setOpenPopup(false);
-  // };
-
   return (
-
     <Container component="main" maxWidth='sm'>
       <Paper
         elevation={3}
