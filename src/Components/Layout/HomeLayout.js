@@ -2,9 +2,7 @@ import React from 'react'
 import HomeNavbar from '../HomeNavbar'
 import { Outlet } from 'react-router-dom'
 
-const HomeLayout = () => {
-
-  
+const HomeLayout = () => {  
   return (
     <div
       sx={{

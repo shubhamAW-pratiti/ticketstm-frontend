@@ -10,10 +10,6 @@ import { useActiveLink } from './ActiveLinkContext';
 const Home = () => {
   const { setActiveLink } = useActiveLink();
 
-  const handleGetStartedClick = () => {
-    setActiveLink('/create-new-ticket');
-  };
-
   return (
     <Container>
       <Grid container>
@@ -57,7 +53,7 @@ const Home = () => {
             We are here to help you with your queries.
           </Typography>
           <Link to="/create-new-ticket"
-            onClick={handleGetStartedClick}
+            onClick={() => setActiveLink('/create-new-ticket')}
           >
             <Button
               variant="contained"
