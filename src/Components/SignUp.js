@@ -2,9 +2,8 @@ import { Button, Container, Divider, Grid, Paper, TextField, Typography } from '
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer , toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
-import { useActiveLink } from './ActiveLinkContext';
 
 function Signup() {
 
@@ -19,7 +18,7 @@ function Signup() {
   const [rePasswordError, setRePasswordError] = useState('');
   const [firstNameError, setFirstNameError] = useState('');
   const role = 'basic';
-  const { setActiveLink } = useActiveLink();
+  
 
   const isEmailValid = (email) => {
     return /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email);
@@ -72,13 +71,13 @@ function Signup() {
   };
 
 
-  const handleFirstNameChange = (e) => {
+  const handleFirstNameChange =(e)=>{
     setFirstName(e.target.value);
 
     if (e.target.value !== '') {
       setFirstNameError('');
     }
-
+    
   };
 
   const handleReset = () => {
@@ -100,51 +99,51 @@ function Signup() {
 
   const handleSingUp = async (event) => {
     event.preventDefault();
-    if (email && pass && repass && firstName) {
-      try {
-        const formData = new URLSearchParams();
-        formData.append('role', role);
-        formData.append('email', email);
-        formData.append('password', pass);
-        formData.append('firstname', firstName);
-        formData.append('lastname', lastName);
-
-        const response = await axios.post('http://localhost:3002/signup', formData.toString(), {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-        });
-        if (response) {
-          if (response.status === 200) {
-            const data = response.data;
-            // Store accessToken in localStorage
-            localStorage.setItem('accessToken', data.data.accessToken);
-            //Toast message for success
-            toast.success("Sign Up successfully !", {
-              position: toast.POSITION.TOP_CENTER
-            });
-
-            setTimeout(() => {
-              window.location.href = '/';
-            }, 3000);
-          } else {
-            //toast message for warn
-
-            toast.warn("user already exists,Please login !", {
-              position: toast.POSITION.TOP_CENTER
-            });
-
-
+    if(email && pass && repass && firstName){
+        try {
+          const formData = new URLSearchParams();
+          formData.append('role', role);
+          formData.append('email', email);
+          formData.append('password', pass);
+          formData.append('firstname', firstName);
+          formData.append('lastname',lastName);
+      
+          const response = await axios.post('http://localhost:3002/signup', formData.toString(), {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+          });
+          if(response){
+            if (response.status === 200) {
+              const data = response.data;
+              // Store accessToken in localStorage
+              localStorage.setItem('accessToken', data.data.accessToken);
+              //Toast message for success
+              toast.success("Sign Up successfully !", {
+                position: toast.POSITION.TOP_CENTER
+              });
+              
+              setTimeout(() => {
+                window.location.href = '/';
+              }, 3000);
+            }else{
+              //toast message for warn
+             
+              toast.warn("user already exists,Please login !", {
+                position: toast.POSITION.TOP_CENTER
+              });
+              
+              
+            }
           }
+            
+        } catch (error) {
+          toast.error('Error in signing up:', {
+            position: toast.POSITION.TOP_CENTER
+          });
+          
         }
-
-      } catch (error) {
-        toast.error('Error in signing up:', {
-          position: toast.POSITION.TOP_CENTER
-        });
-
-      }
-    } else {
+    }else{
       toast.warn("It is mandotory to fill all required fields", {
         position: toast.POSITION.TOP_CENTER
       });
@@ -154,15 +153,15 @@ function Signup() {
 
   return (
     <Container component="main" maxWidth="sm">
-      <Paper elevation={3} sx={{
-        padding: 4,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 2,
-        alignItems: 'center',
-        maxWidth: 'md',
-        marginTop: 5,
-      }}>
+      <Paper elevation={3}  sx={{
+          padding: 4,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+          alignItems: 'center',
+          maxWidth: 'md',
+          marginTop: 5,
+        }}>
         <Typography variant="h4" align="center" gutterBottom>
           SignUp
         </Typography>
@@ -292,24 +291,18 @@ function Signup() {
           OR
         </Divider>
 
-
         <Button
           variant="contained"
           fullWidth
           style={{ textTransform: 'capitalize', marginBottom: '20px' }}
-          onClick={() => {
-            setActiveLink('/create-new-ticket');
-            navigate('/create-new-ticket');
-          }}          >
+          onClick={() => navigate('/create-new-ticket')}
+        >
           CONTINUE AS GUEST
         </Button>
 
-
         <Typography align="center">
           Already signed up?{' '}
-          <Link to="/login" style={{ textDecoration: 'none', color: '#1976d2' }}
-            onClick={() => setActiveLink('/login')}
-          >
+          <Link to="/" style={{ textDecoration: 'none', color:'#1976d2' }}>
             Login
           </Link>
         </Typography>

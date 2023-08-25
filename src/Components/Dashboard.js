@@ -10,25 +10,25 @@ import './Dashboard.css'
 
 const fetchTicketsData = (userId, role, setTickets, setLoading) => {
     axios.get('http://localhost:3002/tickets', {
-        params: {
-            userId: userId,
-            role: role,
-        },
+      params: {
+        userId: userId,
+        role: role,
+      },
     })
-        .then((response) => {
-            if (response.status === 200) {
-                const allTickets = response.data.map(ticket => ({ ...ticket, id: ticket._id }));
-                setTickets(allTickets);
-                setLoading(false);
-            } else {
-                console.log('Problem with fetching tickets');
-                setLoading(false);
-            }
-        })
-        .catch((error) => {
-            console.log('Error fetching tickets', error);
-        });
-};
+    .then((response) => {
+      if (response.status === 200) {
+        const allTickets = response.data.map(ticket => ({ ...ticket, id: ticket._id }));
+        setTickets(allTickets);
+        setLoading(false); 
+      } else {
+        console.log('Problem with fetching tickets');
+        setLoading(false); 
+      }
+    })
+    .catch((error) => {
+      console.log('Error fetching tickets', error);
+    });
+  };
 
 const Dashboard = () => {
     const [loading, setLoading] = useState(true);
@@ -115,19 +115,19 @@ const Dashboard = () => {
 
     //call userprofile
     const navigate = useNavigate();
-    const handleReporterIdClick = (userId) => {
-
+    const handleReporterIdClick = (userId) =>{
+        
         navigate(`/user/${userId}`);
     };
 
     const handleCellClick = (params, event) => {
-
-
-        if (role === 'admin' && params.value !== undefined && (params.field === 'user' || params.field === 'agent')) {
+      
+       
+        if (role==='admin'&& params.value !==undefined && (params.field === 'user' || params.field === 'agent')) {
             event.preventDefault();
-            handleReporterIdClick(params.value);
+            handleReporterIdClick(params.value); 
         } else {
-
+        
             const ticketId = params.row._id;
             navigate(`/ticket/${ticketId}`);
         }
@@ -144,7 +144,7 @@ const Dashboard = () => {
                 flex: 1,
                 width: 100,
                 headerClassName: 'custom-header-cell',
-
+                
                 renderCell: (params) => {
                     return (
                         <Checkbox
@@ -271,7 +271,7 @@ const Dashboard = () => {
     //     ];
     // }
 
-
+   
     //cards height
     const cardHeight = '10em';
 
@@ -281,7 +281,7 @@ const Dashboard = () => {
         <Box component="main" sx={{ flexGrow: 1, p: 3, }}>
             {loading ? (
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                    <CircularProgress color="inherit" />
+                    <CircularProgress color="inherit"/>
                 </div>
             ) : (
                 <>
@@ -308,17 +308,9 @@ const Dashboard = () => {
                                 onClick={() => setSelectedCategory('all')}
                             >
                                 <CardContent>
-                                    
-                                        {role === 'admin' ? (
-                                            <Typography gutterBottom variant="h3" component="div" sx={{ fontSize: '2rem', textAlign: 'center', marginTop: '0px' }}>
-                                            Total Tickets
-                                            </Typography>
-                                        ) : (
-                                            <Typography gutterBottom variant="h3" component="div" sx={{ fontSize: '1.9rem', textAlign: 'center', marginTop: '0px' }}>
-                                            Assigned Tickets
-                                            </Typography>
-                                        )}
-                                    
+                                    <Typography gutterBottom variant="h3" component="div" sx={{ fontSize: '2rem', textAlign: 'center', marginTop: '0px' }}>
+                                        Total Tickets
+                                    </Typography>
                                     <Typography variant="h2" color="text.secondary" sx={{ fontSize: '3rem', textAlign: 'center' }}>
                                         {allTickets.length}
                                     </Typography>
@@ -459,12 +451,12 @@ const Dashboard = () => {
                         <DataGrid
                             rows={dataForDataGridWithIndex}
                             columns={columns}
-                            onCellClick={handleCellClick}
+                            onCellClick={handleCellClick}                           
                         />
 
 
                     </div>
-
+                    
                 </>
             )}
 

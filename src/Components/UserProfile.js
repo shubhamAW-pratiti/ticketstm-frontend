@@ -17,15 +17,10 @@ import {
     TablePagination,
     TextField,
     InputAdornment,
-    Button,
-    Select,
-    MenuItem,
 } from '@mui/material';
 import PendingActionsOutlinedIcon from '@mui/icons-material/PendingActionsOutlined';
 import MemoryOutlinedIcon from '@mui/icons-material/MemoryOutlined';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
-import { ToastContainer, toast } from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css";
 
 const UserProfile = () => {
     const { userId } = useParams();
@@ -35,84 +30,45 @@ const UserProfile = () => {
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [searchTerm, setSearchTerm] = useState('');
 
-    const userRole = localStorage.getItem('userRole');
-    const [selectedRole, setSelectedRole] = useState('');
-
-    const [useEffectCall, setUseEffectCall] = useState(true); 
-
-
-    const handleRoleChange = (event) => {
-        const role = event.target.value;
-        const token = localStorage.getItem('accessToken')
-        const requestBody = new URLSearchParams();
-        requestBody.append('role', role);
-        axios.put(
-            `http://localhost:3002/user/role/${userId}`,
-            requestBody.toString(),
-            {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        )
-            .then((response) => {
-                toast.success('userRole updated successfully!', {
-                    position: toast.POSITION.TOP_CENTER,
-                });
-                
-                setUseEffectCall(true);
-            })
-            .catch((error) => {
-                console.error('Error updating user:', error);
-            });
-    };
-
     useEffect(() => {
         // Fetch user details
-        if (useEffectCall) {
+        axios
+            .get(`http://localhost:3002/user/${userId}`)
+            .then((response) => {
+                if (response.status === 200) {
+                    const fetchedUser = response.data.data;
+                    setUser(fetchedUser);
+                    console.log(user);
+                } else {
+                    console.log('Problem with fetching user details');
+                }
+            })
+            .catch((error) => {
+                console.log('Error fetching user details', error);
+            });
 
-            axios
-                .get(`http://localhost:3002/user/${userId}`)
-                .then((response) => {
-                    if (response.status === 200) {
-                        const fetchedUser = response.data.data;
-                        setUser(fetchedUser);
-                        setSelectedRole(fetchedUser.role);
-                        console.log(user);
-                    } else {
-                        console.log('Problem with fetching user details');
-                    }
-                })
-                .catch((error) => {
-                    console.log('Error fetching user details', error);
-                });
-
-            // Fetch tickets created by the user
-            axios
-                .get('http://localhost:3002/allTicketsByUser', {
-                    params: {
-                        userId: userId,
-                    },
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                })
-                .then((response) => {
-                    if (response.status === 200) {
-                        const tickets = response.data;
-                        setTickets(tickets);
-                    } else {
-                        console.log('Problem with fetching tickets');
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error fetching tickets:', error);
-                });
-            setUseEffectCall(false);
-            return;
-        }
-    }, [useEffectCall]);
+        // Fetch tickets created by the user
+        axios
+            .get('http://localhost:3002/allTicketsByUser', {
+                params: {
+                    userId: userId,
+                },
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            })
+            .then((response) => {
+                if (response.status === 200) {
+                    const tickets = response.data;
+                    setTickets(tickets);
+                } else {
+                    console.log('Problem with fetching tickets');
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching tickets:', error);
+            });
+    }, [userId]);
 
     const handlePageChange = (event, newPage) => {
         setPage(newPage);
@@ -135,28 +91,13 @@ const UserProfile = () => {
     return (
         <Grid container columnGap={2} rowGap={2} padding={4}>
             <Grid item xs={12}>
-                <Paper elevation={3} style={{ padding: '1rem', borderRadius: '10px', display: 'flex', justifyContent: 'space-between' }}>
+                <Paper elevation={3} style={{ padding: '1rem', borderRadius: '10px' }}>
                     <Typography variant="h4" gutterBottom>
-                        {(user && user.firstname !== undefined) || (user && user.lastname !== undefined)
-                            ? `${(user && user.firstname) || ''} ${(user && user.lastname) || ''}`
-                            : 'User Profile'}
-
+                        {user&&user.firstname !== undefined || user&&user.lastname !== undefined
+                            ? `${user&&user.firstname || ''} ${user&&user.lastname || ''}`
+                            : 'User Pofile'}
+                           
                     </Typography>
-                    {userRole === 'admin' && (
-
-                        <Select value={selectedRole} onChange={handleRoleChange}>
-                            <MenuItem value="admin" disabled={selectedRole === 'admin'}>
-                                admin
-                            </MenuItem>
-                            <MenuItem value="agent" disabled={selectedRole === 'agent'}>
-                                agent
-                            </MenuItem>
-                            <MenuItem value="basic" disabled={selectedRole === 'basic'}>
-                                basic
-                            </MenuItem>
-                        </Select>
-                    )}
-
                 </Paper>
             </Grid>
 
@@ -317,7 +258,6 @@ const UserProfile = () => {
                     />
                 </Paper>
             </Grid>
-            <ToastContainer/>
         </Grid>
     );
 };

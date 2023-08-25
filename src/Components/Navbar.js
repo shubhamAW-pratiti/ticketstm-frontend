@@ -36,7 +36,6 @@ import { useActiveLink } from './ActiveLinkContext';
 
 const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
   const API_URL = process.env.API_URL;
-  const { setActiveLink } = useActiveLink();
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -54,9 +53,14 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
   const [updateFirstName, setUpdateFirstName] = useState("");
   const [updateLastName, setUpdateLastName] = useState("");
   const [isUpdateButtonDisabled, setIsUpdateButtonDisabled] = useState(true);
-  const [useEffectCall, setUseEffectCall] = useState(true); 
 
-  
+  const { setActiveLink } = useActiveLink();
+
+  const handleGetStartedClick = () => {
+    setActiveLink('');
+  };
+
+
   //Handle Logout and navigate to / route.
   const handleLogout = () => {
     alert("Really Want to LoggedOut!!");
@@ -64,7 +68,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
     localStorage.removeItem("userId");
     localStorage.removeItem("userRole");
     localStorage.removeItem("accessToken");
-    setActiveLink('');
+    handleGetStartedClick();
     navigate("/");
   };
 
@@ -73,7 +77,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
     setUpdateFirstName(user?.firstname || "");
     setUpdateLastName(user?.lastname || "");
     setIsUpdateButtonDisabled(true);
-
+    
   };
 
   const handleFirstNameChange = (e) => {
@@ -98,32 +102,29 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
     requestBody.append('firstname', updateFirstName);
     requestBody.append('lastname', updateLastName);
 
-    axios.put(
-      `http://localhost:3002/user/details/${userId}`,
-      requestBody.toString(),
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
-      .then((response) => {
-        toast.success('Information updated successfully!', {
-          position: toast.POSITION.TOP_CENTER,
+    // Make the API request to update the specified field
+    fetch(`http://localhost:3002/user/details/${userId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        'Authorization': `Bearer ${token}`
+      },
+      body: requestBody.toString()
+    })
+      .then(response => response.json())
+      .then(data => {
+        toast.success("Information updated successfully!", {
+          position: toast.POSITION.TOP_CENTER
         });
-        handleCloseDialog();
-        setUseEffectCall(true);
       })
-      .catch((error) => {
-        console.error('Error updating user:', error);
+      .catch(error => {
+        console.error("Error updating user:", error);
+
       });
   };
 
-
-  
   useEffect(() => {
-    if (useEffectCall) {
+    if (userId) {
       axios
         .get(`http://localhost:3002/user/${userId}`)
         .then((response) => {
@@ -138,18 +139,14 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
         .catch((error) => {
           console.log("Error fetching user details", error);
         });
-
-      setUseEffectCall(false); 
-      return; 
     }
-
-  }, [useEffectCall]);
-
-
+  }, [userId]);
 
 
   return (
     <Grid container  >
+
+
       <AppBar
         sx={{
           position: "static",
