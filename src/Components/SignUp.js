@@ -307,9 +307,11 @@ function Signup() {
 
         <Typography align="center">
           Already signed up?{' '}
+
           <Link to="/login" style={{ textDecoration: 'none', color: '#1976d2' }}
             onClick={() => setActiveLink('/login')}
           >
+
             Login
           </Link>
         </Typography>

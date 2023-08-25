@@ -3,7 +3,6 @@ import HomeNavbar from '../HomeNavbar'
 import { Outlet } from 'react-router-dom'
 
 const HomeLayout = () => {
-
   
   return (
     <div
