@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { Button, Container, Paper, Stack, TextField, Typography, Divider, Grid } from '@mui/material';
+import { Button, Container, Paper, TextField, Typography, Divider, Grid } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { useActiveLink } from './ActiveLinkContext';
 
 
 const Login_poc = ({ onLogin }) => {
+  const { setActiveLink } = useActiveLink();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -210,7 +212,7 @@ const Login_poc = ({ onLogin }) => {
             </Typography>
           </Link>
 
-          <Link to="ForgotPass" style={{ textDecoration: 'none', width: '40%', marginRight: '5%', color: '#1976d2' }}>
+          <Link to="/ForgotPass" style={{ textDecoration: 'none', width: '40%', marginRight: '5%', color: '#1976d2' }}>
             <Typography variant="body1" sx={{ textTransform: 'capitalize' }}>
               Forgot Password
             </Typography>
@@ -230,7 +232,10 @@ const Login_poc = ({ onLogin }) => {
           type='button'
           size='large'
           variant='contained'
-          onClick={() => navigate('/create-new-ticket')}
+          onClick={() => {
+            setActiveLink('/create-new-ticket');
+            navigate('/create-new-ticket');
+          }}  
         >
           Continue As a Guest
         </Button>
