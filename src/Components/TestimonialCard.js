@@ -6,7 +6,7 @@ const TestimonialCard = ({ title, description, image, name, position }) => {
     <Card
       sx={{
         margin: "0.3rem",
-        height: "300px",
+        height: "350px",
         display:'flex',
         flexDirection:'column',
         justifyContent:'space-between',
@@ -15,6 +15,11 @@ const TestimonialCard = ({ title, description, image, name, position }) => {
         borderRadius: "1rem",
         boxShadow: "0px 6 px 10px rgba(0, 0, 0, 0.1)",
         border: "1px solid rgba(0, 0, 0, 0.1)",
+
+        //onHover
+        "&:hover": {
+          boxShadow: "0 0 5px 1px rgba(4, 4, 3, 0.3)",
+        },
       }}
     >
         {/* Title */}
@@ -69,7 +74,6 @@ const TestimonialCard = ({ title, description, image, name, position }) => {
               color="text.secondary"
               sx={{
                 fontSize: "0.9rem",
-                paddingTop: "0.6rem",
               }}
             >
               {position}

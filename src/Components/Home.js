@@ -1,4 +1,4 @@
-import { Button, Container, Divider, Grid, Typography } from "@mui/material";
+import { Box, Button, Container, Divider, Grid, Typography } from "@mui/material";
 import React from "react";
 import FeatureCard from "./FeatureCard";
 import TestimonialCard from "./TestimonialCard";
@@ -6,6 +6,8 @@ import {featureData } from "../data";
 import {Testimonials} from "../data";
 import { Link } from "react-router-dom";
 import { useActiveLink } from './ActiveLinkContext';
+import { Image } from "@mui/icons-material";
+import person from "../assets/person.webp";
 
 const Home = () => {
   const { setActiveLink } = useActiveLink();
@@ -22,14 +24,16 @@ const Home = () => {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            paddingY: "8rem",
+            paddingTop: "8rem",
+            position: "relative",
+            paddingBottom: "10rem",
           }}
         >
           <Typography
             sx={{
               fontFamily: "sans-serif",
               fontWeight: "bold",
-              fontSize:'3.5rem',
+              fontSize:{xs:'3.5rem',md:'4.5rem'},
             }}
           >
             One Step Solution For
@@ -38,7 +42,7 @@ const Home = () => {
             sx={{
               fontFamily: "sans-serif",
               fontWeight: "bold",
-              fontSize: "3.5rem",
+              fontSize: {xs:'3.5rem',md:'4.5rem'},
             }}
           >
             Your Queries.
@@ -67,6 +71,18 @@ const Home = () => {
               Get Started
             </Button>
           </Link>
+        
+          <Box sx={{
+            position:'absolute',
+            bottom:'0',
+            left:'0',
+            visibility:{xs:'hidden',md:'visible'}
+          }}>
+            <img
+              src={person}
+              alt="person"
+            />
+          </Box>
         </Grid>
 
         {/* SECOND - FEATURE COMPONENT (LOGO , TITLE , DESCRIPTION) */}
