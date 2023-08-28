@@ -47,6 +47,7 @@ const TicketDetails = () => {
     if (newAgent) {
       setAgentEmail(newAgent.email); // Set the email of the selected agent
     }
+    console.log('agent email',newAgent.email);
   };
 
   const handleAssignAgent = () => {
@@ -105,6 +106,7 @@ const TicketDetails = () => {
         if (response.status === 200) {
           const fetchedTicket = response.data;
           setTicket(fetchedTicket);
+          console.log('fetched ticket',fetchedTicket);
           setSelectedStatus(fetchedTicket.status); // Set the initial status
         } else {
           console.log("Problem with fetching ticket details");
@@ -236,7 +238,7 @@ const TicketDetails = () => {
 
           {ticket?.agent ? (
             <Typography variant="h6" gutterBottom component="div">
-              <span style={{ color: "gray" }}>Agent:</span> {ticket.agent}
+              <span style={{ color: "gray" }}>Agent:</span> {ticket.agentemail}
               {userId === ticket.agent && <span> (you)</span>}
             </Typography>
           ) : (

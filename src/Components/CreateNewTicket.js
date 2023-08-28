@@ -5,7 +5,16 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const categories = ['Software', 'Hardware', 'HR'];
+const categories = ["Technical Support",
+    "Software Development",
+    "Infrastructure and Operations",
+    "Security and Compliance",
+    "User Account Management",
+    "Training and Documentation",
+    "Project Management",
+    "Quality Assurance",
+    "Procurement and Inventory",
+    "Communication and Collaboration"];
 
 const CreateNewTicket = () => {
     const userId = localStorage.getItem('userId');
@@ -68,7 +77,6 @@ const CreateNewTicket = () => {
 
             // Clear form fields after successful submission
             setTitle('');
-
             setCategory('');
             setDescription('');
 

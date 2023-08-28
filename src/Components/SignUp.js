@@ -75,7 +75,7 @@ function Signup() {
 
   const handleFirstNameChange = (e) => {
     setFirstName(e.target.value);
-
+    
     if (e.target.value !== '') {
       setFirstNameError('');
     }
@@ -101,7 +101,7 @@ function Signup() {
 
   const handleSingUp = async (event) => {
     event.preventDefault();
-    if (email && pass && repass && firstName) {
+    if (email && pass && repass && firstName && emailError==='' && passwordError==='') {
       try {
         const formData = new URLSearchParams();
         formData.append('role', role);
@@ -126,7 +126,8 @@ function Signup() {
             });
 
             setTimeout(() => {
-              window.location.href = '/';
+              setActiveLink('/login');
+              navigate('/login');
             }, 3000);
           } else {
             //toast message for warn
