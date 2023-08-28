@@ -1,16 +1,19 @@
 import React from 'react';
-import { Card, CardContent, Typography } from '@mui/material';
+import { Card, Typography } from '@mui/material';
 
 const FeatureCard = ({ logo, title, description }) => {
   return (
     <Card sx={{
         margin: '0.3rem',
-        height: '320px',
+        height: '250px',
         borderRadius: '1rem',
         boxShadow: '0px 6 px 10px rgba(0, 0, 0, 0.1)',
         border: '1px solid rgba(0, 0, 0, 0.2)',
         padding:'1rem',
-        // backgroundColor:'red',
+        //onHover
+        "&:hover": {
+          boxShadow: "0 0 5px 1px rgba(4, 4, 3, 0.3)",
+        },
       }}>
       {/* You can place your logo here */}
         {/* LOGO */}
