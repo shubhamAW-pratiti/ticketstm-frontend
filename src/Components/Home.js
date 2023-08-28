@@ -1,11 +1,18 @@
-import { Box, Button, Container, Divider, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  Grid,
+  Typography,
+} from "@mui/material";
 import React from "react";
 import FeatureCard from "./FeatureCard";
 import TestimonialCard from "./TestimonialCard";
-import {featureData } from "../data";
-import {Testimonials} from "../data";
+import { featureData } from "../data";
+import { Testimonials } from "../data";
 import { Link } from "react-router-dom";
-import { useActiveLink } from './ActiveLinkContext';
+import { useActiveLink } from "./ActiveLinkContext";
 import { Image } from "@mui/icons-material";
 import person from "../assets/person.webp";
 
@@ -24,7 +31,7 @@ const Home = () => {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            paddingTop: "8rem",
+            paddingTop: { xs: "3.5rem", md: "8rem" },
             position: "relative",
             paddingBottom: "10rem",
           }}
@@ -33,7 +40,7 @@ const Home = () => {
             sx={{
               fontFamily: "sans-serif",
               fontWeight: "bold",
-              fontSize:{xs:'3.5rem',md:'4.5rem'},
+              fontSize: { xs: "3.5rem", md: "4.5rem" },
             }}
           >
             One Step Solution For
@@ -42,7 +49,7 @@ const Home = () => {
             sx={{
               fontFamily: "sans-serif",
               fontWeight: "bold",
-              fontSize: {xs:'3.5rem',md:'4.5rem'},
+              fontSize: { xs: "3.5rem", md: "4.5rem" },
             }}
           >
             Your Queries.
@@ -50,14 +57,15 @@ const Home = () => {
           <Typography
             sx={{
               margin: "10px",
-              fontSize:'1.5rem',
-              color:'gray'
+              fontSize: "1.5rem",
+              color: "gray",
             }}
           >
             We are here to help you with your queries.
           </Typography>
-          <Link to="/create-new-ticket"
-            onClick={() => setActiveLink('/create-new-ticket')}
+          <Link
+            to="/create-new-ticket"
+            onClick={() => setActiveLink("/create-new-ticket")}
           >
             <Button
               variant="contained"
@@ -66,22 +74,20 @@ const Home = () => {
                 paddingX: "30px",
                 paddingY: "10px",
               }}
-              
             >
               Get Started
             </Button>
           </Link>
-        
-          <Box sx={{
-            position:'absolute',
-            bottom:'0',
-            left:'0',
-            visibility:{xs:'hidden',md:'visible'}
-          }}>
-            <img
-              src={person}
-              alt="person"
-            />
+
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: "0",
+              left: "0",
+              visibility: { xs: "hidden", md: "visible" },
+            }}
+          >
+            <img src={person} alt="person" />
           </Box>
         </Grid>
 
@@ -90,8 +96,8 @@ const Home = () => {
           container
           sx={{
             marginY: "4rem",
-            paddingY:'1.2rem',
-            paddingX:'0.3rem',
+            paddingY: "1.2rem",
+            paddingX: "0.3rem",
             background: "linear-gradient(to bottom, #f0f2f5, #d9e2ec)", // Gradient background color
             borderRadius: "0.5rem",
           }}
@@ -112,11 +118,13 @@ const Home = () => {
             >
               Features of our Website..
             </Typography>
-            <Typography sx={{
-              fontWeight:'bold',  
-              fontSize:'2rem',
-            }}>
-            A delightful Experience 
+            <Typography
+              sx={{
+                fontWeight: "bold",
+                fontSize: "2rem",
+              }}
+            >
+              A delightful Experience
             </Typography>
             <Typography
               sx={{
@@ -203,7 +211,7 @@ const Home = () => {
                 </Grid>
               ))} */}
 
-          {Testimonials.map((Testimonial, index) => (
+            {Testimonials.map((Testimonial, index) => (
               <Grid item xs={12} sm={6} md={3} key={index}>
                 <TestimonialCard
                   title={Testimonial.title}
@@ -211,7 +219,6 @@ const Home = () => {
                   image={Testimonial.UserProfile}
                   name={Testimonial.UserName}
                   position={Testimonial.UserPosition}
-
                 />
               </Grid>
             ))}
