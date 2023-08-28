@@ -12,11 +12,8 @@ const Login_poc = ({ onLogin }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  //const [openPopup, setOpenPopup] = useState(false);
 
-  //ashish
   const [emailError, setEmailError] = useState('');
-  // const [passwordError, setPasswordError] = useState('');
   const [btnDisabled, setBtnDisabled] = useState(true);
 
   const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -134,8 +131,6 @@ const Login_poc = ({ onLogin }) => {
           required
           value={password}
           onChange={handlePasswordChange}
-        // error={passwordError !== ''}
-        // helperText={passwordError}
         />
 
         {/* Login & Reset Buttons */}
@@ -171,33 +166,6 @@ const Login_poc = ({ onLogin }) => {
         </Grid>
 
         {/* signup & forgot password */}
-        {/* <Stack spacing={0} direction="row" marginTop={2}>
-          <ul> <Link to="/SignUp">Signup</Link> </ul>
-          <ul>|</ul>
-          <ul><Link to="/ForgotPass">Forgot Password</Link></ul>
-        </Stack>
-         */}
-        {/* <div
-          style={{
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'flex-end',
-            margin: 'auto',
-            marginTop: '10px',
-          }}
-        >
-          <Link to="/SignUp" style={{ textDecoration: 'none', marginRight: '10px' }}>
-            <Button variant="text" size="small" fullWidth sx={{ textTransform: 'capitalize', borderRight: '1px solid #ccc', paddingRight: '12px' }}>
-              Sign Up
-            </Button>
-          </Link>
-
-          <Link to="ForgotPass" style={{ width: '40%', marginRight: '10%', marginLeft: '-5%' }}>
-            <Button variant="text" size="small" fullWidth sx={{ textTransform: 'capitalize', }}>
-              Forgot Password
-            </Button>
-          </Link>
-        </div> */}
         <div
           style={{
             width: '100%',
@@ -241,19 +209,6 @@ const Login_poc = ({ onLogin }) => {
         >
           Continue As a Guest
         </Button>
-
-        {/* Welcome Popup */}
-        {/* <Dialog open={openPopup} onClose={handleClosePopup}>
-          <DialogTitle>Welcome</DialogTitle>
-          <DialogContent>
-            <Typography variant='body1'>Welcome to our website!</Typography>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClosePopup} color='primary'>
-              Close
-            </Button>
-          </DialogActions>
-        </Dialog> */}
       </Paper>
       <ToastContainer />
     </Container>
