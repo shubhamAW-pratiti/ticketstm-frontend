@@ -36,7 +36,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         if (useEffectCall) {
-          axios.get('http://localhost:3002/tickets', {
+          axios.get(`${BASE_URL}/tickets`, {
             params: {
               userId: localStorage.getItem('userId'),
               role: localStorage.getItem('userRole'),
@@ -141,8 +141,7 @@ const Dashboard = () => {
             {
                 field: 'checkbox',
                 headerName: 'Select',
-                flex: 1,
-                width: 100,
+                width: 70,
                 headerClassName: 'custom-header-cell',
 
                 renderCell: (params) => {
@@ -156,36 +155,36 @@ const Dashboard = () => {
                     );
                 },
             },
-            { field: 'index', headerName: 'Sr.No.', flex: 1, width: 70, headerClassName: 'custom-header-cell', },
-            { field: 'ticketId', headerName: 'Ticket ID', flex: 2, width: 200, headerClassName: 'custom-header-cell', },
-            { field: 'title', headerName: 'Title', width: 200, flex: 2, headerClassName: 'custom-header-cell', },
-            { field: 'useremail', headerName: 'UserEmail', width: 200, flex: 2, headerClassName: 'custom-header-cell', },
+            { field: 'index', headerName: 'Sr.No.', flex: 0.7, headerClassName: 'custom-header-cell', },
+            { field: 'ticketId', headerName: 'Ticket ID', flex: 1.3, headerClassName: 'custom-header-cell', },
+            { field: 'title', headerName: 'Title', flex: 2, headerClassName: 'custom-header-cell', },
+            { field: 'category', headerName: 'Category', flex: 2, headerClassName: 'custom-header-cell', },
+            { field: 'useremail', headerName: 'Reporter Email', flex: 2, headerClassName: 'custom-header-cell', },
 
-            // { field: 'user', headerName: 'ReporterId', flex: 3, width: 200, headerClassName: 'custom-header-cell', },
-            { field: 'agent', headerName: 'AssingedAgentId', width: 270, flex: 3, headerClassName: 'custom-header-cell', },
-            //{ field: 'username', headerName: 'Reporter', flex: 3, width: 200, headerClassName: 'custom-header-cell' },
-            //{ field: 'agentname', headerName: 'Assigned Agent', width: 270, flex: 3, headerClassName: 'custom-header-cell' },
+            // { field: 'user', headerName: 'ReporterId', flex: 3, headerClassName: 'custom-header-cell', },
+            //{ field: 'agent', headerName: 'AssingedAgentId', flex: 3, headerClassName: 'custom-header-cell', },
+            //{ field: 'username', headerName: 'Reporter', flex: 3, headerClassName: 'custom-header-cell' },
+            { field: 'agentemail', headerName: 'Assigned Agent', flex: 2, headerClassName: 'custom-header-cell' },
             {
                 field: 'date',
-                headerName: 'Time',
+                headerName: 'Created On',
                 type: 'dateTime',
                 flex: 2,
-                width: 250,
                 valueFormatter: (params) => {
                     const date = new Date(params.value);
                     return date.toLocaleString();
                 },
                 headerClassName: 'custom-header-cell',
             },
-            { field: 'status', headerName: 'Status', width: 150, flex: 1, headerClassName: 'custom-header-cell', checkboxSelection: true, },
+            { field: 'status', headerName: 'Status',  flex: 1, headerClassName: 'custom-header-cell', checkboxSelection: true, },
         ];
     } else if (role === 'agent') {
         columns = [
             {
                 field: 'checkbox',
                 headerName: 'Select',
-                flex: 1,
-                width: 100,
+              
+                width: 70,
                 headerClassName: 'custom-header-cell',
 
                 renderCell: (params) => {
@@ -199,13 +198,15 @@ const Dashboard = () => {
                     );
                 },
             },
-            { field: 'index', headerName: 'Sr.No.', width: 100, flex: 1, headerClassName: 'custom-header-cell', },
-            { field: 'title', headerName: 'Title', flex: 2, width: 200, headerClassName: 'custom-header-cell', },
-            { field: 'useremail', headerName: 'UserEmail', flex: 2, width: 200, headerClassName: 'custom-header-cell', },
-            //{ field: 'username', headerName: 'Reporter Name', flex: 3, width: 200, headerClassName: 'custom-header-cell', },
+            { field: 'index', headerName: 'Sr.No.',  flex: 0.7, headerClassName: 'custom-header-cell', },
+            { field: 'ticketId', headerName: 'Ticket ID', flex: 1.3, headerClassName: 'custom-header-cell', },
+            { field: 'title', headerName: 'Title', flex: 2, headerClassName: 'custom-header-cell', },
+            { field: 'category', headerName: 'Category', flex: 2, headerClassName: 'custom-header-cell', },
+            { field: 'useremail', headerName: 'Reporter Email', flex: 2, headerClassName: 'custom-header-cell', },
+            //{ field: 'username', headerName: 'Reporter Name', flex: 3, headerClassName: 'custom-header-cell', },
             {
                 field: 'date',
-                headerName: 'Time',
+                headerName: 'Created On',
                 type: 'dateTime',
                 flex: 3,
                 width: 300,
@@ -215,7 +216,7 @@ const Dashboard = () => {
                 },
                 headerClassName: 'custom-header-cell',
             },
-            { field: 'status', headerName: 'Status', flex: 1, width: 150, headerClassName: 'custom-header-cell', checkboxSelection: true, },
+            { field: 'status', headerName: 'Status', flex: 1,  headerClassName: 'custom-header-cell', checkboxSelection: true, },
         ];
     }
 
