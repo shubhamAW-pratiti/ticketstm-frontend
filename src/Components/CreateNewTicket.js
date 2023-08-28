@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, TextField, Button, Select, MenuItem, FormControl, InputLabel, Box, Typography, Container, Paper } from '@mui/material';
+import { Grid, TextField, Button, Select, MenuItem, FormControl, InputLabel, Typography, Container, Paper } from '@mui/material';
 import axios from 'axios';
 // toast
 import { toast, ToastContainer } from 'react-toastify';
@@ -134,8 +134,8 @@ const CreateNewTicket = () => {
                                     ))}
                                 </Select>
                             </FormControl>
-
                         </Grid>
+
                         <Grid item xs={12}>
                             <TextField
                                 label={
@@ -150,11 +150,13 @@ const CreateNewTicket = () => {
                                 onChange={(event) => setDescription(event.target.value)}
                             />
                         </Grid>
+
                         <Grid item xs={12}>
                             <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>
                                 Submit
                             </Button>
                         </Grid>
+                        
                     </Grid>
                 </form>
                 <ToastContainer />
