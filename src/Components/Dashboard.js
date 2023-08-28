@@ -8,6 +8,9 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css'
 
+
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
 const Dashboard = () => {
     const [useEffectCall, setUseEffectCall] = useState(true);
     const [loading, setLoading] = useState(true);

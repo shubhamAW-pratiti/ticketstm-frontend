@@ -20,14 +20,15 @@ import {
 import { Link } from 'react-router-dom';
 
 const Users = () => {
-  const BASE_URL = process.env.REACT_APP_BASE_URL;
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchValue, setSearchValue] = useState('');
   const [filterRole, setFilterRole] = useState('all');
-
+  
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
+  
   const theme = useTheme();
   const isMdScreen = useMediaQuery(theme.breakpoints.up('md'));
 

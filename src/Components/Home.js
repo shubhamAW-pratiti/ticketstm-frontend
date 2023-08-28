@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Container,
-  Divider,
   Grid,
   Typography,
 } from "@mui/material";
@@ -13,7 +12,6 @@ import { featureData } from "../data";
 import { Testimonials } from "../data";
 import { Link } from "react-router-dom";
 import { useActiveLink } from "./ActiveLinkContext";
-import { Image } from "@mui/icons-material";
 import person from "../assets/person.webp";
 
 const Home = () => {

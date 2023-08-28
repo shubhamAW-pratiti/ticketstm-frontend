@@ -1,5 +1,3 @@
-const Profile = require('./assets/profile.png');
-
 
 export const featureData = [
   {
