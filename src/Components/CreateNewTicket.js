@@ -14,7 +14,10 @@ const categories = ["Technical Support",
     "Project Management",
     "Quality Assurance",
     "Procurement and Inventory",
-    "Communication and Collaboration"];
+    "Communication and Collaboration",
+    "Agent Management",
+    "Bug Report"
+];
 
 const CreateNewTicket = () => {
     const userId = localStorage.getItem('userId');
