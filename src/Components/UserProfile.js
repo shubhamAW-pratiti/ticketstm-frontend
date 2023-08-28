@@ -301,7 +301,7 @@ const UserProfile = () => {
                                                 </div>
                                             )}
                                         </TableCell>
-                                        <TableCell>{ticket.agent}</TableCell>
+                                        <TableCell>{ticket.agentemail}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

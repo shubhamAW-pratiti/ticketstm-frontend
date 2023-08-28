@@ -36,6 +36,7 @@ const TicketDetails = () => {
   const [selectedAgent, setSelectedAgent] = useState("");
   const [refresh, setRefresh] = useState(false);
   const [agentemail, setAgentEmail] = useState(null);
+  const [useremail, setUserEmail] = useState(null);
 
   const userId = localStorage.getItem("userId");
 
@@ -146,6 +147,26 @@ const TicketDetails = () => {
       });
   }, [ticketId, statusUpdate, selectedAgent]);
 
+
+  //get user from userId
+  useEffect(() => {
+    axios
+      .get(`${BASE_URL}/user/${userId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          const fetchedUser = response.data.data;
+          console.log('fetched user',fetchedUser);
+          setUserEmail(fetchedUser.email);
+          localStorage.setItem("userEmail", fetchedUser.email);
+        } else {
+          console.log("Problem with fetching user details");
+        }
+      })
+      .catch((error) => {
+        console.log("Error fetching user details", error);
+      });
+  },[ticketId])
+
   // Handle status change
   const handleStatusChange = (event) => {
     const newStatus = event.target.value;
@@ -222,7 +243,7 @@ const TicketDetails = () => {
 
           {localStorage.getItem("userRole") !== "basic" && (
             <Typography variant="h6" gutterBottom component="div">
-              <span style={{ color: "gray" }}>User Email:</span>{" "}
+              <span style={{ color: "gray" }}>Created By:</span>{" "}
               {ticket?.useremail}
             </Typography>
           )}
@@ -234,6 +255,11 @@ const TicketDetails = () => {
 
           <Typography variant="h6" gutterBottom component="div">
             <span style={{ color: "gray" }}>Status:</span> {ticket?.status}
+          </Typography>
+
+          <Typography variant="h6" gutterBottom component="div">
+            <span style={{ color: "gray" }}>Category:</span>{" "}
+            {ticket?.category}
           </Typography>
 
           {ticket?.agent ? (
@@ -342,7 +368,7 @@ const TicketDetails = () => {
                 >
                   <ListItemText
                     primary={comment.comment}
-                    secondary={`By ${comment.firstname} on ${new Date(
+                    secondary={`By ${localStorage.getItem('userEmail')} on ${new Date(
                       comment.date
                     ).toLocaleString()}`}
                   />
