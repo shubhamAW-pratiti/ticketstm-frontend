@@ -8,8 +8,10 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css'
 
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
 const fetchTicketsData = (userId, role, setTickets, setLoading) => {
-    axios.get('http://localhost:3002/tickets', {
+    axios.get(`${BASE_URL}/tickets`, {
         params: {
             userId: userId,
             role: role,

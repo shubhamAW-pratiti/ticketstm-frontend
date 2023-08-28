@@ -14,7 +14,7 @@ const CreateNewTicket = () => {
     const [useremail, setUserEmail] = useState('');
     const [category, setCategory] = useState('');
     const [description, setDescription] = useState('');
-
+    
     const BASE_URL = process.env.REACT_APP_BASE_URL;
 
     useEffect(() => {
