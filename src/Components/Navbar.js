@@ -143,7 +143,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
       return; 
     }
 
-  }, [useEffectCall]);
+  }, [useEffectCall, userId]);
 
 
 

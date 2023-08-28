@@ -8,31 +8,11 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css'
 
+
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const fetchTicketsData = (userId, role, setTickets, setLoading) => {
-    axios.get(`${BASE_URL}/tickets`, {
-        params: {
-            userId: userId,
-            role: role,
-        },
-    })
-        .then((response) => {
-            if (response.status === 200) {
-                const allTickets = response.data.map(ticket => ({ ...ticket, id: ticket._id }));
-                setTickets(allTickets);
-                setLoading(false);
-            } else {
-                console.log('Problem with fetching tickets');
-                setLoading(false);
-            }
-        })
-        .catch((error) => {
-            console.log('Error fetching tickets', error);
-        });
-};
-
 const Dashboard = () => {
+    const [useEffectCall, setUseEffectCall] = useState(true);
     const [loading, setLoading] = useState(true);
 
     const [selectedRows, setSelectedRows] = useState([]);
@@ -54,15 +34,32 @@ const Dashboard = () => {
         closeStatusDialog();
     };
 
-
-
-
-
     useEffect(() => {
-        // Fetch all tickets 
-        fetchTicketsData(localStorage.getItem('userId'), role, setTickets, setLoading);
-
-    }, [role]);
+        if (useEffectCall) {
+          axios.get('http://localhost:3002/tickets', {
+            params: {
+              userId: localStorage.getItem('userId'),
+              role: localStorage.getItem('userRole'),
+            },
+          })
+          .then((response) => {
+            if (response.status === 200) {
+              const allTickets = response.data.map(ticket => ({ ...ticket, id: ticket._id }));
+              setTickets(allTickets);
+              setLoading(false);
+     
+            } else {
+              console.log('Problem with fetching tickets');
+              setLoading(false);
+            }
+          })
+          .catch((error) => {
+            console.log('Error fetching tickets', error);
+          });
+          setUseEffectCall(false);
+        }
+      }, [useEffectCall]);
+      
 
 
     const handleStatusChange = async (newStatus) => {
@@ -73,8 +70,7 @@ const Dashboard = () => {
                     newStatus: newStatus,
                 },
             });
-            fetchTicketsData(localStorage.getItem('userId'), role, setTickets, setLoading);
-
+            setUseEffectCall(true);
             console.log(response.data.message);
             clearSelectedRows();
 
@@ -163,26 +159,12 @@ const Dashboard = () => {
             { field: 'index', headerName: 'Sr.No.', flex: 1, width: 70, headerClassName: 'custom-header-cell', },
             { field: 'ticketId', headerName: 'Ticket ID', flex: 2, width: 200, headerClassName: 'custom-header-cell', },
             { field: 'title', headerName: 'Title', width: 200, flex: 2, headerClassName: 'custom-header-cell', },
-            // { field: 'useremail', headerName: 'UserEmail', width: 200, flex: 2, headerClassName: 'custom-header-cell', },
-            // {
-            //     field: 'user',
-            //     headerName: 'ReporterId',
-            //     flex: 3,
-            //     width: 200,
-            //     headerClassName: 'custom-header-cell',
-            //     renderCell: (params) => {
-            //         return (
-            //             <div
-            //                 onClick={() => handleReporterIdClick(params.value)} 
-            //                 style={{ cursor: 'pointer' }}
-            //             >
-            //                 {params.value}
-            //             </div>
-            //         );
-            //     },
-            // },
-            { field: 'user', headerName: 'ReporterId', flex: 3, width: 200, headerClassName: 'custom-header-cell', },
+            { field: 'useremail', headerName: 'UserEmail', width: 200, flex: 2, headerClassName: 'custom-header-cell', },
+
+            // { field: 'user', headerName: 'ReporterId', flex: 3, width: 200, headerClassName: 'custom-header-cell', },
             { field: 'agent', headerName: 'AssingedAgentId', width: 270, flex: 3, headerClassName: 'custom-header-cell', },
+            //{ field: 'username', headerName: 'Reporter', flex: 3, width: 200, headerClassName: 'custom-header-cell' },
+            //{ field: 'agentname', headerName: 'Assigned Agent', width: 270, flex: 3, headerClassName: 'custom-header-cell' },
             {
                 field: 'date',
                 headerName: 'Time',
@@ -219,8 +201,8 @@ const Dashboard = () => {
             },
             { field: 'index', headerName: 'Sr.No.', width: 100, flex: 1, headerClassName: 'custom-header-cell', },
             { field: 'title', headerName: 'Title', flex: 2, width: 200, headerClassName: 'custom-header-cell', },
-            // { field: 'useremail', headerName: 'UserEmail', flex: 2, width: 200, headerClassName: 'custom-header-cell', },
-            { field: 'user', headerName: 'ReporterId', flex: 3, width: 200, headerClassName: 'custom-header-cell', },
+            { field: 'useremail', headerName: 'UserEmail', flex: 2, width: 200, headerClassName: 'custom-header-cell', },
+            //{ field: 'username', headerName: 'Reporter Name', flex: 3, width: 200, headerClassName: 'custom-header-cell', },
             {
                 field: 'date',
                 headerName: 'Time',
@@ -236,45 +218,6 @@ const Dashboard = () => {
             { field: 'status', headerName: 'Status', flex: 1, width: 150, headerClassName: 'custom-header-cell', checkboxSelection: true, },
         ];
     }
-    //  else {
-    //     columns = [
-    //         {
-    //             field: 'checkbox',
-    //             headerName: 'Select',
-    //             flex: 1,
-    //             width: 100,
-    //             headerClassName: 'custom-header-cell',
-
-    //             renderCell: (params) => {
-    //                 return (
-    //                     <Checkbox
-    //                         checked={selectedRows.includes(params.id)}
-    //                         onChange={(event) => handleRowCheckboxChange(event, params.id)}
-    //                         onClick={(event) => event.stopPropagation()}
-
-    //                     />
-    //                 );
-    //             },
-    //         },
-    //         { field: 'index', headerName: 'Sr.No.', flex: 1, width: 100, headerClassName: 'custom-header-cell', },
-    //         { field: 'title', headerName: 'Title', flex: 2, width: 200, headerClassName: 'custom-header-cell', },
-    //         { field: 'description', headerName: 'Description', flex: 2, width: 200, headerClassName: 'custom-header-cell', },
-    //         {
-    //             field: 'date',
-    //             headerName: 'Time',
-    //             type: 'dateTime',
-    //             flex: 3,
-    //             width: 300,
-    //             valueFormatter: (params) => {
-    //                 const date = new Date(params.value);
-    //                 return date.toLocaleString();
-    //             },
-    //             headerClassName: 'custom-header-cell',
-    //         },
-    //         { field: 'status', headerName: 'Status', flex: 1, width: 150, headerClassName: 'custom-header-cell', checkboxSelection: true, },
-    //     ];
-    // }
-
 
     //cards height
     const cardHeight = '10em';
@@ -312,17 +255,17 @@ const Dashboard = () => {
                                 onClick={() => setSelectedCategory('all')}
                             >
                                 <CardContent>
-                                    
-                                        {role === 'admin' ? (
-                                            <Typography gutterBottom variant="h3" component="div" sx={{ fontSize: '2rem', textAlign: 'center', marginTop: '0px' }}>
+
+                                    {role === 'admin' ? (
+                                        <Typography gutterBottom variant="h3" component="div" sx={{ fontSize: '2rem', textAlign: 'center', marginTop: '0px' }}>
                                             Total Tickets
-                                            </Typography>
-                                        ) : (
-                                            <Typography gutterBottom variant="h3" component="div" sx={{ fontSize: '1.9rem', textAlign: 'center', marginTop: '0px' }}>
+                                        </Typography>
+                                    ) : (
+                                        <Typography gutterBottom variant="h3" component="div" sx={{ fontSize: '1.9rem', textAlign: 'center', marginTop: '0px' }}>
                                             Assigned Tickets
-                                            </Typography>
-                                        )}
-                                    
+                                        </Typography>
+                                    )}
+
                                     <Typography variant="h2" color="text.secondary" sx={{ fontSize: '3rem', textAlign: 'center' }}>
                                         {allTickets.length}
                                     </Typography>
