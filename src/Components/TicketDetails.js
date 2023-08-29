@@ -208,7 +208,13 @@ const TicketDetails = () => {
   };
 
   return (
-    <Grid container gap={5}>
+    <Grid container gap={5} sx={{
+      padding:{
+        xs:'0',
+        sm:'1rem',
+        md:'1.5rem',
+      }
+    }}>
       {/* LEFT PANEL -TICKET DETAILS */}
       <Grid item xs={12} md={6}>
         <Paper

@@ -16,7 +16,7 @@ const UserDashboard = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState("pending");
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [sortingOption, setSortingOption] = useState("newest");
   const userId = localStorage.getItem("userId");
 
