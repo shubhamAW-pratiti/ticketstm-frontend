@@ -1,20 +1,15 @@
 import { Button, Grid, Typography ,TextField } from '@mui/material'
 import React, { useEffect } from 'react'
 import { Navigate ,Link} from 'react-router-dom';
-import jwt_decode from 'jwt-decode'; //needed when you want to extract userId form accessToken(which is stored in local Storage)
 import { useState } from 'react';
 import axios from 'axios';
-
 import CreateTicketForm from './CreateTicketForm';
-
-
 
 const Profile = ({onLogout}) => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   const [user, setUser] = useState(null);
   const [isFormOpen , setIsFormOpen] = useState(false);
   const [userId , setUserId] = useState(null);
-  //array of tickets
   const [tickets , setTickets] = useState([]);
   const [searchTerm , setSearchTerm] = useState('');
 
@@ -34,8 +29,6 @@ const Profile = ({onLogout}) => {
       formData.append('description', description);
       formData.append('user', localStorage.getItem("userId"));
 
-      console.log(formData.toString());
-
       const response = await axios.post(`${BASE_URL}/newticket`, formData.toString(),{
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
@@ -47,14 +40,10 @@ const Profile = ({onLogout}) => {
       }
       else{
         alert('problem with ticket creationg');
-      }
-  
-      console.log(response.data); // Assuming your server sends back useful data upon successful creation
-  
+      }  
       setIsFormOpen(false);
     } catch (error) {
-      console.error('Error creating ticket:', error);
-      // Handle error, show a message to the user, etc.
+      console.error(error);
     }
   };
   
@@ -71,20 +60,15 @@ const Profile = ({onLogout}) => {
   .then((response) => {
     if (response.status === 200) {
       const tickets = response.data;
-      console.log('Tickets:', tickets);
       setTickets(tickets);
-      // Handle tickets data
-    } else {
-      console.log('Problem with fetching tickets');
     }
+    
   })
   .catch((error) => {
     console.error('Error fetching tickets:', error);
   });
   
   },[isFormOpen]);
-
-  //Ticket render when first time render
 
   useEffect(()=>{
     axios.get(`${BASE_URL}/allTicketsByUser`, {
@@ -99,13 +83,7 @@ const Profile = ({onLogout}) => {
   .then((response) => {
     if (response.status === 200) {
       const tickets = response.data;
-      console.log('Tickets:', tickets);
       setTickets(tickets);
-      // Handle tickets data
-      console.log(userId);
-      console.log('tickets in useeffect: ', tickets)
-    } else {
-      console.log('Problem with fetching tickets');
     }
   })
   .catch((error) => {
@@ -114,19 +92,15 @@ const Profile = ({onLogout}) => {
   
   },[]);
 
-
-
   const handleSignOUt=()=>{
     onLogout();
     <Navigate to='/' replace/>
   };
 
-  //handleSearch 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  //Fiter tickets by ticket name
   const filterTickets = tickets.filter(ticket => 
     ticket.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -184,10 +158,3 @@ const Profile = ({onLogout}) => {
 }
 
 export default Profile
-
-
-//Problem : everytime i have to fetch userId from localstorage and userid need to first fetch from localstorage when component render every time 
-//Solution : use useEffect to fetch userId from localstorage and store it in state and then use that state to fetch tickets
-//Problem : when i create new ticket then i have to fetch tickets again to show new ticket in list
-//Solution : use useEffect to fetch tickets again when new ticket is created
-

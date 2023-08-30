@@ -96,7 +96,7 @@ const Home = () => {
             marginY: "4rem",
             paddingY: "1.2rem",
             paddingX: "0.3rem",
-            background: "linear-gradient(to bottom, #f0f2f5, #d9e2ec)", // Gradient background color
+            background: "linear-gradient(to bottom, #f0f2f5, #d9e2ec)", 
             borderRadius: "0.5rem",
           }}
         >
@@ -137,8 +137,6 @@ const Home = () => {
           </Grid>
 
           {/* FEATURES - COMPONENT */}
-          {/* Feature component has a LOGO , Title & Description make a array of that and create a separate card component to rendered and it should be responsive design */}
-
           <Grid container>
             {featureData.map((feature, index) => (
               <Grid item xs={12} sm={6} md={3} key={index}>
@@ -152,7 +150,6 @@ const Home = () => {
           </Grid>
         </Grid>
 
-        {/* DIVIDER LINE */}
         <div
           style={{
             width: "100%",
@@ -162,7 +159,6 @@ const Home = () => {
           }}
         />
 
-        {/* THIRD - TESTIMONIALS */}
         <Grid container>
           <Grid item>
             <Typography
@@ -196,19 +192,6 @@ const Home = () => {
           </Grid>
 
           <Grid container>
-            {/* {
-              Testimonials.map((Testimonial,index)=>(
-                <Grid item xs={12} sm={6} md={3} key={index}>
-                  <TestimonialCard
-                    title={Testimonial.title}
-                    description={Testimonial.description}
-                    image={Testimonial.UserProfile}
-                    name={Testimonial.UserName}
-                    position={Testimonial.UserPosition}
-                  />
-                </Grid>
-              ))} */}
-
             {Testimonials.map((Testimonial, index) => (
               <Grid item xs={12} sm={6} md={3} key={index}>
                 <TestimonialCard

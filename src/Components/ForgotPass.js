@@ -2,7 +2,6 @@ import React ,{useState} from 'react'
 import { Button, Container, Paper, TextField, Typography } from '@mui/material'
 
 const ForgotPass = () => {
-
     const[email , setEmail]=useState('');
     const[showOTPfield, setShowOTPField]=useState(false);
     const[sendedOTP,setSendedOTP]=useState('');
@@ -18,7 +17,6 @@ const ForgotPass = () => {
 
     const handleEmailChange=(value)=>{
         setEmail(value);
-        
     }
 
     const handleOTPChange=(value)=>{
@@ -29,7 +27,6 @@ const ForgotPass = () => {
         const storedUser=JSON.parse(localStorage.getItem('user'));
 
         if(storedUser && email===storedUser.email){
-            //OTP set
            const generatedOTP= Math.floor(10000+Math.random()*900000);
            console.log("Generated OTP",generatedOTP);
            setSendedOTP(generatedOTP);
@@ -42,7 +39,6 @@ const ForgotPass = () => {
         
     }
 
-    //handle submit otp
     const handleSubmitOTP=()=>{
         if(otp==sendedOTP){
             alert("OTP validated successfully");
@@ -85,10 +81,6 @@ const ForgotPass = () => {
                     onChange={(e)=>handleOTPChange(e.target.value)}
                 />
                )} 
-            
-
-            {/* Send OTP */}
-
             {!submitOTPButton && (
                 <Button fullWidth variant='contained' onClick={hanldePasswordReset}>Send OTP</Button>
             )}
@@ -98,7 +90,6 @@ const ForgotPass = () => {
             )}
             
         </Paper>
-
     </Container>
   )
 }

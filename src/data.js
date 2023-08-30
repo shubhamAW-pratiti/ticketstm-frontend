@@ -22,8 +22,6 @@ export const featureData = [
   },
 ];
 
-
-
 export const Testimonials = [
   {
     UserProfile: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmFuZG9tJTIwcGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60', // Replace with actual image URL

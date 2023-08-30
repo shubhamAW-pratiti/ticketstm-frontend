@@ -6,13 +6,11 @@ import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { useActiveLink } from './ActiveLinkContext';
 
-
 const Login_poc = ({ onLogin }) => {
   const { setActiveLink } = useActiveLink();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const [emailError, setEmailError] = useState('');
   const [btnDisabled, setBtnDisabled] = useState(true);
 
@@ -74,18 +72,14 @@ const Login_poc = ({ onLogin }) => {
           navigate('/userdashboard');
         else
           navigate('/dashboard');
-
       } else {
         const data = response.data;
         toast.error(data.message, {
           position: toast.POSITION.TOP_CENTER
         });
-
       }
-
     } catch (error) {
       console.error('Error logging in:', error);
-
     }
   };
 

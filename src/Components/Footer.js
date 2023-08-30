@@ -1,6 +1,5 @@
 import React from 'react'
 
-//footer always at bottom
 const Footer = () => {
   return (
     <div

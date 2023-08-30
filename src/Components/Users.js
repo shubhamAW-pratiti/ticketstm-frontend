@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
   Table,
   TableBody,
@@ -16,21 +16,21 @@ import {
   MenuItem,
   useMediaQuery,
   useTheme,
-} from '@mui/material';
-import { Link } from 'react-router-dom';
+} from "@mui/material";
+import { Link } from "react-router-dom";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [searchValue, setSearchValue] = useState('');
-  const [filterRole, setFilterRole] = useState('all');
-  
+  const [searchValue, setSearchValue] = useState("");
+  const [filterRole, setFilterRole] = useState("all");
+
   const BASE_URL = process.env.REACT_APP_BASE_URL;
-  
+
   const theme = useTheme();
-  const isMdScreen = useMediaQuery(theme.breakpoints.up('md'));
+  const isMdScreen = useMediaQuery(theme.breakpoints.up("md"));
 
   useEffect(() => {
     axios
@@ -41,12 +41,10 @@ const Users = () => {
           setUsers(fetchedUsers);
           setLoading(false);
         } else {
-          console.log('Problem with fetching users');
           setLoading(false);
         }
       })
       .catch((error) => {
-        console.log('Error fetching users', error);
         setLoading(false);
       });
   }, []);
@@ -54,7 +52,7 @@ const Users = () => {
   const filteredUsers = users.filter(
     (user) =>
       user.email.toLowerCase().includes(searchValue.toLowerCase()) &&
-      (filterRole === 'all' || user.role === filterRole)
+      (filterRole === "all" || user.role === filterRole)
   );
 
   const handleChangePage = (_, newPage) => {
@@ -71,7 +69,7 @@ const Users = () => {
   };
 
   return (
-    <div style={{ padding: isMdScreen ? '20px' : '0' }}>
+    <div style={{ padding: isMdScreen ? "20px" : "0" }}>
       <h2>Users</h2>
 
       {/* Search Bar */}
@@ -110,32 +108,29 @@ const Users = () => {
       {/* Table */}
       <TableContainer component={Paper}>
         <Table>
-          <TableHead >
-            <TableRow  >
-            <TableCell
-                  style={{
-                    fontSize: '1.2rem',
-                    backgroundColor:'#f5f5f5'
-                  }}
-    
+          <TableHead>
+            <TableRow>
+              <TableCell
+                style={{
+                  fontSize: "1.2rem",
+                  backgroundColor: "#f5f5f5",
+                }}
               >
                 User Name
               </TableCell>
               <TableCell
-                  style={{
-                    fontSize: '1.2rem',
-                    backgroundColor:'#f5f5f5'
-                  }}
-    
+                style={{
+                  fontSize: "1.2rem",
+                  backgroundColor: "#f5f5f5",
+                }}
               >
                 Email
               </TableCell>
               <TableCell
-                  style={{
-                    fontSize: '1.2rem',
-                    backgroundColor:'#f5f5f5'
-                  }}
-    
+                style={{
+                  fontSize: "1.2rem",
+                  backgroundColor: "#f5f5f5",
+                }}
               >
                 Role
               </TableCell>
@@ -155,27 +150,29 @@ const Users = () => {
                     component={Link}
                     to={`/user/${user._id}`}
                     style={{
-                      textDecoration: 'none',
-                      color: 'black',
-                      transition: 'background-color 0.2s',
-                     
+                      textDecoration: "none",
+                      color: "black",
+                      transition: "background-color 0.2s",
                     }}
                   >
-                    <TableCell>{user.firstname+' '+user.lastname}</TableCell>
+                    <TableCell>
+                      {user.firstname + " " + user.lastname}
+                    </TableCell>
                     <TableCell
                       style={{
-                        // hover 
-                        '&:hover': {
-                          backgroundColor: '#f5f5f5',
-                        }
+                        // hover
+                        "&:hover": {
+                          backgroundColor: "#f5f5f5",
+                        },
                       }}
-                    >{user.email}</TableCell>
+                    >
+                      {user.email}
+                    </TableCell>
                     <TableCell>{user.role}</TableCell>
                   </TableRow>
                 ))
             )}
           </TableBody>
-
         </Table>
       </TableContainer>
       <TablePagination

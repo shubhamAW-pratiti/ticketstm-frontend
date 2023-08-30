@@ -30,9 +30,7 @@ const CreateNewTicket = () => {
     const BASE_URL = process.env.REACT_APP_BASE_URL;
 
     useEffect(() => {
-        // Fetch user details
         if (userId) {
-            // Fetch user details
             axios
                 .get(`${BASE_URL}/user/${userId}`)
                 .then((response) => {
@@ -42,22 +40,17 @@ const CreateNewTicket = () => {
                         if (fetchedEmail) {
                             setUserEmail(fetchedEmail);
                         }
-                    } else {
-                        console.log('Problem with fetching user details');
-                    }
+                    } 
                 })
                 .catch((error) => {
-                    console.log('Error fetching user details', error);
+                    throw error;
                 });
         }
 
     }, [userId]);
 
-
-
-    // Function to handle form submission
     const handleSubmit = async (event) => {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault(); 
 
         const formData = {
             title,
@@ -66,7 +59,6 @@ const CreateNewTicket = () => {
             useremail,
         };
 
-        // Add the user field only if userId is not empty
         if (userId) {
             formData.user = userId;
         }
@@ -76,19 +68,15 @@ const CreateNewTicket = () => {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
             });
-            console.log('Data saved:', response.data);
-
-            // Clear form fields after successful submission
             setTitle('');
             setCategory('');
             setDescription('');
 
-            // Show success alert
             toast.success('Ticket Created successfully', {
                 position: toast.POSITION.TOP_CENTER,
             });
         } catch (error) {
-            console.error('Error saving data:', error);
+            throw error;
         }
     };
 

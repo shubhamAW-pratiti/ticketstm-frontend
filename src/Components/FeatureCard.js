@@ -10,13 +10,10 @@ const FeatureCard = ({ logo, title, description }) => {
         boxShadow: '0px 6 px 10px rgba(0, 0, 0, 0.1)',
         border: '1px solid rgba(0, 0, 0, 0.2)',
         padding:'1rem',
-        //onHover
         "&:hover": {
           boxShadow: "0 0 5px 1px rgba(4, 4, 3, 0.3)",
         },
       }}>
-      {/* You can place your logo here */}
-        {/* LOGO */}
         <img src={logo} alt="logo" style={{ width: '50px', height: '50px' , borderRadius:'13px' }} />
         <Typography variant="h5" component="div" sx={{
           fontWeight:'bold',

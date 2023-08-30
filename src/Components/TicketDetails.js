@@ -14,25 +14,23 @@ import {
   ListItem,
   ListItemText,
 } from "@mui/material";
-
-// toast
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const TicketDetails = () => {
-    const BASE_URL = process.env.REACT_APP_BASE_URL;
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
   const { ticketId } = useParams();
   const [ticket, setTicket] = useState(null);
   const [statusOptions, setStatusOptions] = useState([
     "pending",
     "open",
     "closed",
-  ]); // Add status options here
+  ]);
   const [selectedStatus, setSelectedStatus] = useState("");
   const [statusUpdate, setStatusUpdate] = useState(false);
   const [commentuser, setCommentUser] = useState("");
-  const [comments, setComments] = useState([]); //comments array
-  const [agents, setAgents] = useState([]); //agents array
+  const [comments, setComments] = useState([]);
+  const [agents, setAgents] = useState([]);
   const [selectedAgent, setSelectedAgent] = useState("");
   const [refresh, setRefresh] = useState(false);
   const [agentemail, setAgentEmail] = useState(null);
@@ -40,15 +38,13 @@ const TicketDetails = () => {
 
   const userId = localStorage.getItem("userId");
 
-  // Handle agent change
   const handleAgentChange = (event) => {
     const newAgentId = event.target.value;
-    setSelectedAgent(newAgentId); // Store the ID of the selected agent
+    setSelectedAgent(newAgentId);
     const newAgent = agents.find((agent) => agent._id === newAgentId);
     if (newAgent) {
-      setAgentEmail(newAgent.email); // Set the email of the selected agent
+      setAgentEmail(newAgent.email);
     }
-    console.log('agent email',newAgent.email);
   };
 
   const handleAssignAgent = () => {
@@ -59,7 +55,6 @@ const TicketDetails = () => {
       formData.append("id", userId);
       formData.append("agentemail", agentemail);
 
-      // Make API request to assign the ticket to the selected agent
       axios
         .post(`${BASE_URL}/assignTicketToAgent`, formData, {
           headers: {
@@ -70,15 +65,15 @@ const TicketDetails = () => {
           toast.success("Agent Assigned for Ticket successfully", {
             position: toast.POSITION.TOP_RIGHT,
           });
-          setRefresh(!refresh); //refresh the page
+          setRefresh(!refresh);
         })
         .catch((error) => {
-          console.error("Error assigning ticket:", error);
+          console.error('Error assigning agent for ticket', error);
         });
     } catch (error) {
-      console.log("Error updating ticket status", error);
+      console.error('Error assigning agent for ticket', error);
     }
-    setSelectedAgent(""); //reset the selected agent
+    setSelectedAgent("");
     setAgentEmail("");
   };
 
@@ -90,16 +85,14 @@ const TicketDetails = () => {
           const fetchedTicket = response.data;
           setTicket(fetchedTicket);
           setSelectedStatus(fetchedTicket.status); // Set the initial status
-        } else {
-          console.log("Problem with fetching ticket details");
         }
       })
       .catch((error) => {
-        console.log("Error fetching ticket details", error);
+        console.error("Error fetching ticket details:", error);
       });
   }, [ticketId, refresh]);
 
-  // Fetch ticket details when the component mounts
+  // Fetch comments for the ticket
   useEffect(() => {
     axios
       .get(`${BASE_URL}/ticketDetailsById/${ticketId}`)
@@ -107,14 +100,11 @@ const TicketDetails = () => {
         if (response.status === 200) {
           const fetchedTicket = response.data;
           setTicket(fetchedTicket);
-          console.log('fetched ticket',fetchedTicket);
           setSelectedStatus(fetchedTicket.status); // Set the initial status
-        } else {
-          console.log("Problem with fetching ticket details");
         }
       })
       .catch((error) => {
-        console.log("Error fetching ticket details", error);
+        console.error("Error fetching ticket details:", error);
       });
 
     // Fetch comments for the ticket
@@ -123,9 +113,6 @@ const TicketDetails = () => {
       .then((response) => {
         if (response.status === 200) {
           setComments(response.data);
-          console.log("comments", response.data);
-        } else {
-          console.log("Problem with fetching comments");
         }
       })
       .catch((error) => {
@@ -133,7 +120,6 @@ const TicketDetails = () => {
       });
 
     //Fetch Agents
-
     axios
       .get(`${BASE_URL}/getAgents`)
       .then((response) => {
@@ -143,10 +129,9 @@ const TicketDetails = () => {
         }
       })
       .catch((error) => {
-        console.log("Error fetching agents", error);
+        console.error("Error fetching agents", error);
       });
   }, [ticketId, statusUpdate, selectedAgent]);
-
 
   //get user from userId
   useEffect(() => {
@@ -155,17 +140,14 @@ const TicketDetails = () => {
       .then((response) => {
         if (response.status === 200) {
           const fetchedUser = response.data.data;
-          console.log('fetched user',fetchedUser);
           setUserEmail(fetchedUser.email);
           localStorage.setItem("userEmail", fetchedUser.email);
-        } else {
-          console.log("Problem with fetching user details");
         }
       })
       .catch((error) => {
-        console.log("Error fetching user details", error);
+        console.error("Error fetching user details", error);
       });
-  },[ticketId])
+  }, [ticketId]);
 
   // Handle status change
   const handleStatusChange = (event) => {
@@ -176,7 +158,6 @@ const TicketDetails = () => {
   // Handle update status
   const handleUpdateStatus = () => {
     try {
-      // Update the ticket status using axios or your preferred method
       const newStatus = selectedStatus;
       const comment = commentuser;
       const agentId = localStorage.getItem("userId");
@@ -200,21 +181,25 @@ const TicketDetails = () => {
           setStatusUpdate(!statusUpdate);
         })
         .catch((error) => {
-          console.log("Error updating ticket status", error);
+          console.error("Error updating ticket status", error);
         });
     } catch (error) {
-      console.log("Error updating ticket status", error);
+      console.error("Error updating ticket status", error);
     }
   };
 
   return (
-    <Grid container gap={5} sx={{
-      padding:{
-        xs:'0',
-        sm:'1rem',
-        md:'1.5rem',
-      }
-    }}>
+    <Grid
+      container
+      gap={5}
+      sx={{
+        padding: {
+          xs: "0",
+          sm: "1rem",
+          md: "1.5rem",
+        },
+      }}
+    >
       {/* LEFT PANEL -TICKET DETAILS */}
       <Grid item xs={12} md={6}>
         <Paper
@@ -226,13 +211,15 @@ const TicketDetails = () => {
           <h1
             style={{
               fontFamily: "sans-serif",
+              backgroundColor: "whitesmoke",
+              padding: "10px",
+              borderRadius: "5px",
             }}
           >
             Ticket Details:
           </h1>
 
           <Typography variant="h6" gutterBottom component="div">
-            {/* gray colored ticketId */}
             <span
               style={{
                 color: "gray",
@@ -264,8 +251,7 @@ const TicketDetails = () => {
           </Typography>
 
           <Typography variant="h6" gutterBottom component="div">
-            <span style={{ color: "gray" }}>Category:</span>{" "}
-            {ticket?.category}
+            <span style={{ color: "gray" }}>Category:</span> {ticket?.category}
           </Typography>
 
           {ticket?.agent ? (
@@ -316,8 +302,6 @@ const TicketDetails = () => {
             Update
           </Button>
 
-          {/* only visiable to Admin */}
-
           {localStorage.getItem("userRole") === "admin" && (
             <FormControl style={{ width: "100%", marginTop: "10px" }}>
               <Typography variant="h6" gutterBottom component="div">
@@ -332,7 +316,6 @@ const TicketDetails = () => {
               </Select>
             </FormControl>
           )}
-          {/* ONLY VISIABLE TO ADMIN.. */}
           {selectedAgent && (
             <Button
               variant="contained"
@@ -355,7 +338,16 @@ const TicketDetails = () => {
             padding: "2rem",
           }}
         >
-          <h1 style={{ fontFamily: "sans-serif" }}>Comments: </h1>
+          <h1
+            style={{
+              fontFamily: "sans-serif",
+              backgroundColor: "whitesmoke",
+              padding: "10px",
+              borderRadius: "5px",
+            }}
+          >
+            Comments:{" "}
+          </h1>
 
           <Typography variant="h6">
             Total Comments: {comments.length}
@@ -374,9 +366,9 @@ const TicketDetails = () => {
                 >
                   <ListItemText
                     primary={comment.comment}
-                    secondary={`By ${localStorage.getItem('userEmail')} on ${new Date(
-                      comment.date
-                    ).toLocaleString()}`}
+                    secondary={`By ${localStorage.getItem(
+                      "userEmail"
+                    )} on ${new Date(comment.date).toLocaleString()}`}
                   />
                 </ListItem>
               ))}

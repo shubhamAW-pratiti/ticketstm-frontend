@@ -1,13 +1,9 @@
-// //Dashboard.js
-
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Typography, Card, CardContent, Box, Button, Toolbar, Grid, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, List, ListItem, CircularProgress } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css'
-
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -49,12 +45,11 @@ const Dashboard = () => {
               setLoading(false);
      
             } else {
-              console.log('Problem with fetching tickets');
               setLoading(false);
             }
           })
           .catch((error) => {
-            console.log('Error fetching tickets', error);
+            console.error('Error fetching tickets:', error);
           });
           setUseEffectCall(false);
         }
@@ -71,11 +66,10 @@ const Dashboard = () => {
                 },
             });
             setUseEffectCall(true);
-            console.log(response.data.message);
             clearSelectedRows();
 
         } catch (error) {
-            console.error('Error changing ticket statuses:', error);
+            console.error('Error updating status:', error);
         }
     };
 
@@ -121,8 +115,6 @@ const Dashboard = () => {
     };
 
     const handleCellClick = (params, event) => {
-
-
         if (role === 'admin' && params.value !== undefined && (params.field === 'user' || params.field === 'agent')) {
             event.preventDefault();
             handleReporterIdClick(params.value);
@@ -132,7 +124,6 @@ const Dashboard = () => {
             navigate(`/ticket/${ticketId}`);
         }
     };
-
 
     // Define the columns for the DataGrid
     let columns = [];
@@ -160,10 +151,6 @@ const Dashboard = () => {
             { field: 'title', headerName: 'Title', flex: 2, headerClassName: 'custom-header-cell', },
             { field: 'category', headerName: 'Category', flex: 2, headerClassName: 'custom-header-cell', },
             { field: 'useremail', headerName: 'Reporter Email', flex: 2, headerClassName: 'custom-header-cell', },
-
-            // { field: 'user', headerName: 'ReporterId', flex: 3, headerClassName: 'custom-header-cell', },
-            //{ field: 'agent', headerName: 'AssingedAgentId', flex: 3, headerClassName: 'custom-header-cell', },
-            //{ field: 'username', headerName: 'Reporter', flex: 3, headerClassName: 'custom-header-cell' },
             { field: 'agentemail', headerName: 'Assigned Agent', flex: 2, headerClassName: 'custom-header-cell' },
             {
                 field: 'date',
@@ -203,7 +190,6 @@ const Dashboard = () => {
             { field: 'title', headerName: 'Title', flex: 2, headerClassName: 'custom-header-cell', },
             { field: 'category', headerName: 'Category', flex: 2, headerClassName: 'custom-header-cell', },
             { field: 'useremail', headerName: 'Reporter Email', flex: 2, headerClassName: 'custom-header-cell', },
-            //{ field: 'username', headerName: 'Reporter Name', flex: 3, headerClassName: 'custom-header-cell', },
             {
                 field: 'date',
                 headerName: 'Created On',
@@ -224,8 +210,6 @@ const Dashboard = () => {
     const cardHeight = '10em';
 
     return (
-
-
         <Box component="main" sx={{ flexGrow: 1, p: 3, }}>
             {loading ? (
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -400,8 +384,6 @@ const Dashboard = () => {
                         )}
                     </Toolbar>
 
-
-
                     <div style={{ height: 600, width: '100%' }}>
 
                         <DataGrid
@@ -409,13 +391,9 @@ const Dashboard = () => {
                             columns={columns}
                             onCellClick={handleCellClick}
                         />
-
-
                     </div>
-
                 </>
             )}
-
         </Box>
     );
 };

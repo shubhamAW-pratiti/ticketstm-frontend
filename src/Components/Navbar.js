@@ -6,7 +6,6 @@ import {
   Search,
   SettingsOutlined,
   ArrowDropDownOutlined,
-
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
@@ -30,9 +29,9 @@ import {
   Grid,
 } from "@mui/material";
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useActiveLink } from './ActiveLinkContext';
+import { useActiveLink } from "./ActiveLinkContext";
 
 const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
   const { setActiveLink } = useActiveLink();
@@ -53,10 +52,10 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
   const [updateFirstName, setUpdateFirstName] = useState("");
   const [updateLastName, setUpdateLastName] = useState("");
   const [isUpdateButtonDisabled, setIsUpdateButtonDisabled] = useState(true);
-  const [useEffectCall, setUseEffectCall] = useState(true); 
+  const [useEffectCall, setUseEffectCall] = useState(true);
 
   const BASE_URL = process.env.REACT_APP_BASE_URL;
-  
+
   //Handle Logout and navigate to / route.
   const handleLogout = () => {
     alert("Really Want to LoggedOut!!");
@@ -64,7 +63,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
     localStorage.removeItem("userId");
     localStorage.removeItem("userRole");
     localStorage.removeItem("accessToken");
-    setActiveLink('');
+    setActiveLink("");
     navigate("/");
   };
 
@@ -73,7 +72,6 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
     setUpdateFirstName(user?.firstname || "");
     setUpdateLastName(user?.lastname || "");
     setIsUpdateButtonDisabled(true);
-
   };
 
   const handleFirstNameChange = (e) => {
@@ -90,38 +88,31 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
     setIsDialogOpen(false);
   };
 
-
-
   const handleUpdateDetails = () => {
-    const token = localStorage.getItem('accessToken')
+    const token = localStorage.getItem("accessToken");
     const requestBody = new URLSearchParams();
-    requestBody.append('firstname', updateFirstName);
-    requestBody.append('lastname', updateLastName);
+    requestBody.append("firstname", updateFirstName);
+    requestBody.append("lastname", updateLastName);
 
-    axios.put(
-      `${BASE_URL}/user/details/${userId}`,
-      requestBody.toString(),
-      {
+    axios
+      .put(`${BASE_URL}/user/details/${userId}`, requestBody.toString(), {
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          "Content-Type": "application/x-www-form-urlencoded",
           Authorization: `Bearer ${token}`,
         },
-      }
-    )
+      })
       .then((response) => {
-        toast.success('Information updated successfully!', {
+        toast.success("Information updated successfully!", {
           position: toast.POSITION.TOP_CENTER,
         });
         handleCloseDialog();
         setUseEffectCall(true);
       })
       .catch((error) => {
-        console.error('Error updating user:', error);
+        console.error("Error updating user details:", error);
       });
   };
 
-
-  
   useEffect(() => {
     if (useEffectCall) {
       axios
@@ -130,39 +121,30 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
           if (response.status === 200) {
             const fetchedUser = response.data.data;
             setUser(fetchedUser);
-            console.log(fetchedUser);
-          } else {
-            console.log("Problem with fetching user details");
-          }
+          } 
         })
         .catch((error) => {
-          console.log("Error fetching user details", error);
+          console.error("Error fetching user:", error);
         });
 
-      setUseEffectCall(false); 
-      return; 
+      setUseEffectCall(false);
+      return;
     }
-
   }, [useEffectCall, userId]);
 
-
-
-
   return (
-    <Grid container  >
+    <Grid container>
       <AppBar
         sx={{
           position: "static",
           background: "none",
           boxShadow: "none",
-          // sticky at top
           top: "0",
         }}
       >
         <Toolbar sx={{ justifyContent: "space-between" }}>
           {/* LEFT SIDE */}
           <FlexBetween>
-
             {!isSidebarOpen && (
               <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
                 <MenuIcon />
@@ -180,7 +162,6 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
                 gap="3rem"
                 p="0.1rem 1.5rem"
               >
-
                 <InputBase placeholder="Search..." />
                 <IconButton>
                   <Search />
@@ -262,7 +243,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
           fullWidth
           PaperProps={{
             style: {
-              widows: '100%',
+              widows: "100%",
               height: "70vh",
             },
           }}
@@ -282,7 +263,7 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen, onLogout }) => {
                   value={updateFirstName}
                   onChange={handleFirstNameChange}
                   fullWidth
-                  sx={{ mt: '10px' }}
+                  sx={{ mt: "10px" }}
                 />
               </Grid>
               <Grid item xs={12}>

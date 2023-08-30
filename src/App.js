@@ -1,9 +1,6 @@
 import * as React from "react";
-import { useState, useEffect, useMemo } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
-import { themeSettings } from "./theme";
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import { createTheme } from "@mui/material/styles";
+import { useState } from "react";
+import { Routes, Route } from "react-router-dom";
 
 import Login_poc from "./Components/Login_poc";
 import SignUp from "./Components/SignUp";
@@ -13,21 +10,17 @@ import About from "./Components/About";
 import TicketDetails from "./Components/TicketDetails";
 import Users from "./Components/Users";
 import UserProfile from "./Components/UserProfile";
-import Daily from "./scenes/Daily";
-import DashboardLayout from "./Components/Layout/DashboardLayout";
 import Dashboard from "./Components/Dashboard";
-import Monthly from "./scenes/Monthly";
-import BreakDown from "./scenes/BreakDown";
 import CreateNewTicket from "./Components/CreateNewTicket";
 import UserDashboard from "./Components/UserDashboard";
-import HomeLayout from "./Components/Layout/HomeLayout";
 import Home from "./Components/Home";
+import DashboardLayout from "./Components/Layout/DashboardLayout";
+import HomeLayout from "./Components/Layout/HomeLayout";
+import Daily from "./scenes/Daily";
+import Monthly from "./scenes/Monthly";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  localStorage.setItem("mode", "dark");
-  const [mode, setMode] = useState(localStorage.getItem("mode"));
-  let theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -39,16 +32,9 @@ export default function App() {
     localStorage.setItem("isLoggedIn", false);
   };
 
-  const BASE_URL = process.env.REACT_APP_BASE_URL;
-
   return (
-    //  <ThemeProvider theme={theme}>
-    //  <CssBaseline />
-
     <div>
       <Routes>
-
-        {/* Home DashBoard */}
         <Route element={<HomeLayout/>}>
           <Route path="/" element={ <Home/>} />
           <Route path="/login" element={<Login_poc onLogin={handleLogin} />} />
@@ -64,7 +50,6 @@ export default function App() {
             path="/dashboard"
             element={
               <PrivateRoute path='/dashboard' isLoggedIn={isLoggedIn}>
-                {/* Dashboard */}
                 <Dashboard/>
               </PrivateRoute>
             }
@@ -73,13 +58,10 @@ export default function App() {
             path="/userdashboard"
             element={
               <PrivateRoute path='/userdashboard' isLoggedIn={isLoggedIn}>
-                {/* User Dashboard */}
                 <UserDashboard/>
               </PrivateRoute>
             }
           />
-
-          {/* ticket Details */}
           <Route
             path="ticket/:ticketId"
             element={
@@ -88,8 +70,6 @@ export default function App() {
               </PrivateRoute>
             }
           />
-
-          {/* users details */}
           <Route
             path="user/:userId"
             element={
@@ -98,8 +78,6 @@ export default function App() {
               </PrivateRoute>
             }
           />
-
-          {/* Users */}
           <Route
             path="users"
             element={
@@ -108,9 +86,6 @@ export default function App() {
               </PrivateRoute>
             }
           />
-
-          {/* Daily */}
-
           <Route
             path="daily"
             element={
@@ -119,9 +94,6 @@ export default function App() {
               </PrivateRoute>
             }
           />
-
-          {/* Monthly */}
-
           <Route
             path="monthly"
             element={
@@ -129,9 +101,7 @@ export default function App() {
                 <Monthly onLogout={handleLogout} />
               </PrivateRoute>
             }
-            />
-          
-          {/* User create Ticket */}
+            />          
           <Route
             path="/createticket"
             element={
@@ -142,8 +112,6 @@ export default function App() {
           />
         </Route>        
       </Routes>
-      {/* <Footer/> */}
     </div>
-    // </ThemeProvider>
   );
 }

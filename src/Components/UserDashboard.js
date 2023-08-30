@@ -29,7 +29,6 @@ const UserDashboard = () => {
   };
 
   useEffect(() => {
-    // Fetch all tickets format: x-www-form-urlencoded
     axios
       .get(`${BASE_URL}/allTicketsByUser`, {
         params: {
@@ -45,7 +44,6 @@ const UserDashboard = () => {
           setTickets(tickets);
           setLoading(false);
         } else {
-          console.log("Problem with fetching tickets");
           setLoading(false);
         }
       })
