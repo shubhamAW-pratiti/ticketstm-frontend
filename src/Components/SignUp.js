@@ -16,16 +16,15 @@ import { useActiveLink } from "./ActiveLinkContext";
 
 function Signup() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
-  const [repass, setRepass] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [rePasswordError, setRePasswordError] = useState("");
-  const [firstNameError, setFirstNameError] = useState("");
-  const role = "basic";
+  const [email, setEmail] = useState('');
+  const [pass, setPass] = useState('');
+  const [repass, setRepass] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [rePasswordError, setRePasswordError] = useState('');
+  const role = 'basic';
   const { setActiveLink } = useActiveLink();
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -49,18 +48,12 @@ function Signup() {
   const handlePasswordChange = (e) => {
     const newPass = e.target.value;
     setPass(newPass);
-    setPasswordError("");
-    if (newPass === "") {
-      setPasswordError("");
+    setPasswordError('');
+    if (newPass === '') {
+      setPasswordError('');
     }
-    else if (
-      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&])[a-zA-Z\d@#$!%*?&]{8,}$/.test(
-        newPass
-      )
-    ) {
-      setPasswordError(
-        "Password must contain at least 8 characters, including at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character (@, #, $, !, %, *, ?, &)."
-      );
+    else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&])[a-zA-Z\d@#$!%*?&]{8,}$/.test(newPass)) {
+      setPasswordError('Password must contain at least 8 characters, including at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character (@, #, $, !, %, *, ?, &).');
     } else {
       setPasswordError("");
     }
@@ -68,82 +61,72 @@ function Signup() {
 
   const handleRePasswordChange = (e) => {
     setRepass(e.target.value);
-    if (e.target.value === "") {
-      setRePasswordError("");
-    } else if (e.target.value !== pass) {
-      setRePasswordError("Passwords do not match");
+    if (e.target.value === '') {
+      setRePasswordError('');
+    }
+    else if (e.target.value !== pass) {
+      setRePasswordError('Passwords do not match');
     } else {
       setRePasswordError("");
     }
   };
 
-  const handleFirstNameChange = (e) => {
-    setFirstName(e.target.value);
-    if (e.target.value !== "") {
-      setFirstNameError("");
-    }
-  };
-
   const handleReset = () => {
-    setEmail("");
-    setPass("");
-    setRepass("");
-    setFirstName("");
-    setLastName("");
-    setEmailError("");
-    setPasswordError("");
-    setRePasswordError("");
-    setFirstNameError("");
+    setEmail('');
+    setPass('');
+    setRepass('');
+    setFirstName('');
+    setLastName('');
+    setEmailError('');
+    setPasswordError('');
+    setRePasswordError('');
   };
 
   const handleSingUp = async (event) => {
     event.preventDefault();
-    if (
-      email &&
-      pass &&
-      repass &&
-      firstName &&
-      emailError === "" &&
-      passwordError === ""
-    ) {
-      try {
-        const formData = new URLSearchParams();
-        formData.append("role", role);
-        formData.append("email", email);
-        formData.append("password", pass);
-        formData.append("firstname", firstName);
-        formData.append("lastname", lastName);
+    if (email && pass && repass && firstName) {
+      if (emailError === '' && passwordError === '') {
+        try {
+          const formData = new URLSearchParams();
+          formData.append('role', role);
+          formData.append('email', email);
+          formData.append('password', pass);
+          formData.append('firstname', firstName);
+          formData.append('lastname', lastName);
 
-        const response = await axios.post(
-          `${BASE_URL}/signup`,
-          formData.toString(),
-          {
+          const response = await axios.post(`${BASE_URL}/signup`, formData.toString(), {
             headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
+              'Content-Type': 'application/x-www-form-urlencoded',
             },
+          });
+          if (response) {
+            if (response.status === 200) {
+              const data = response.data;
+              // Store accessToken in localStorage
+              localStorage.setItem('accessToken', data.data.accessToken);
+              //Toast message for success
+              toast.success("Sign Up successfully !", {
+                position: toast.POSITION.TOP_CENTER
+              });
+              setTimeout(() => {
+                setActiveLink('/login');
+                navigate('/login');
+              }, 3000);
+            } else {
+              //toast message for warn
+              toast.warn("user already exists,Please login !", {
+                position: toast.POSITION.TOP_CENTER
+              });
+            }
           }
-        );
-        if (response) {
-          if (response.status === 200) {
-            const data = response.data;
-            localStorage.setItem("accessToken", data.data.accessToken);
-            toast.success("Sign Up successfully !", {
-              position: toast.POSITION.TOP_CENTER,
-            });
-
-            setTimeout(() => {
-              setActiveLink("/login");
-              navigate("/login");
-            }, 3000);
-          } else {
-            toast.warn("user already exists,Please login !", {
-              position: toast.POSITION.TOP_CENTER,
-            });
-          }
+        } catch (error) {
+          toast.error('Error in signing up:', {
+            position: toast.POSITION.TOP_CENTER
+          });
         }
-      } catch (error) {
-        toast.error("Error in signing up:", {
-          position: toast.POSITION.TOP_CENTER,
+      }else{
+        toast.warn("Email or Password format is invalid", {
+          position: toast.POSITION.TOP_CENTER
         });
       }
     } else {
@@ -242,11 +225,10 @@ function Signup() {
                 fullWidth
                 margin="normal"
                 value={firstName}
-                onChange={handleFirstNameChange}
-                error={firstNameError !== ""}
-                helperText={firstNameError}
+                onChange={(e) => setFirstName(e.target.value)}
               />
             </Grid>
+
             <Grid item xs={12} sm={6}>
               <TextField
                 label="Last Name"
@@ -272,6 +254,7 @@ function Signup() {
                 Sign Up
               </Button>
             </Grid>
+
             <Grid item xs={6}>
               <Button
                 variant="outlined"
@@ -302,18 +285,16 @@ function Signup() {
         </Button>
 
         <Typography align="center">
-          Already signed up?{" "}
-          <Link
-            to="/login"
-            style={{ textDecoration: "none", color: "#1976d2" }}
-            onClick={() => setActiveLink("/login")}
+          Already signed up?{' '}
+          <Link to="/login" style={{ textDecoration: 'none', color: '#1976d2' }}
+            onClick={() => setActiveLink('/login')}
           >
             Login
           </Link>
         </Typography>
       </Paper>
       <ToastContainer />
-    </Container>
+    </Container >
   );
 }
 

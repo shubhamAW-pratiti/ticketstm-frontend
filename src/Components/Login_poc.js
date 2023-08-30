@@ -13,7 +13,6 @@ const Login_poc = ({ onLogin }) => {
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [btnDisabled, setBtnDisabled] = useState(true);
-
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
   const isEmailValid = (email) => {
@@ -22,23 +21,25 @@ const Login_poc = ({ onLogin }) => {
   const handleEmailChange = (e) => {
     const newEmail = e.target.value;
     setEmail(newEmail);
-
     if (newEmail === '') {
       setEmailError('');
     } else if (!isEmailValid(newEmail)) {
       setEmailError('Invalid email format.');
+      setBtnDisabled(true);
+      return;
     } else {
       setEmailError('');
+      if (password) setBtnDisabled(false);
     }
   };
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&])[a-zA-Z\d@#$!%*?&]{7,}$/g.test(password)) {
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&])[a-zA-Z\d@#$!%*?&]{8,}$/g.test(password)) {
       setBtnDisabled(true);
       return;
     } else {
-      setBtnDisabled(false);
+      if (email && emailError === '') setBtnDisabled(false);
       return;
     }
   };
@@ -55,13 +56,11 @@ const Login_poc = ({ onLogin }) => {
       const formData = new URLSearchParams();
       formData.append('email', email);
       formData.append('password', password);
-
       const response = await axios.post(`${BASE_URL}/login`, formData.toString(), {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
-
       if (response.status === 200) {
         const data = response.data;
         localStorage.setItem('accessToken', data.accessToken);
@@ -113,7 +112,6 @@ const Login_poc = ({ onLogin }) => {
           onChange={handleEmailChange}
           error={emailError !== ''}
           helperText={emailError}
-
         />
         <TextField
           type='password'
@@ -127,7 +125,6 @@ const Login_poc = ({ onLogin }) => {
           onChange={handlePasswordChange}
         />
 
-        {/* Login & Reset Buttons */}
         <Grid container spacing={2} mt={1}>
           <Grid item xs={12} sm={6}>
             <Button
@@ -139,8 +136,8 @@ const Login_poc = ({ onLogin }) => {
             >
               Login
             </Button>
-
           </Grid>
+
           <Grid item xs={12} sm={6}>
             <Button
               variant="outlined"
@@ -151,7 +148,6 @@ const Login_poc = ({ onLogin }) => {
                 setEmail('');
                 setPassword('');
                 setEmailError('');
-
               }}
             >
               Reset
@@ -175,15 +171,12 @@ const Login_poc = ({ onLogin }) => {
               Sign Up
             </Typography>
           </Link>
-
           <Link to="/ForgotPass" style={{ textDecoration: 'none', width: '40%', marginRight: '5%', color: '#1976d2' }}>
             <Typography variant="body1" sx={{ textTransform: 'capitalize' }}>
               Forgot Password
             </Typography>
           </Link>
         </div>
-
-
 
         {/* Divider */}
         <Divider flexItem sx={{ marginTop: 2 }}>
@@ -199,14 +192,13 @@ const Login_poc = ({ onLogin }) => {
           onClick={() => {
             setActiveLink('/create-new-ticket');
             navigate('/create-new-ticket');
-          }}  
+          }}
         >
           Continue As a Guest
         </Button>
       </Paper>
       <ToastContainer />
     </Container>
-
   );
 };
 
